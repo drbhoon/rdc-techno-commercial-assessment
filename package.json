@@ -9,11 +9,12 @@
     "build-banks": "py scripts/build-question-banks.py"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.52.0",
+    "jspdf": "^4.2.1",
     "next": "^15.1.0",
+    "pg": "^8.13.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "@anthropic-ai/sdk": "^0.52.0",
-    "pg": "^8.13.3",
     "uuid": "^11.0.3"
   },
   "devDependencies": {
@@ -22,9 +23,9 @@
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@types/uuid": "^10.0.0",
-    "typescript": "^5.0.0",
-    "tailwindcss": "^3.4.0",
     "autoprefixer": "^10.4.0",
-    "postcss": "^8.4.0"
+    "postcss": "^8.4.0",
+    "tailwindcss": "^3.4.0",
+    "typescript": "^5.0.0"
   }
 }

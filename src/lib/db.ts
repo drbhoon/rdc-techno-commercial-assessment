@@ -6,7 +6,7 @@
  * Railway injects DATABASE_URL automatically when you add a PostgreSQL service.
  * For local dev, add DATABASE_URL to .env.local.
  */
-import { Pool } from "pg";
+import { getPool } from "./dbPool";
 import type {
   CandidateInfo,
   ClientQuestion,
@@ -38,27 +38,6 @@ export interface StoredSession {
   completedAt?: string;
   status: "in_progress" | "completed";
   responses: Record<number, StoredResponse>; // keyed by position 1-20
-}
-
-// ── Pool singleton ────────────────────────────────────────────────────────────
-const globalForPg = global as typeof global & { __pgPool?: Pool };
-
-function getPool(): Pool {
-  if (!globalForPg.__pgPool) {
-    globalForPg.__pgPool = new Pool({
-      connectionString: process.env.DATABASE_URL,
-      ssl:
-        process.env.DATABASE_URL &&
-        !process.env.DATABASE_URL.includes("localhost") &&
-        !process.env.DATABASE_URL.includes("127.0.0.1")
-          ? { rejectUnauthorized: false }
-          : undefined,
-      max: 10,
-      idleTimeoutMillis: 30000,
-      connectionTimeoutMillis: 10000,
-    });
-  }
-  return globalForPg.__pgPool;
 }
 
 // ── Schema init (idempotent) ──────────────────────────────────────────────────
