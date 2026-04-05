@@ -1,0 +1,48 @@
+{
+  "selling": {
+    "competencies": {
+      "C1": "Customer Understanding & Need Diagnosis",
+      "C2": "Service Recovery & Complaint Handling",
+      "C3": "Delivery Coordination & Execution Orientation",
+      "C4": "Value Selling & Differentiation",
+      "C5": "Negotiation & Objection Handling",
+      "C6": "Commercial Acumen & Credit Discipline",
+      "C7": "Relationship Management & Trust Building",
+      "C8": "Ownership, Escalation & Follow-through"
+    },
+    "distribution": {
+      "C1": 2,
+      "C2": 4,
+      "C3": 3,
+      "C4": 2,
+      "C5": 3,
+      "C6": 3,
+      "C7": 1,
+      "C8": 2
+    },
+    "totalQuestions": 20,
+    "poolSize": 107
+  },
+  "technical": {
+    "competencies": {
+      "T1": "RMX Fundamentals & Product Understanding",
+      "T2": "Site Condition Diagnosis",
+      "T3": "Complaint Handling for Fresh Concrete",
+      "T4": "Complaint Handling for Hardened Concrete",
+      "T5": "Corrective Action & Preventive Guidance",
+      "T6": "Technical Risk Judgment",
+      "T7": "Communication & Escalation Discipline"
+    },
+    "distribution": {
+      "T1": 3,
+      "T2": 3,
+      "T3": 4,
+      "T4": 4,
+      "T5": 3,
+      "T6": 2,
+      "T7": 1
+    },
+    "totalQuestions": 20,
+    "poolSize": 48
+  }
+}

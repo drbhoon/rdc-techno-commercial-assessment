@@ -1,0 +1,56 @@
+{
+  "sessionId": "sample-00000000-0000-0000-0000-000000000000",
+  "_note": "This is a sample report illustrating the output format. Real reports are saved in db/sessions/.",
+  "candidate": {
+    "name": "Rahul Sharma",
+    "employeeId": "EMP-0042",
+    "location": "Mumbai",
+    "role": "Senior Sales Executive"
+  },
+  "assessmentType": "selling",
+  "completedAt": "2026-04-05T10:30:00.000Z",
+  "overallScore": 68,
+  "overallAvg": 3.4,
+  "readinessRecommendation": "Ready with coaching",
+  "readinessLabel": "Can manage most situations but needs structured coaching on negotiation, complaint control, or collections.",
+  "competencyScores": [
+    { "id": "C1", "name": "Customer Understanding & Need Diagnosis", "questionsAnswered": 2, "totalScore": 7, "avgScore": 3.5, "maxPossible": 10, "pct": 70 },
+    { "id": "C2", "name": "Service Recovery & Complaint Handling", "questionsAnswered": 4, "totalScore": 14, "avgScore": 3.5, "maxPossible": 20, "pct": 70 },
+    { "id": "C3", "name": "Delivery Coordination & Execution Orientation", "questionsAnswered": 3, "totalScore": 11, "avgScore": 3.7, "maxPossible": 15, "pct": 73 },
+    { "id": "C4", "name": "Value Selling & Differentiation", "questionsAnswered": 2, "totalScore": 7, "avgScore": 3.5, "maxPossible": 10, "pct": 70 },
+    { "id": "C5", "name": "Negotiation & Objection Handling", "questionsAnswered": 3, "totalScore": 9, "avgScore": 3.0, "maxPossible": 15, "pct": 60 },
+    { "id": "C6", "name": "Commercial Acumen & Credit Discipline", "questionsAnswered": 3, "totalScore": 8, "avgScore": 2.7, "maxPossible": 15, "pct": 53 },
+    { "id": "C7", "name": "Relationship Management & Trust Building", "questionsAnswered": 1, "totalScore": 4, "avgScore": 4.0, "maxPossible": 5, "pct": 80 },
+    { "id": "C8", "name": "Ownership, Escalation & Follow-through", "questionsAnswered": 2, "totalScore": 6, "avgScore": 3.0, "maxPossible": 10, "pct": 60 }
+  ],
+  "topStrengths": [
+    "Relationship Management & Trust Building (avg 4/5)",
+    "Delivery Coordination & Execution Orientation (avg 3.7/5)",
+    "Customer Understanding & Need Diagnosis (avg 3.5/5)"
+  ],
+  "developmentAreas": [
+    "Commercial Acumen & Credit Discipline (avg 2.7/5)",
+    "Negotiation & Objection Handling (avg 3/5)",
+    "Ownership, Escalation & Follow-through (avg 3/5)"
+  ],
+  "redFlags": [],
+  "responses": [
+    {
+      "position": 1,
+      "questionId": "S003",
+      "questionText": "How would you ensure timely delivery in a congested traffic situation during RMX dispatch?",
+      "competencies": ["C3", "C1"],
+      "transcript": "First I will check GPS to see where TMs are. Then I will call the customer and give realistic ETA. I will also coordinate with logistics for alternative route. If delay is more than one hour I will escalate to plant manager.",
+      "evaluation": {
+        "questionId": "S003",
+        "competencies": ["C3", "C1"],
+        "score": 4,
+        "whyThisScore": "Candidate showed practical RMX-grounded thinking with GPS check, customer communication, and escalation trigger. Minor gap: no mention of checking site readiness to avoid TM waiting charges at destination.",
+        "whatWasGood": "Proactive GPS check, realistic ETA communication, route coordination, and clear escalation threshold.",
+        "whatWasMissing": "Should also check if site is ready to receive concrete on arrival — TM waiting at site compounds the delay cost.",
+        "managerCoachingNote": "Coach on the full loop: dispatch delay → site readiness check → waiting charge control. Good instinct on customer communication."
+      },
+      "recordedAt": "2026-04-05T10:05:00.000Z"
+    }
+  ]
+}

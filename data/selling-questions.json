@@ -1,0 +1,1178 @@
+[
+  {
+    "id": "S001",
+    "sourceNum": 1,
+    "text": "A pump breakdown delays the pour. What actions should you take?",
+    "modelAnswer": "Immediately inform the customer. Provide revised ETA. Offer alternate/ Taxi pump if possible.Coordinate with logistics and maintain transparency. (Aligned with challenges: equipment breakdown & service expectations.)",
+    "competencies": [
+      "C1",
+      "C3"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S002",
+    "sourceNum": 2,
+    "text": "During a mass pour, GPS shows trucks stuck in traffic. What actions do you take?",
+    "modelAnswer": "Use GPS/RDC TRAK to check real-time movement. Provide updated ETA to client. Re-route trucks if possible. Arrange additional vehicles from plant or nearby plant.",
+    "competencies": [
+      "C1",
+      "C3"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S003",
+    "sourceNum": 3,
+    "text": "How would you ensure timely delivery in a congested traffic situation during RMX dispatch?",
+    "modelAnswer": "Use GPS tracking to monitor truck location, inform clients proactively about delays, and coordinate alternative routes or rescheduling with logistics to minimize impact.",
+    "competencies": [
+      "C1",
+      "C3"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S004",
+    "sourceNum": 4,
+    "text": "In case of equipment breakdown impacting delivery, what immediate actions should be taken?",
+    "modelAnswer": "Notify the client, arrange alternative equipment or trucks, escalate internally to resolve the issue quickly, and update the client regularly till full restoration.",
+    "competencies": [
+      "C1",
+      "C3"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S005",
+    "sourceNum": 5,
+    "text": "What impact can delays in RMX delivery have on a customer's project?",
+    "modelAnswer": "Disruption of scheduled pours and labour downtime. Need for additional temporary works or rework. Increased costs from idle equipment & labour. Quality compromises(cold joints, reduced strength). Client dissatisfaction and potential contract penalties.",
+    "competencies": [
+      "C3",
+      "C1"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S006",
+    "sourceNum": 6,
+    "text": "What are the Challenges during delivery?",
+    "modelAnswer": "Traffic Breakdowns, QC issues. Delayed Updates. Pump Coordination issues.",
+    "competencies": [
+      "C3",
+      "C1"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S007",
+    "sourceNum": 7,
+    "text": "How RDC handles these?",
+    "modelAnswer": "GPS, RDC TRAK, confirmations, onsite QC. Real-time updates, Complaint management. RDC CUSTOMER CONNECT APPLICATION.",
+    "competencies": [
+      "C3",
+      "C1"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S008",
+    "sourceNum": 8,
+    "text": "A customer complains that the delivery is delayed due to heavy traffic congestion en route to the site. How would you handle this immediately?",
+    "modelAnswer": "Acknowledge the frustration and confirm the truck's current status via RDC TRA GPS tracking. Provide a real-time ETA update and suggest alternative routes or rescheduling pours in sections to minimize impact. Advise preparing the site for quick unloading upon arrival. Escalate via the escalation matrix to reroute or dispatch an additional truck if needed. Follow up with WhatsApp/SMS update and log in the central complaint system to track OTIF and prevent cascading delays.",
+    "competencies": [
+      "C3",
+      "C1"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S009",
+    "sourceNum": 9,
+    "text": "The customer reports a truck breakdown during transit, causing a potential delay in concrete delivery. What immediate steps would you take?",
+    "modelAnswer": "Empathize with the urgency and gather details on the breakdown location and time elapsed since batching. Recommend checking the mix's viability (e.g., agitate if possible) and arrange for a replacement truck or tow service promptly. Suggest site preparations to handle the delay, like covering forms.Use the escalation matrix to involve logistics for quick resolution. Provide constant SMS updates and document in CCTS to maintain trust and support repeat business.",
+    "competencies": [
+      "C3",
+      "C1"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S010",
+    "sourceNum": 10,
+    "text": "Due to poor site access (e.g., narrow roads or obstacles), the delivery truck cannot reach the pour area. What remedies would you suggest right away?",
+    "modelAnswer": "Acknowledge the access issue and ask for site specifics like entry points or barriers.Advise using smaller vehicles or pumps for transfer if feasible, or clearing a path with on-site equipment. Recommend pre-delivery site surveys for future orders. Escalate to dispatch a suitable alternative truck. Update via the RDC App and log in the 24-hour system to ensure timely resolution and improve coordination. Prior site inspection needs to be done.",
+    "competencies": [
+      "C3",
+      "C1"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S011",
+    "sourceNum": 11,
+    "text": "A client mentions weather-related delays, such as rain or extreme heat affecting delivery timing and concrete setting. How would you respond promptly?",
+    "modelAnswer": "Express understanding and confirm weather conditions at the site and plant. Suggest protective measures like tarps for rain or retarders for heat, and reschedule if safety is compromised. Advise monitoring via RDC TRAK for adjusted ETAs. Escalate to the technical team for mix adjustments. Provide WhatsApp updates and record in complaint resolution logs to align with quality assurance and NPS goals.",
+    "competencies": [
+      "C3",
+      "C8"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S012",
+    "sourceNum": 12,
+    "text": "The customer complains about a lack of pump availability or coordination lapses during delivery, halting the pour. What initial guidance would you provide?",
+    "modelAnswer": "Acknowledge the coordination issue and probe for details on pump requirements. Recommend manual alternatives like wheelbarrows for small volumes or sourcing a nearby pump. Suggest better pre-planning with daily confirmation calls. Use the escalation matrix to deploy manpower or equipment urgently. Follow up with SMS updates and log in CCTS to prevent project issues and enhance client relationships. Arrange taxi pump from the market for the customer.",
+    "competencies": [
+      "C3",
+      "C8"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S013",
+    "sourceNum": 13,
+    "text": "The delivery is impacted by last-minute order changes or additions, leading to scheduling conflicts. How would you handle this complaint immediately?",
+    "modelAnswer": "Acknowledge the change's impact and confirm new requirements. Suggest prioritizing critical pours and adjusting batch sizes via plant coordination. Advise communicating changes earlier for better planning. Escalate via the helpline for rapid rescheduling. Update with real-time WhatsApp notifications and log in CCTS to maintain OTIF and build trust.",
+    "competencies": [
+      "C3",
+      "C8"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S014",
+    "sourceNum": 14,
+    "text": "A customer experiences delays due to long distance from the batch plant, risking early setting of the concrete. What immediate actions would you advise?",
+    "modelAnswer": "Show concern for the time-sensitive nature and ask about transit duration. Recommend adding retarders to extend workability if within limits, or sourcing from a closer plant for future deliveries. Suggest on-site agitation upon arrival. Use RDC TRAK for monitoring and escalate for expedited alternatives. Provide SMS updates and record to ensure resolution within 24 hours.",
+    "competencies": [
+      "C3",
+      "C8"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S015",
+    "sourceNum": 15,
+    "text": "There is a communication delay in updates about delivery status, causing uncertainty at the site. What remedies would you suggest right away?",
+    "modelAnswer": "Acknowledge the lack of transparency and verify the truck's status via GPS. Immediately send real-time ETA via WhatsApp/SMS and set up automated alerts through the RDC App. Advise daily confirmation calls for proactive updates. Escalate to logistics for improved tracking. Log in the complaint system and follow up to reinforce responsive communication and KPIs.",
+    "competencies": [
+      "C3",
+      "C8"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S016",
+    "sourceNum": 16,
+    "text": "The customer reports unstable ground or incomplete site preparation, preventing safe truck maneuvering and delivery. How would you guide them initially?",
+    "modelAnswer": "Empathize with the safety concern and gather site readiness details. Advise stabilizing the ground with gravel or mats and completing formwork before arrival. Recommend pre-delivery inspections. Escalate to dispatch a scout or alternative delivery method. Update via the app, log in CCTS, and emphasize coordination to avoid delays and support long-term business.",
+    "competencies": [
+      "C3",
+      "C8"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S017",
+    "sourceNum": 17,
+    "text": "The customer has ordered 80 cum for a continuous pour, but only 6 trucks (48 cum) have arrived in 3 hours and the pour is getting delayed. What will you do immediately?",
+    "modelAnswer": "Apologize sincerely, open RDC TRAK instantly and share the live location and ETA of the remaining trucks with the customer via WhatsApp. Simultaneously escalate to the Plant In-Charge and Transport Manager on the escalation matrix for priority loading of balance trucks. Offer to deploy an extra pump free of cost if the delay exceeds 30 minutes so that placement speed can be increased once concrete arrives. Log the complaint in the 24-hour system and give the customer a firm revised completion timeline.",
+    "competencies": [
+      "C3",
+      "C8"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S018",
+    "sourceNum": 18,
+    "text": "Customer says the truck has been waiting at site for more than 45 minutes because their crane/pump is not ready. They are now threatening to reject the load. How will you respond?",
+    "modelAnswer": "Politely remind the customer that waiting charges apply after 30 minutes as per our standard terms, but to maintain relationship I will request the transport team to waive 50 % of the waiting charges. Simultaneously coordinate with site supervisor to expedite crane/pump readiness. If delay goes beyond 90 minutes from batching time, I will immediately arrange a replacement truck so fresh concrete is supplied at no extra cost. Update customer every 10 minutes via WhatsApp.",
+    "competencies": [
+      "C3",
+      "C8"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S019",
+    "sourceNum": 19,
+    "text": "A truck has reached the site but the customer says the boom pump they booked from a third-party vendor has broken down. Pour is stopped. What immediate solution will you give?",
+    "modelAnswer": "Instantly check availability of RDC’s own pumps or empanelled pump vendors in that area. Offer to arrange an emergency pump within 60–90 minutes (we will bear 50–100 % of the extra pump charges depending on order value). Meanwhile, ask the customer to keep the trucks rotating slowly so concrete does not set. Escalate to Regional Logistics Head and update customer every 15 minutes till pump reaches site.",
+    "competencies": [
+      "C3",
+      "C8"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S020",
+    "sourceNum": 20,
+    "text": "The site is in a low-ground area and it rained heavily last night. The truck is getting stuck in mud and cannot enter. Customer is panicking. Your immediate action?",
+    "modelAnswer": "Apologize and immediately dispatch tractor/trailer or smaller 15 cum transit mixers that can negotiate muddy roads. Simultaneously guide the customer to lay MS plates or gravel temporarily (we will reimburse reasonable cost). Share photographs of alternate vehicles WhatsApp and give exact ETA. Escalate to Transport Manager for future site survey before monsoon jobs.",
+    "competencies": [
+      "C3",
+      "C8"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S021",
+    "sourceNum": 21,
+    "text": "Customer ordered M-30 but the truck that reached site has an e-way bill and delivery challan showing M-25 by mistake. Customer refuses to accept. How will you resolve on the spot?",
+    "modelAnswer": "Apologize for the documentation error. Confirm via RDC TRAK and plant batch report that the actual concrete loaded is M-30 (share screenshot instantly). Offer to get a corrected challan within 30 minutes through our central dispatch team and simultaneously take site in-charge signature on a manual receipt mentioning correct grade. Assure the customer that we will regularize documents before billing. Log incident to avoid recurrence.",
+    "competencies": [
+      "C3",
+      "C2"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S022",
+    "sourceNum": 22,
+    "text": "Customer complains that the driver is refusing to reverse the truck inside the site saying it is unsafe and narrow. Pour is delayed. How will you handle?",
+    "modelAnswer": "Speak to the driver on speaker with customer present and instruct him to follow site supervisor’s guidance. If still unsafe, immediately arrange a smaller 15 cum truck for internal transfer. Offer free extra manpower for chute placement or extra pump if required because of this. Update customer every 10 minutes and log the issue in CCTS for driver training.",
+    "competencies": [
+      "C3",
+      "C2"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S023",
+    "sourceNum": 23,
+    "text": "It is a night pour. The truck reached at 10 pm but site electricity failed and they cannot pour in darkness. Customer is angry. Your immediate response?",
+    "modelAnswer": "Apologize and instantly arrange 2–3 mobile light towers from our empanelled vendor (we will bear the cost). Simultaneously check if we can extend working window with retarder and confirm concrete is still workable. Give customer commitment that light towers will reach within 60 minutes. Keep sharing live photos once towers are deployed.",
+    "competencies": [
+      "C3",
+      "C2"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S024",
+    "sourceNum": 24,
+    "text": "Customer says three trucks came together and site has space only for one truck at a time. Now concrete is waiting in the second and third truck and may start setting. What will you do?",
+    "modelAnswer": "Immediately instruct drivers to keep drums rotating at agitation speed. Coordinate with site to create temporary holding area or ask them to allow trucks to wait on the approach road with police permission if required. Offer to add hydration stabilizer free of cost if waiting exceeds 90 minutes from batching. Escalate to plant to stop further dispatches till site clears backlog.",
+    "competencies": [
+      "C3",
+      "C2"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S025",
+    "sourceNum": 25,
+    "text": "Customer ordered 100 cum with 15 cum/hour pumping speed guaranteed, but actual pumping speed is only 8–10 cum/hour because their pump operator is slow. They are blaming us for slow pour. How will you defend and resolve?",
+    "modelAnswer": "Politely explain that pumping speed depends on customer’s equipment and operator (share our standard pumping clause). Still, to support the customer, offer to deplo one additional pump or experienced operator from our side at 50 % cost. Share livephotos of our trucks waiting and pumping rate. Log the incident and update daily confirmation call checklist to capture customer pump capacity in advance.",
+    "competencies": [
+      "C3",
+      "C2"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S026",
+    "sourceNum": 26,
+    "text": "The customer placed an order for 60 cum at 7 am but now at 3 pm says they can take only 20 cum today because labour has left. They want us to take back 40 cum. How will you respond?",
+    "modelAnswer": "Politely remind them that concrete is a perishable product and once batched cannot betaken back. Offer flexible solutions — either (a) pour the balance in non-critical areas today, or (b) cast extra cubes/test blocks, or (c) we will consume it in our own yard and charge only 50 % of the ordered quantity as goodwill gesture. Simultaneously highlight the importance of accurate scheduling in future orders. Document the discussion and get written confirmation on mail/WhatsApp.",
+    "competencies": [
+      "C3",
+      "C2"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S027",
+    "sourceNum": 27,
+    "text": "Post-delivery, the customer reports minor spills or washout messes from the truck, affecting site cleanliness. What quick fixes would you recommend?",
+    "modelAnswer": "Empathize with the mess and gather info on spill extent. Advise designating a washout area in advance and using containment like buckets or tarps for cleanup. Recommend eco-friendly disposal methods. Escalate for on-site assistance if needed. Provide app-based updates and document in the central system to support environmental responsibility and feedback ratings.",
+    "competencies": [
+      "C3",
+      "C2"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S028",
+    "sourceNum": 28,
+    "text": "How would you address a complaint related to pump availability lapses at the client site?",
+    "modelAnswer": "Coordinate closely with dispatch and pump teams for prompt deployment, inform the client about the status and expected arrival time, and ensure backup resources for quick resolution.",
+    "competencies": [
+      "C3",
+      "C2"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S029",
+    "sourceNum": 29,
+    "text": "What if the customer delays the pump and transit mixer at site?",
+    "modelAnswer": "I inform them politely about waiting charges as per company policy.",
+    "competencies": [
+      "C3",
+      "C2"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S030",
+    "sourceNum": 30,
+    "text": "What will you do if a customer asks for urgent supply within 1–2 hours?",
+    "modelAnswer": "I check immediate plant availability, fleet status and confirm honestly what is possible.",
+    "competencies": [
+      "C3",
+      "C2"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S031",
+    "sourceNum": 31,
+    "text": "How should a sales professional communicate during delays?",
+    "modelAnswer": "Proactively call the customer. Provide accurate ETA using GPS tools. Be transparent, truthful, and calm. Offer alternative solutions (rerouting, additional vehicle, revised pour plan).",
+    "competencies": [
+      "C3",
+      "C2"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S032",
+    "sourceNum": 32,
+    "text": "What is the escalation matrix's role in complaint resolution?",
+    "modelAnswer": "To ensure complaints are addressed quickly by enabling structured escalation to QC, plant head, logistics, or senior management within defined timelines (e.g., 24 hours).",
+    "competencies": [
+      "C2",
+      "C3"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S033",
+    "sourceNum": 33,
+    "text": "If a customer is agitated due to a rejected concrete load, how do you handle it?",
+    "modelAnswer": "Stay patient and do not argue. Listen actively and document their complaint. Provide assurance of immediate action. Coordinate QC visit ASAP. Communicate transparently and follow up until closure. (Aligned with complaint resolution and service behaviour.)",
+    "competencies": [
+      "C2",
+      "C3"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S034",
+    "sourceNum": 34,
+    "text": "What are best practices for pre-pour communication?",
+    "modelAnswer": "Daily confirmation call to customer. Verify site readiness, pump availability. Share expected delivery timeline. Ensure mix and quantity re-confirmation.",
+    "competencies": [
+      "C2",
+      "C3"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S035",
+    "sourceNum": 35,
+    "text": "How do you manage client expectations during the RMX project lifecycle?",
+    "modelAnswer": "Through constant communication, transparent updates on order status, addressing queries quickly, and providing technical and logistical support at every touch point.",
+    "competencies": [
+      "C2",
+      "C3"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S036",
+    "sourceNum": 36,
+    "text": "If there is a delay in responses to client inquiries? What steps should you take?",
+    "modelAnswer": "Escalate the query to the central helpline, ensure follow-ups within stipulated times, keep the client informed honestly, and track the issue until resolution.",
+    "competencies": [
+      "C2",
+      "C3"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S037",
+    "sourceNum": 37,
+    "text": "Describe the importance of digital tools in RMX customer service.",
+    "modelAnswer": "Digital tools like GPS tracking and apps enable real-time order status updates, improve communication, support complaint resolution faster, and enhance overall service transparency.",
+    "competencies": [
+      "C2",
+      "C3"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S038",
+    "sourceNum": 38,
+    "text": "How does RDC TRAK facilitate better customer service?",
+    "modelAnswer": "RDC TRAK provides real-time tracking of orders, enabling clients and the service team to monitor deliveries and address concerns proactively.",
+    "competencies": [
+      "C2",
+      "C3"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S039",
+    "sourceNum": 39,
+    "text": "How is customer feedback leveraged to enhance RMX services",
+    "modelAnswer": "Feedback is collected via help lines and digital tools to identify service gaps, implement corrective actions, improve quality, and build stronger client relationships.",
+    "competencies": [
+      "C2",
+      "C3"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S040",
+    "sourceNum": 40,
+    "text": "Describe a scenario where transparent and truthful communication helped resolve a customer issue.",
+    "modelAnswer": "When a delivery delay occurred due to unforeseen traffic, immediate client notification and honest explanation helped manage expectations and maintained trust.",
+    "competencies": [
+      "C2",
+      "C3"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S041",
+    "sourceNum": 41,
+    "text": "Why is transparent and truthful communication essential in RMX operations?",
+    "modelAnswer": "Transparent communication builds trust. Allows customers to plan (labor, pump setup). Reduces misunderstandings, prevents small issues from becoming major disputes. Honest updates also improve credibility when problems occur.",
+    "competencies": [
+      "C2",
+      "C3"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S042",
+    "sourceNum": 42,
+    "text": "What strategies would you employ to handle multiple simultaneous complaints effectively?",
+    "modelAnswer": "Prioritize complaints based on severity, use the escalation matrix for prompt management attention, keep clients updated regularly, and allocate resources to resolve issues quickly.",
+    "competencies": [
+      "C2",
+      "C3"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S043",
+    "sourceNum": 43,
+    "text": "How do you handle a customer who complains about delay in supply?",
+    "modelAnswer": "I apologise, check the reason with the plant, give a clear revised timeline and ensure the next delivery is on time.",
+    "competencies": [
+      "C2",
+      "C3"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S044",
+    "sourceNum": 44,
+    "text": "How do you coordinate with plant for smooth supply?",
+    "modelAnswer": "I share daily schedules, special instructions, grade details and customer priorities.",
+    "competencies": [
+      "C2",
+      "C3"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S045",
+    "sourceNum": 45,
+    "text": "What are the expectations of a customer who takes concrete in his own transit mixer from our Plant?",
+    "modelAnswer": "1. Priority based loading of client transit mixer. 2. Availability of batcher (24/7) when the vehicle reaches our plant. 3. Digital Group for prior information of vehicle dispatch to ready mix plant to avoid delays.",
+    "competencies": [
+      "C2",
+      "C3"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S046",
+    "sourceNum": 46,
+    "text": "The customer disputes billing after pour, saying quantity delivered is less. How do you manage?",
+    "modelAnswer": "Refer weighment records (auto weighment system). Show delivery slip/MRN and ERP data. Explain transit loss norms if relevant. Resolve calmly and transparently.",
+    "competencies": [
+      "C6",
+      "C5"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S047",
+    "sourceNum": 47,
+    "text": "What should be the approach when handling billing and document-related queries from clients?",
+    "modelAnswer": "Verify documents promptly, clarify discrepancies openly, coordinate with accounting, and provide accurate resolutions within agreed timelines.",
+    "competencies": [
+      "C6",
+      "C5"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S048",
+    "sourceNum": 48,
+    "text": "Dispute: “Delivered quantity is less than billed quantity.” How to handle?",
+    "modelAnswer": "Delivery slips, ERP, auto-weighment logs. Explain: Transit loss norms + IS permissible limits. Offer: Joint verification of pour area and consumption. Maintain transparency, avoid defensive tone. Escalate to plant head/QC only if numbers don’t reconcile.",
+    "competencies": [
+      "C6",
+      "C5"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S049",
+    "sourceNum": 49,
+    "text": "Dispute: “The rate charged does not match the quotation/PO.” How to handle?",
+    "modelAnswer": "Show: Signed quotation & PO copy. Explain: Any add-ons clearly (waiting, handling, pump, night pour charge). Acknowledge if communication was unclear. Seek internal approval if goodwill discount is justified. Document decisions for transparency.",
+    "competencies": [
+      "C6",
+      "C5"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S050",
+    "sourceNum": 50,
+    "text": "Dispute: “Extra charges added (pump hour charges, waiting charges).” How to handle?",
+    "modelAnswer": "Share: GPS time logs + pump contractor report. Explain: Industry norms + pre-agreed terms. OFFER: Waiver ONLY if delay was RDC’s fault (traffic/plant breakdown). Maintain professional tone.",
+    "competencies": [
+      "C6",
+      "C5"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S051",
+    "sourceNum": 51,
+    "text": "Dispute: “Wrong tax calculation / GST issues.” How to handle?",
+    "modelAnswer": "Share invoice with breakup. Offer to add Accounts team in discussion. Provide clarification on SAC & GST percentage.",
+    "competencies": [
+      "C6",
+      "C5"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S052",
+    "sourceNum": 52,
+    "text": "Dispute: “Duplicate billing / Missing bill / Incorrect bill format.” How to handle?",
+    "modelAnswer": "Resend invoice immediately. Confirm email/WhatsApp receipt. Provide summary of all billed loads. Offer consolidated statement for easy reconciliation.",
+    "competencies": [
+      "C6",
+      "C5"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S053",
+    "sourceNum": 53,
+    "text": "Dispute: “Freight / unloading / pump charges misunderstood.” How to handle?",
+    "modelAnswer": "Show quotation/P.O. clearly highlighting inclusions/exclusions. Break down the charges simply. Offer credit only if miscommunication occurred from RDC side.",
+    "competencies": [
+      "C6",
+      "C5"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S054",
+    "sourceNum": 54,
+    "text": "Dispute: “Rejected load still billed.” How to handle?",
+    "modelAnswer": "Verify: GPS timestamps + QC report + delivery slip status. If rejection is valid and documented → credit note. If rejection is wrong/misuse → professionally explain implications. Involve QC for factual clarity.",
+    "competencies": [
+      "C6",
+      "C5"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S055",
+    "sourceNum": 55,
+    "text": "Typical Reasons for Payment Delays and Handling: Customer’s internal approval chain delays.",
+    "modelAnswer": "Provide advance reminders before due date. Send soft copies proactively. Offer statement of accounts for reconciliation.",
+    "competencies": [
+      "C7",
+      "C6"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S056",
+    "sourceNum": 56,
+    "text": "Typical Reasons for Payment Delays and Handling: Customer’s cash flow issues.",
+    "modelAnswer": "Understand the situation empathetically. Offer realistic rescheduling. Inform credit-control team. Avoid supplying further orders without internal approval.",
+    "competencies": [
+      "C7",
+      "C6"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S057",
+    "sourceNum": 57,
+    "text": "Typical Reasons for Payment Delays and Handling: Disputes or hold due to pending complaints.",
+    "modelAnswer": "Close loop on technical complaint fast. Document closure. Maintain transparent updates.",
+    "competencies": [
+      "C7",
+      "C6"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S058",
+    "sourceNum": 58,
+    "text": "Typical Reasons for Payment Delays and Handling: Mismatch in PO vs invoice.",
+    "modelAnswer": "Share invoice–PO reconciliation sheet. Arrange 3-way call between RDC Sales – Customer Engineer – Customer Accounts.",
+    "competencies": [
+      "C7",
+      "C6"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S059",
+    "sourceNum": 59,
+    "text": "Typical Reasons for Payment Delays and Handling: Customer accounts team unaware of delivery details.",
+    "modelAnswer": "Provide delivery logs, weighment slips, GPS history. Provide joint reconciliation statement.",
+    "competencies": [
+      "C6",
+      "C7"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S060",
+    "sourceNum": 60,
+    "text": "Typical Reasons for Payment Delays and Handling: Intentional delay tactics.",
+    "modelAnswer": "Escalate internally to Credit/Cluster Head. Mark account as “Hold” or “Caution” (as per RDC policy). Always maintain professionalism.",
+    "competencies": [
+      "C6",
+      "C7"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S061",
+    "sourceNum": 61,
+    "text": "Some customers send mails for every delay in pour and demand for labour charges debit which can be a written document for them to debit those amounts while clearing due’s, how do we tackle this?",
+    "modelAnswer": "Response should not be delayed and ground work for incontinences caused should be noted. Our response are the evidences for later payment discrepancies. Ensuring the same will be communicated to client before next pour to avoid delays.",
+    "competencies": [
+      "C6",
+      "C7"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S062",
+    "sourceNum": 62,
+    "text": "How do you handle payment follow-ups?",
+    "modelAnswer": "I remind politely, share ledger details, and highlight pending bills before confirming the next schedule.",
+    "competencies": [
+      "C6",
+      "C7"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S063",
+    "sourceNum": 63,
+    "text": "The customer asks why they should choose RDC over competitors. What is the correct response?",
+    "modelAnswer": "Highlight: Service excellence (“We promise – We deliver”). GPS-enabled tracking. Quality consistency & automated batching. Fast issue resolution via central complaint system. Strong technical support & on-site advisory.",
+    "competencies": [
+      "C4",
+      "C5"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S064",
+    "sourceNum": 64,
+    "text": "Most important ways to achieve volume from a client making them 10-20% SOW to 100%SOW.",
+    "modelAnswer": "1. Understanding the whole project timing. 2. Site progressing speed. 3. Informing the customer regarding the delay in priority. 4. Planning accordingly with the operation team to avoid miscommunication. 5. Being active every time with a short-term goal of achieving the site targets along with the customer.",
+    "competencies": [
+      "C4",
+      "C5"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S065",
+    "sourceNum": 65,
+    "text": "A customer is 100% SOW of a local ready-mix company since 5 years and they are having 3000 cubic metre per month in the whole city combining different sites, if we have been offered an initial Po and the site engineers are always trying to cancel our Po in every stage of supply from beginning, what is the positive approach from a sales person?",
+    "modelAnswer": "1. Presence of the sales person most of the time in site as the short-term presence initially for a long time in site during the pouring. 2. Coordination and perfect quantity supplies elevates the difference from corporate supplies and local players quality automatically in different pours in a site. 3. Patience is the key to success in this situation. 4. Accepting all the positive reasons why they are taking from local rmc and ensuring our standards effectively.",
+    "competencies": [
+      "C4",
+      "C5"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S066",
+    "sourceNum": 66,
+    "text": "How do we provide good service to the client whose site is in 5km radius and needs everyday 40-50 cubic meter in a certain slot on all working days.",
+    "modelAnswer": "1. Frequent visits to the site for knowing the process of laying (time gap between structure preparation in 24 hours and plan accordingly helping client to achieve project progress Fastly by updating to plant and advising client to take more quantity in our idle transit mixer timings). 2. Daily follow up with quantity requirement in WhatsApp groups.",
+    "competencies": [
+      "C4",
+      "C5"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S067",
+    "sourceNum": 67,
+    "text": "How can you convert a client to take concrete according to our timings?",
+    "modelAnswer": "1. Late night concreting works amazingly in tier two cities. 2. Communication of slot with mutual understanding. 3. Best service with good planning.",
+    "competencies": [
+      "C4",
+      "C5"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S068",
+    "sourceNum": 68,
+    "text": "What are the main precaution’s to be taken for infrastructure project clients (Example- Road works, drain works,)?",
+    "modelAnswer": "1. Checking thickness randomly and taking picture of average thickness of road. 2. Minimum knowledge of measurements of road work. 3. Follow up with clients regularly from excavation by helping him in providing idea for creating best access in case of different terrain.",
+    "competencies": [
+      "C4",
+      "C5"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S069",
+    "sourceNum": 69,
+    "text": "How do you identify a potential customer in your area?",
+    "modelAnswer": "I check ongoing construction sites, talk to contractors, builders and site engineers, and see which projects are starting soon.",
+    "competencies": [
+      "C4",
+      "C5"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S070",
+    "sourceNum": 70,
+    "text": "What is the first thing you ask a new customer?",
+    "modelAnswer": "Their project type, concrete requirement and expected schedule.",
+    "competencies": [
+      "C4",
+      "C5"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S071",
+    "sourceNum": 71,
+    "text": "How do you convince a customer who says our rate is high?",
+    "modelAnswer": "I explain our quality, timely supply, lab support and no hidden costs. I also check if we can give a suitable rate based on volume.",
+    "competencies": [
+      "C5",
+      "C4"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S072",
+    "sourceNum": 72,
+    "text": "How do you follow up after sending a quote?",
+    "modelAnswer": "I call the customer on the same day, ask if they have any doubts and request for the schedule.",
+    "competencies": [
+      "C5",
+      "C4"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S073",
+    "sourceNum": 73,
+    "text": "What documents do you collect before starting supply?",
+    "modelAnswer": "Purchase order, site address, contact details, mix confirmation and billing information.",
+    "competencies": [
+      "C5",
+      "C4"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S074",
+    "sourceNum": 74,
+    "text": "How do you check whether the customer is genuine or time-pass?",
+    "modelAnswer": "I see if they share clear requirements, site details, billing info and confirm timelines. Time-pass customers avoid giving details.",
+    "competencies": [
+      "C5",
+      "C4"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S075",
+    "sourceNum": 75,
+    "text": "How do you manage D-grades or low-margin orders?",
+    "modelAnswer": "I review distance, pump requirement and volume, and try to upsell higher grades or additional quantities.",
+    "competencies": [
+      "C5",
+      "C4"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S076",
+    "sourceNum": 76,
+    "text": "What do you do if a customer wants supply beyond plant radius?",
+    "modelAnswer": "I check travel time, traffic and adjust rate accordingly, or suggest the nearest RDC plant.",
+    "competencies": [
+      "C5",
+      "C4"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S077",
+    "sourceNum": 77,
+    "text": "What steps do you take to increase monthly sales?",
+    "modelAnswer": "Daily site visits, follow-ups, new inquiries, meeting builders/contractors, and tracking upcoming projects.",
+    "competencies": [
+      "C5",
+      "C4"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S078",
+    "sourceNum": 78,
+    "text": "How do you maintain relations with old customers?",
+    "modelAnswer": "Regular calls, occasional visits, quick support during problems and sharing new offers.",
+    "competencies": [
+      "C5",
+      "C4"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S079",
+    "sourceNum": 79,
+    "text": "What will you do if competitor offers a lower price?",
+    "modelAnswer": "I explain RDC’s quality and reliability. If needed, I discuss with seniors for possible rate revision.",
+    "competencies": [
+      "C5",
+      "C4"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S080",
+    "sourceNum": 80,
+    "text": "How do you make sure the customer does not divert orders to other RMCs?",
+    "modelAnswer": "Fast response, correct billing, on-time supply and regular follow-ups.",
+    "competencies": [
+      "C5",
+      "C4"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S081",
+    "sourceNum": 81,
+    "text": "How do you track your monthly target?",
+    "modelAnswer": "I monitor daily pouring, pending orders, potential orders and gap to target.",
+    "competencies": [
+      "C5",
+      "C4"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S082",
+    "sourceNum": 82,
+    "text": "Which teams or touchpoints are involved in ensuring good customer service across the RMX lifecycle?",
+    "modelAnswer": "1. Sales / Estimation. 2. Dispatch/Logistics. 3. Batching Plant Operations. 4. Quality Control (QC). 5. Site Supervisors/Technicians. 6. Customer Helpline/Support. 7. Accounts (billing & docs).",
+    "competencies": [
+      "C8",
+      "C1"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S083",
+    "sourceNum": 83,
+    "text": "What KPIs would you use to measure RMX customer service effectiveness?",
+    "modelAnswer": "On-Time In-Full delivery (OTIF), Net Promoter Scores (NPS), complaint resolution within 24 hours, repeat business ratios, and client feedback ratings.",
+    "competencies": [
+      "C8",
+      "C1"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S084",
+    "sourceNum": 84,
+    "text": "What KPIs are used to measure customer service performance in RMX?",
+    "modelAnswer": "1. OTIF (On-Time In-Full %). 2. NPS (Net Promoter Score) or customer satisfaction rating. 3. % complaints resolved within 24 hours. 4. Repeat business / contract renewal rate. 5. Average response time to customer queries.",
+    "competencies": [
+      "C8",
+      "C1"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S087",
+    "sourceNum": 87,
+    "text": "A major client has a continuous pour of 3000 cum over 3 days. How will you prepare?",
+    "modelAnswer": "Based on Shapoorji case: 24×7 batching support. Dedicated QC at site. Advance scheduling & pump allocation. Real-time coordination with the plant. Ensure on-time delivery and zero rejection.",
+    "competencies": [
+      "C3",
+      "C2"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S088",
+    "sourceNum": 88,
+    "text": "Low Slump on Arrival. Customer: “Your concrete is useless! Slump is very low!” What do you do?",
+    "modelAnswer": "Stay calm, apologize. Ask for time of arrival, delay, weather. Suggest testing slump in their presence. Give solution (admixture/QC support). Document issue.",
+    "competencies": [
+      "C2",
+      "C3"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S089",
+    "sourceNum": 89,
+    "text": "Truck Delay & Customer Angry. Customer: “Your truck is 45 minutes late. My labour is sitting idle!” What do you do?",
+    "modelAnswer": "Check GPS immediately. Give exact ETA. Apologize. Provide reason + corrective action. Offer to resequence next load.",
+    "competencies": [
+      "C2",
+      "C3"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S090",
+    "sourceNum": 90,
+    "text": "Cube Strength Failure. Customer: “Your concrete failed. I want compensation.” What do you do?",
+    "modelAnswer": "Ask for curing conditions & casting method. Guide to re-test in NABL lab. Involve QC. Avoid blame game. Stay solution-oriented.",
+    "competencies": [
+      "C2",
+      "C3"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S091",
+    "sourceNum": 91,
+    "text": "Pump Breakdown. What do you do?",
+    "modelAnswer": "Immediate transparency. Offer backup pump if possible. Contact logistics. Document delay.",
+    "competencies": [
+      "C2",
+      "C3"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S092",
+    "sourceNum": 92,
+    "text": "Billing Dispute. What do you do?",
+    "modelAnswer": "Verify delivery slips. Show ERP records. Explain auto-weighment. Resolve calmly. This organized bank totals over 150 unique questions, covering all content from the document. It can be used directly for viva voce sessions, with categories facilitating targeted evaluation (e.g., 45% weightage on technical tests as per certification grading). If needed, tables or further sub-categorization can be added for specific sections.",
+    "competencies": [
+      "C6"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S093",
+    "sourceNum": 93,
+    "text": "If a customer is a very large account but has an overdue balance at one location that has crossed 360 days, what is your action plan for collection?",
+    "modelAnswer": "Immediately seek a meeting with the top leadership (CEO and MD). Leverage the long-standing relationship and emphasize that the current situation will negatively impact their credibility at other locations. Secure a formal payment plan via email.",
+    "competencies": [
+      "C6",
+      "C7"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S094",
+    "sourceNum": 94,
+    "text": "The customer is highly dependent on our supplies, but they have not paid the last month’s overdue outstanding. They state that the full quantities in their ERP have been consumed and director approval is needed from Singapore, and that the company needs immediate funds. What should be your action plan?",
+    "modelAnswer": "Exert pressure on their project team by stating that supplies will be stopped. Simultaneously, pressure the accounts team and escalate to the CFO to demand advance payments or payment through alternative acceptable modes.",
+    "competencies": [
+      "C6",
+      "C7"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S095",
+    "sourceNum": 95,
+    "text": "A customer has not paid for more than 180 days, and we have already stopped supplies, but payment is still not forthcoming. What should be your action plan?",
+    "modelAnswer": "Arrange a meeting with their directors. Stress the severity of our company’s current cash flow issues and remind them of the support provided previously. Emphasize that management is pressuring you personally due to having vouched for their continued support based on your relationship. Secure a commitment via email and explore alternative payment methods such as an LC or cash (following proper company protocol).",
+    "competencies": [
+      "C6",
+      "C7"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S096",
+    "sourceNum": 96,
+    "text": "If a customer is delaying payment with non-genuine reasons, and you possess security checks, what is your plan for collections?",
+    "modelAnswer": "Meet with the owners and explain that while we have provided support when needed, the necessary reciprocation is not occurring. State clearly that if payment is not received within a few days, the security check will be deposited, and legal action will be initiated under the appropriate sections. For outstanding balances above [Amount, e.g., 1 Crore], explore the NCLT route as well.",
+    "competencies": [
+      "C6",
+      "C7"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S097",
+    "sourceNum": 97,
+    "text": "What is your action plan if the customer says, \"Your ledgers never match; match the ledgers first, then ask for payment\"?",
+    "modelAnswer": "Implement frequent reconciliation practices: quantity reconciliation fortnightly, ledger reconciliation monthly, and balance confirmations quarterly. Demand immediate payment for the amount that is clearly reflected in the customer’s own ledger.",
+    "competencies": [
+      "C6",
+      "C7"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S098",
+    "sourceNum": 98,
+    "text": "What are the key customer expectations in the RMX (Ready-Mix Concrete) industry?",
+    "modelAnswer": "Customers mainly expect timely delivery, consistent quality, technical support, regular communication, manpower coordination for cube casting and pumping, billing/ documentation support, and quick complaint resolution.",
+    "competencies": [
+      "C2",
+      "C7"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S099",
+    "sourceNum": 99,
+    "text": "Why is customer service extremely important in the RMX industry?",
+    "modelAnswer": "Because concrete is a commoditized product—so service becomes the main differentiator. Timely delivery impacts project timelines, delays cause cascading costs, and strong customer service drives repeat business and positive word-of-mouth.",
+    "competencies": [
+      "C2",
+      "C7"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S100",
+    "sourceNum": 100,
+    "text": "What are the core elements of customer service according to RDC Concrete?",
+    "modelAnswer": "The six core elements are: Timely delivery, Quality consistency, Technical support, Transparent and responsive communication, Complaint resolution Digital tools & real-time tracking",
+    "competencies": [
+      "C2",
+      "C7"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S101",
+    "sourceNum": 101,
+    "text": "Can you describe the typical customer journey in RMX?",
+    "modelAnswer": "The journey is: Enquiry → Quotation → Order → Batching → Transit → Placement → Feedback → Billing. Touchpoints include sales, batching plant, logistics, QC, customer helpline, and accounts.",
+    "competencies": [
+      "C2",
+      "C7"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S102",
+    "sourceNum": 102,
+    "text": "What are the common challenges faced in customer service in the RMX business?",
+    "modelAnswer": "Major challenges include traffic delays, equipment breakdowns, mix inconsistency, QC complaints, poor or delayed communication, pump availability issues, and quality concerns during/after pouring.",
+    "competencies": [
+      "C2",
+      "C7"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S103",
+    "sourceNum": 103,
+    "text": "What best practices does RDC follow to improve customer service?",
+    "modelAnswer": "RDC uses GPS tracking for trucks, RDC TRAK, daily confirmation calls, real-time WhatsApp/SMS updates, on-site cube testing, and an escalation matrix with a 24-hour complaint management system.",
+    "competencies": [
+      "C2",
+      "C7"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S104",
+    "sourceNum": 104,
+    "text": "Explain the case study involving Shapoorji Pallonji.",
+    "modelAnswer": "For a 3000 cum continuous pour, RDC provided 24×7 batching, dedicated QC support, delivered on time with zero rejection, which resulted in repeat orders and strong referrals.",
+    "competencies": [
+      "C2",
+      "C7"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S105",
+    "sourceNum": 105,
+    "text": "How has technology improved customer service at RDC Concrete?",
+    "modelAnswer": "Through the RDC App, ERP integration, centralized helpline, plant automation, real-time tracking, and auto-weighment systems that ensure accuracy and transparency.",
+    "competencies": [
+      "C2",
+      "C7"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S106",
+    "sourceNum": 106,
+    "text": "What are the key KPIs used to measure customer service performance?",
+    "modelAnswer": "Important KPIs are: OTIF % (On-Time In-Full), NPS (Net Promoter Score), Complaints closed within 24 hours, Repeat business ratio, Customer feedback ratings",
+    "competencies": [
+      "C2",
+      "C7"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S107",
+    "sourceNum": 107,
+    "text": "What future technologies will influence customer service in RMX?",
+    "modelAnswer": "Upcoming advancements include AI-based demand forecasting, integrated logistics platforms, drone monitoring, green/ESG-focused concrete solutions, on-site mobile batching units, and AI-enabled raw material testing.",
+    "competencies": [
+      "C2",
+      "C7"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S108",
+    "sourceNum": 108,
+    "text": "Why is real-time communication essential in RMX operations?",
+    "modelAnswer": "Because concrete is time-sensitive, customers need exact visibility of dispatch, transit, ETA, and placement. Real-time communication reduces disputes and improves trust and coordination.",
+    "competencies": [
+      "C2",
+      "C7"
+    ],
+    "assessmentType": "selling"
+  },
+  {
+    "id": "S109",
+    "sourceNum": 109,
+    "text": "How does exceptional customer service contribute to the long-term success of an RMX business?",
+    "modelAnswer": "It ensures trust, smooth project execution, repeat orders, better relationships, and creates a service-based competitive advantage, since the core product is similar across suppliers.",
+    "competencies": [
+      "C2",
+      "C7"
+    ],
+    "assessmentType": "selling"
+  }
+]

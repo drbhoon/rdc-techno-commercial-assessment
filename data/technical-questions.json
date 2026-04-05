@@ -1,0 +1,519 @@
+[
+  {
+    "id": "T001",
+    "sourceNum": 1,
+    "text": "Why is customer service critical in the Ready-Mix Concrete (RMX) industry?",
+    "modelAnswer": "Concrete is a commoditized product, so service becomes the differentiator. Delays or poor coordination create cascading project delays and financial loss. Long-term contracts rely on trust, consistency, and communication.Many variables—traffic, equipment, site readiness—require tight service coordination.",
+    "competencies": [
+      "T1"
+    ],
+    "assessmentType": "technical"
+  },
+  {
+    "id": "T002",
+    "sourceNum": 2,
+    "text": "From a technical standpoint, what is “quality consistency” in concrete?",
+    "modelAnswer": "Ensuring uniform slump, strength, workability, and freshness across all loads. Achieved through automated batching, correct mix design, proper raw material control, and real-time adjustments. (Concept aligned with customer service quality expectations.)",
+    "competencies": [
+      "T1"
+    ],
+    "assessmentType": "technical"
+  },
+  {
+    "id": "T003",
+    "sourceNum": 3,
+    "text": "Explain the purpose of the Techno-Commercial Certification.",
+    "modelAnswer": "To ensure sales staff have sufficient technical knowledge + customer-handling skills to address pre- and post-delivery queries without relying entirely on quality staff, aligning with Total Quality Management.",
+    "competencies": [
+      "T1"
+    ],
+    "assessmentType": "technical"
+  },
+  {
+    "id": "T004",
+    "sourceNum": 4,
+    "text": "Explain how technical and non-technical factors cause concrete rejection.",
+    "modelAnswer": "Technical: incorrect slump, segregation, wrong mix. Non-technical: delays, pump issues, poor communication, site readiness. Service aspects are as important as mix quality.",
+    "competencies": [
+      "T1"
+    ],
+    "assessmentType": "technical"
+  },
+  {
+    "id": "T005",
+    "sourceNum": 5,
+    "text": "What is the significance of on-site mobile batching units in customer service?",
+    "modelAnswer": "On-site mobile batching units provide flexibility, reduce transportation delays,support sustainability goals, and ensure mix consistency directly at the project site.",
+    "competencies": [
+      "T1"
+    ],
+    "assessmentType": "technical"
+  },
+  {
+    "id": "T006",
+    "sourceNum": 6,
+    "text": "What role does manpower deployment play during cube casting and pumping activities?",
+    "modelAnswer": "Efficient manpower deployment ensures timely coordination, smooth execution, and quality assurance on-site to meet delivery and project specifications.",
+    "competencies": [
+      "T1"
+    ],
+    "assessmentType": "technical"
+  },
+  {
+    "id": "T007",
+    "sourceNum": 7,
+    "text": "How can you maintain quality consistency in RMX during continuous large pour projects?",
+    "modelAnswer": "By deploying dedicated quality control at the site, continuous monitoring, regular cube testing, and using plant automation and auto weighment systems.",
+    "competencies": [
+      "T1"
+    ],
+    "assessmentType": "technical"
+  },
+  {
+    "id": "T008",
+    "sourceNum": 8,
+    "text": "What is the relevance of green concrete & ESG focus for customers?",
+    "modelAnswer": "Increasing demand for sustainable materials. Helps in environmental compliance and green building ratings. Strengthens brand trust and customer loyalty.",
+    "competencies": [
+      "T1"
+    ],
+    "assessmentType": "technical"
+  },
+  {
+    "id": "T009",
+    "sourceNum": 9,
+    "text": "What can we see in future ready-mix industry?",
+    "modelAnswer": "AI planning – PAM and MIS while calculating loss in breakdowns. Drones – Site inspection before supply. Integrated logistics. Mobile batching units. AI raw material testing – ensuring quality.",
+    "competencies": [
+      "T1"
+    ],
+    "assessmentType": "technical"
+  },
+  {
+    "id": "T010",
+    "sourceNum": 10,
+    "text": "How does AI-based demand planning benefit RMX service delivery?",
+    "modelAnswer": "AI-based demand planning helps forecast client needs accurately,optimize raw material procurement, minimize delays, and improve resource allocation.",
+    "competencies": [
+      "T1"
+    ],
+    "assessmentType": "technical"
+  },
+  {
+    "id": "T011",
+    "sourceNum": 11,
+    "text": "Explain how 24x7 batching support benefits large construction projects.",
+    "modelAnswer": "Continuous batching support ensures uninterrupted supply, meeting tight schedules and preventing project delays.",
+    "competencies": [
+      "T1"
+    ],
+    "assessmentType": "technical"
+  },
+  {
+    "id": "T012",
+    "sourceNum": 12,
+    "text": "A customer complains that the delivered concrete has low slump. How should you respond?",
+    "modelAnswer": "Stay calm and acknowledge concern. Verify: site conditions, delays in unloading, water added at site, weather. Provide immediate remedy: Suggest re-tempering only if within limits and QC-approved.Explore using admixture if permissible. Escalate to QC if persistent.(Aligned with “QC complaints at site” challenges.)",
+    "competencies": [
+      "T2",
+      "T3"
+    ],
+    "assessmentType": "technical"
+  },
+  {
+    "id": "T013",
+    "sourceNum": 13,
+    "text": "Customer says strength results (cubes) are low. How do you handle it?",
+    "modelAnswer": "Acknowledge and collect details (curing, storage, casting method). Check whether site cubes were cast as per IS requirements. Advise controlled cube testing at NABL lab if needed. Provide technical support and involve QC for detailed investigation. (Linked to manpower for cube casting & QC complaints at site.)",
+    "competencies": [
+      "T2",
+      "T3"
+    ],
+    "assessmentType": "technical"
+  },
+  {
+    "id": "T014",
+    "sourceNum": 14,
+    "text": "Customer says the concrete is setting too fast. What may be the reasons and solutions?",
+    "modelAnswer": "Possible causes: Hot weather, delay in placement, excessive site handling, incorrect use of admixtures by customer. Solution: Provide guidance on proper placement timelines. Suggest retarding admixtures if required. Ask QC to check material temperature.",
+    "competencies": [
+      "T2",
+      "T3"
+    ],
+    "assessmentType": "technical"
+  },
+  {
+    "id": "T015",
+    "sourceNum": 15,
+    "text": "The customer reports plastic shrinkage cracks appearing on the concrete surface shortly after pouring, especially in hot weather. How would you guide them immediately?",
+    "modelAnswer": "Empathize and gather info on weather and pouring conditions. Recommend immediate actions like covering the surface with wet burlap or polyethylene sheets to retain moisture, or applying a fine mist of water (evaporation retarder if available). Advise using windbreaks or sunshades to reduce evaporation. Suggest on-site cube testing to verify mix integrity.Escalate to the technical manager for a site visit if cracks persist, and update via SMS. Document in the complaint resolution system to track NPS impact.",
+    "competencies": [
+      "T3",
+      "T4"
+    ],
+    "assessmentType": "technical"
+  },
+  {
+    "id": "T016",
+    "sourceNum": 16,
+    "text": "A client mentions that the concrete is setting too quickly (flash set) during placement, making it difficult to finish. What remedies would you suggest right away?",
+    "modelAnswer": "Acknowledge the urgency and ask about ambient temperature or admixtures used. Immediately advise slowing placement by working in smaller sections and using a retarding admixture if the batch allows (coordinate with the plant via RDC TRAK). Recommend shading the area and misting to control temperature. If within delivery window, suggest re-agitating the mix. Escalate to QC foron-site advisory and log the complaint centrally for timely resolution, ensuring constant communication to build trust.",
+    "competencies": [
+      "T3",
+      "T2"
+    ],
+    "assessmentType": "technical"
+  },
+  {
+    "id": "T017",
+    "sourceNum": 17,
+    "text": "The customer complains of segregation (aggregates separating from the cement paste) in the delivered concrete. What initial response and fixes would you provide?",
+    "modelAnswer": "Express understanding and inquire about transit time or handling. Suggest immediate re-mixing in the truck drum at low speed for 1-2 minutes to reintegrate materials, avoiding over-mixing which could introduce air. Advise checking pumpability and using vibration during placement to consolidate. Recommend on-site testing for consistency.Use the escalation matrix to involve QC if needed, and send real-time updates via the RDC App. Record in CCTS to prevent recurrence and support repeat business.",
+    "competencies": [
+      "T3",
+      "T2"
+    ],
+    "assessmentType": "technical"
+  },
+  {
+    "id": "T018",
+    "sourceNum": 18,
+    "text": "Post-delivery, the customer notices surface scaling or flaking on the hardened concrete after a freeze-thaw cycle. How would you handle this complaint immediately?",
+    "modelAnswer": "Acknowledge the concern professionally and confirm exposure to weather. Advise applying a high-quality sealer immediately to protect remaining surfaces and prevent further damage. Suggest air-entrained mix for future orders in cold climates. Arrange for on-site cube testing to assess strength. Escalate to the technical team for inspection and potential repair advice, while logging in the 24-hour complaint system. Follow up with feedback calls to improve client relationships.",
+    "competencies": [
+      "T2",
+      "T4"
+    ],
+    "assessmentType": "technical"
+  },
+  {
+    "id": "T019",
+    "sourceNum": 19,
+    "text": "A customer reports discoloration in the cured concrete, affecting the aesthetic finish. What quick remedies would you recommend?",
+    "modelAnswer": "Empathize with the visual impact and ask about curing methods or mix variations. Suggest uniform application of a curing compound or tint/dye to blend shades if the issue is superficial. Advise consistent pouring and finishing techniques for future batches. Recommend immediate on-site inspection via the escalation matrix. Update the customer via WhatsApp and document in complaint resolution logs to align with quality assurance goals.",
+    "competencies": [
+      "T2",
+      "T4"
+    ],
+    "assessmentType": "technical"
+  },
+  {
+    "id": "T020",
+    "sourceNum": 20,
+    "text": "The concrete shows delamination (blisters or layers separating) after finishing. What immediate actions would you advise the customer to take?",
+    "modelAnswer": "Acknowledge the issue and probe for over-finishing or wet mix signs. Recommend stopping further work and allowing bleed water to evaporate before final troweling. Suggest using proper tools like magnesium floats to avoid sealing air in. If early-stage, advise light re-vibration. Escalate to QC for site advisory and cube sampling. Use the central helpline for logging and provide SMS updates to ensure transparent communication.",
+    "competencies": [
+      "T2",
+      "T4"
+    ],
+    "assessmentType": "technical"
+  },
+  {
+    "id": "T021",
+    "sourceNum": 21,
+    "text": "During a pour, the customer experiences inconsistent water-cement ratio leading to variable workability. How would you respond promptly?",
+    "modelAnswer": "Show empathy and confirm batch details. Advise against adding water on-site (as it reduces strength) and suggest using moisture probes or slump tests to verify. Recommend automated adjustments at the plant for the next load. Coordinate via RDC TRAK for real-time monitoring. Escalate to the technical manager and log in CCTS, emphasizing proactive communication to resolve within 24 hours.",
+    "competencies": [
+      "T3",
+      "T2"
+    ],
+    "assessmentType": "technical"
+  },
+  {
+    "id": "T022",
+    "sourceNum": 22,
+    "text": "A client complains about cracks due to rapid drying in windy conditions post-delivery. What immediate remedies would you suggest?",
+    "modelAnswer": "Acknowledge promptly and gather site weather data. Recommend erecting windbreaks and applying an evaporation retarder (e.g., alcohol spray) immediately after screeding. Advise proper curing with moist coverings. Suggest control joints for expansion. Escalate for on-site mix advisory and testing, while updating via the app. Document to track resolution and support KPIs like complaints resolved <24 hours.",
+    "competencies": [
+      "T4",
+      "T5"
+    ],
+    "assessmentType": "technical"
+  },
+  {
+    "id": "T023",
+    "sourceNum": 23,
+    "text": "The delivered concrete has equipment-related inconsistencies (e.g., from truck malfunction), causing poor quality. What steps would you take right away?",
+    "modelAnswer": "Empathize and ask for specifics like delivery delays. Advise checking truck logs via GPS tracking and re-mixing if feasible. Recommend rejecting the batch if unworkable and arranging a replacement. Use the escalation matrix for QC intervention and on-site testing. Log in the central system, provide constant updates, and follow up with feedback to enhance trust and OTIF metrics.",
+    "competencies": [
+      "T3",
+      "T5"
+    ],
+    "assessmentType": "technical"
+  },
+  {
+    "id": "T024",
+    "sourceNum": 24,
+    "text": "Post-pour, the customer reports low compressive strength from cube tests. How would you address this immediately?",
+    "modelAnswer": "Acknowledge the test results and request details on curing. Advise reviewing mix design and suggesting accelerators or adjustments for future batches. Recommend additional on-site cube casting and lab testing. Escalate to the technical head for root cause analysis.Update via SMS/helpline and log in complaint resolution to ensure timely dispute resolution.",
+    "competencies": [
+      "T4",
+      "T6"
+    ],
+    "assessmentType": "technical"
+  },
+  {
+    "id": "T025",
+    "sourceNum": 25,
+    "text": "In cold weather, the concrete is freezing before proper setting, leading to weakness. What quick fixes would you provide?",
+    "modelAnswer": "Express concern and confirm temperatures. Suggest using heated water or accelerators in the mix, and insulating forms with blankets.Advise protecting the pour with enclosures. Coordinate plant adjustments via RDC TRAK. Escalate for QC support and document in CCTS, with real-time communication to prevent cascading issues.",
+    "competencies": [
+      "T4",
+      "T6"
+    ],
+    "assessmentType": "technical"
+  },
+  {
+    "id": "T026",
+    "sourceNum": 26,
+    "text": "The customer experiences bleeding (excess water rising to the surface) in the concrete. What immediate remedies would you recommend?",
+    "modelAnswer": "Acknowledge and inquire about mix proportions. Advise delaying finishing until bleeding stops and using vibration to reduce it. Suggest lower water content or stabilizers in future mixes. Recommend on-site advisory from QC via escalation. Provide app-based updates and log for resolution tracking.",
+    "competencies": [
+      "T3",
+      "T2"
+    ],
+    "assessmentType": "technical"
+  },
+  {
+    "id": "T027",
+    "sourceNum": 27,
+    "text": "A pump blockage occurs due to unsuitable mix during delivery. How would you guide the customer initially?",
+    "modelAnswer": "Empathize with the disruption and ask about mix specs. Suggest priming the pump with grout or adjusting ratios with finer aggregates. Advise slow pumping rates. Escalate to dispatch a technician and use the 24-hour system for logging. Follow up with coordination calls to minimize downtime.",
+    "competencies": [
+      "T7",
+      "T3"
+    ],
+    "assessmentType": "technical"
+  },
+  {
+    "id": "T028",
+    "sourceNum": 28,
+    "text": "The concrete shows honeycombing (voids) after form removal. What prompt actions would you suggest?",
+    "modelAnswer": "Acknowledge the structural concern and probe placement techniques. Recommend proper vibration during pouring and grouting voids if minor. Advise better consolidation for future pours. Arrange QC site visit via escalation matrix.Update via WhatsApp and document to align with quality consistency goals.",
+    "competencies": [
+      "T5",
+      "T4"
+    ],
+    "assessmentType": "technical"
+  },
+  {
+    "id": "T029",
+    "sourceNum": 29,
+    "text": "A customer complains about efflorescence (white powdery deposits) appearing on the cured concrete surface. What immediate steps would you take to resolve this?",
+    "modelAnswer": "Acknowledge the aesthetic and potential durability issue and gather details on moisture exposure or mix composition. Advise gently brushing off the deposits and applying a breathable sealer to prevent recurrence. Suggest using low-alkali cement or better drainage in future orders. Recommend on-site inspection and cube testing for underlying causes. Escalate via the central complaint system, provide SMS updates, and log in CCTS to ensure resolution within 24 hours while maintaining transparent communication.",
+    "competencies": [
+      "T5",
+      "T4"
+    ],
+    "assessmentType": "technical"
+  },
+  {
+    "id": "T030",
+    "sourceNum": 30,
+    "text": "The customer reports crazing (a network of fine surface cracks) on the finished concrete. How would you provide immediate guidance?",
+    "modelAnswer": "Empathize and inquire about curing practices or rapid drying conditions. Recommend applying a surface hardener or sealer immediately to minimize further cracking. Advise uniform moist curing and avoiding over-troweling in future pours. Suggest on-site advisory from QC. Use the escalation matrix for a site visit if needed, update via the RDC App, and document in the complaint resolution system to support client feedback ratings.",
+    "competencies": [
+      "T5",
+      "T4"
+    ],
+    "assessmentType": "technical"
+  },
+  {
+    "id": "T031",
+    "sourceNum": 31,
+    "text": "Post-curing, the concrete surface is dusting (becoming powdery and weak). What remedies would you suggest right away?",
+    "modelAnswer": "Acknowledge the concern and ask about carbonation or low cement content. Advise applying a dust-proofing compound or hardener to stabilize the surface immediately. Recommend higher-strength mixes or proper curing membranes for next deliveries. Coordinate on-site cube testing to verify quality. Escalate to the technical team, log in the 24-hour system, and follow up with WhatsApp updates to build trust and prevent project delays.",
+    "competencies": [
+      "T4",
+      "T5"
+    ],
+    "assessmentType": "technical"
+  },
+  {
+    "id": "T032",
+    "sourceNum": 32,
+    "text": "The customer notices curling (edges of the slab lifting or warping) in the hardened concrete.What initial response and fixes would you provide?",
+    "modelAnswer": "Express understanding and probe for temperature differentials or slab thickness. Suggest saw-cutting control joints immediately to relieve stress and prevent cracking. Advise using fiber reinforcement or uniform subbase preparation in future batches. Recommend QC involvement for assessment. Use real-time tracking via RDC TRAK for adjustments, escalate promptly, and document in CCTS to align with complaint handling best practices.",
+    "competencies": [
+      "T4",
+      "T5"
+    ],
+    "assessmentType": "technical"
+  },
+  {
+    "id": "T033",
+    "sourceNum": 33,
+    "text": "A client reports signs of alkali-aggregate reaction (expansion, cracking, and gel exudation) in the concrete over time. How would you handle this complaint immediately?",
+    "modelAnswer": "Acknowledge the serious long-term issue and confirm aggregate sources or environmental factors. Advise monitoring cracks and applying sealants to limit moisture ingress as a temporary measure. Suggest low-alkali cement or pozzolanic admixtures for replacements. Arrange urgent on-site inspection and testing via the escalation matrix. Log in the central helpline system, provide constant updates, and emphasize technical support to resolve disputes and maintain repeat business.",
+    "competencies": [
+      "T4",
+      "T6"
+    ],
+    "assessmentType": "technical"
+  },
+  {
+    "id": "T034",
+    "sourceNum": 34,
+    "text": "A customer reports blistering on the concrete surface, with small raised bumps forming shortly after finishing. What immediate remedies would you suggest?",
+    "modelAnswer": "Acknowledge the issue and inquire about finishing timing or mix details. Advise ensuring bleed water has evaporated before final finishing and using a roller to vent trapped air if still workable. Recommend proper mix proportions to avoid excess fines. Suggest on-site QC advisory via escalation. Provide app updates and log in CCTS for resolution, emphasizing transparent communication to prevent cascading project issues.",
+    "competencies": [
+      "T4",
+      "T5"
+    ],
+    "assessmentType": "technical"
+  },
+  {
+    "id": "T035",
+    "sourceNum": 35,
+    "text": "The customer complains of high permeability in the cured concrete, leading to water seepage and durability concerns. How would you address this promptly?",
+    "modelAnswer": "Empathize and confirm curing practices. Advise applying a penetrating sealer immediately to reduce porosity and protect against moisture. Suggest improved curing methods, like extended moist curing, for future batches. Recommend lab testing of cubes for verification. Escalate to the technical team, log in the central system, and follow up with SMS to maintain trust and NPS.",
+    "competencies": [
+      "T4",
+      "T6"
+    ],
+    "assessmentType": "technical"
+  },
+  {
+    "id": "T036",
+    "sourceNum": 36,
+    "text": "Post-installation, the customer notices settlement cracks due to uneven soil beneath the concrete slab. What initial steps would you take?",
+    "modelAnswer": "Acknowledge the structural risk and gather site foundation details. Recommend assessing crack width and filling with epoxy or patching compounds for minor issues; advise full-depth repairs if severe. Suggest soil compaction checks for future pours. Arrange on-site inspection via escalation matrix. Update via WhatsApp and document in complaint resolution to support repeat business.",
+    "competencies": [
+      "T4",
+      "T6"
+    ],
+    "assessmentType": "technical"
+  },
+  {
+    "id": "T037",
+    "sourceNum": 37,
+    "text": "A client reports structural cracks from excessive loads or foundation movement in the concrete. What quick guidance would you provide?",
+    "modelAnswer": "Express concern for safety and ask about load conditions. Advise immediate crack injection with epoxy or polyurethane for sealing, and consulting a structural engineer if wide. Recommend reinforcement in mix designs for high-load areas. Escalate to QC for evaluation and cube testing. Log in CCTS, provide real-time updates, and ensure resolution within 24 hours.",
+    "competencies": [
+      "T4",
+      "T6"
+    ],
+    "assessmentType": "technical"
+  },
+  {
+    "id": "T038",
+    "sourceNum": 38,
+    "text": "The concrete is showing spalling, with chunks breaking off the surface due to corrosion or freeze-thaw. How would you handle this complaint immediately?",
+    "modelAnswer": "Acknowledge the damage and probe for environmental exposure. Suggest removing loose material and applying a repair mortar or overlay immediately. Advise using corrosion inhibitors in future mixes.Recommend on-site advisory and testing. Use the escalation matrix, update via the RDC App, and record to align with quality assurance KPIs.",
+    "competencies": [
+      "T4",
+      "T6"
+    ],
+    "assessmentType": "technical"
+  },
+  {
+    "id": "T039",
+    "sourceNum": 39,
+    "text": "During curing, the customer experiences surface crusting, where the top layer hardens prematurely while the underlying concrete remains soft. What remedies would you suggest right away?",
+    "modelAnswer": "Empathize and inquire about weather or finishing techniques. Advise misting the surface to soften the crust and re-finishing if possible, or applying a bonding agent for repairs. Suggest avoiding premature troweling in hot conditions. Escalate for QC support, log in the 24-hour system, and follow up with coordination calls to minimize delays.",
+    "competencies": [
+      "T5",
+      "T4"
+    ],
+    "assessmentType": "technical"
+  },
+  {
+    "id": "T040",
+    "sourceNum": 40,
+    "text": "The cured concrete has a pockmarked surface with small pits or bug holes from trapped air. What immediate actions would you advise?",
+    "modelAnswer": "Acknowledge the aesthetic flaw and ask about vibration and formwork. Recommend filling pits with a grout or patching compound immediately. Advise better vibration and formwork release agents for future pours. Suggest on-site inspection. Provide SMS updates, escalate via the matrix, and document in CCTS to enhance client relationships.",
+    "competencies": [
+      "T5",
+      "T4"
+    ],
+    "assessmentType": "technical"
+  },
+  {
+    "id": "T041",
+    "sourceNum": 41,
+    "text": "A customer complains of exposed reinforcement (rebar) in the concrete, compromising structural integrity. How would you respond promptly?",
+    "modelAnswer": "Show urgency and confirm protective layer details. Advise cleaning the area and applying a corrosion-resistant coating or repair mortar to cover the rebar immediately. Recommend adequate cover and vibration in mixes going forward. Arrange QC site visit and testing.Log in the central helpline, update constantly, and aim for timely dispute resolution.",
+    "competencies": [
+      "T6",
+      "T4"
+    ],
+    "assessmentType": "technical"
+  },
+  {
+    "id": "T042",
+    "sourceNum": 42,
+    "text": "The concrete structure shows missing edges or corners after form removal, due to damage or poor demolding. What quick fixes would you recommend?",
+    "modelAnswer": "Empathize with the finishing issue and gather demolding timeline. Suggest rebuilding edges with a high-bond repair concrete or epoxy mortar right away. Advise proper form moistening and timed removal to prevent this. Escalate for technical advisory, provide app-based tracking, and record in complaint logs to support OTIF metrics.",
+    "competencies": [
+      "T6",
+      "T4"
+    ],
+    "assessmentType": "technical"
+  },
+  {
+    "id": "T043",
+    "sourceNum": 43,
+    "text": "Over time, the customer notices popouts, where small conical fragments pop off the surface due to reactive aggregates. What initial remedies would you provide?",
+    "modelAnswer": "Acknowledge the defect and inquire about aggregate sources. Recommend patching the voids with mortar and sealing the surface to prevent moisture entry. Suggest non-reactive aggregates or fly ash in future mixes. Escalate to the technical manager for analysis, log in CCTS, and follow up with feedback to build long-term trust.",
+    "competencies": [
+      "T6",
+      "T4"
+    ],
+    "assessmentType": "technical"
+  },
+  {
+    "id": "T044",
+    "sourceNum": 44,
+    "text": "If a client reports inconsistency in concrete mix quality on-site, how should you handle it?",
+    "modelAnswer": "Immediately arrange for on-site cube testing, analyze results with QC, provide technical support to adjust mix, and communicate resolution steps transparently to the client.",
+    "competencies": [
+      "T3",
+      "T2"
+    ],
+    "assessmentType": "technical"
+  },
+  {
+    "id": "T045",
+    "sourceNum": 45,
+    "text": "A customer complains after pouring that cracks appeared the next day. What do you do?",
+    "modelAnswer": "Educate that cracks may be due to curing, temperature, shrinkage—not necessarily concrete quality. Arrange QC visit. Check curing method, finishing practices. Provide corrective guidance.",
+    "competencies": [
+      "T3",
+      "T2"
+    ],
+    "assessmentType": "technical"
+  },
+  {
+    "id": "T046",
+    "sourceNum": 46,
+    "text": "What do you do if a customer demands extra slump at site?",
+    "modelAnswer": "I explain the risk of adding excess water and ask them to sign the added-water declaration.",
+    "competencies": [
+      "T3",
+      "T2"
+    ],
+    "assessmentType": "technical"
+  },
+  {
+    "id": "T047",
+    "sourceNum": 47,
+    "text": "Customer repeatedly demands slump higher than approved mix design. What do you do?",
+    "modelAnswer": "Explain technical risks (segregation, strength loss). Offer use of superplasticizers if within QC guidelines. Maintain documentation of customer request vs. standard mix design.",
+    "competencies": [
+      "T3",
+      "T2"
+    ],
+    "assessmentType": "technical"
+  },
+  {
+    "id": "T048",
+    "sourceNum": 48,
+    "text": "What do you do if the site rejects concrete?",
+    "modelAnswer": "I visit the site, check the actual issue, take cube samples and inform QA/plant team immediately.",
+    "competencies": [
+      "T3",
+      "T2"
+    ],
+    "assessmentType": "technical"
+  }
+]
