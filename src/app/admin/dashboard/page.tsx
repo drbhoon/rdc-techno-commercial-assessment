@@ -10,7 +10,7 @@ interface SessionRow {
   location: string;
   role: string;
   assessmentType: "selling" | "technical";
-  status: "in_progress" | "completed";
+  status: "in_progress" | "submitted" | "completed";
   startedAt: string;
   completedAt: string | null;
   questionsAnswered: number;
@@ -28,6 +28,8 @@ const SCORE_COLOR = (s: number | null) => {
 const BADGE = (status: string) =>
   status === "completed"
     ? "bg-green-100 text-green-700 border border-green-200"
+    : status === "submitted"
+    ? "bg-blue-100 text-blue-700 border border-blue-200"
     : "bg-amber-100 text-amber-700 border border-amber-200";
 
 export default function AdminDashboard() {
@@ -35,7 +37,7 @@ export default function AdminDashboard() {
   const [sessions, setSessions] = useState<SessionRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [filter, setFilter] = useState<"all" | "completed" | "in_progress">("all");
+  const [filter, setFilter] = useState<"all" | "completed" | "submitted" | "in_progress">("all");
   const [search, setSearch] = useState("");
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [downloadingId, setDownloadingId] = useState<string | null>(null);
@@ -109,6 +111,7 @@ export default function AdminDashboard() {
   const stats = {
     total: sessions.length,
     completed: sessions.filter((s) => s.status === "completed").length,
+    submitted: sessions.filter((s) => s.status === "submitted").length,
     inProgress: sessions.filter((s) => s.status === "in_progress").length,
     avgScore: (() => {
       const scored = sessions.filter((s) => s.overallScore !== null);
@@ -163,7 +166,7 @@ export default function AdminDashboard() {
         {[
           { label: "Total Assessments", value: stats.total, icon: "📋", color: "text-slate-800" },
           { label: "Completed", value: stats.completed, icon: "✅", color: "text-green-600" },
-          { label: "In Progress", value: stats.inProgress, icon: "⏳", color: "text-amber-600" },
+          { label: "Evaluating", value: stats.submitted, icon: "🔄", color: "text-blue-600" },
           { label: "Avg Score", value: stats.avgScore !== null ? `${stats.avgScore}%` : "—", icon: "📊", color: SCORE_COLOR(stats.avgScore) },
         ].map((stat) => (
           <div key={stat.label} className="bg-white rounded-2xl shadow-card p-4 text-center">
@@ -183,7 +186,7 @@ export default function AdminDashboard() {
           className="flex-1 min-w-[200px] border-2 border-slate-200 rounded-xl px-4 py-2 text-sm font-medium focus:outline-none focus:border-blue-500 transition-colors"
         />
         <div className="flex gap-2">
-          {(["all", "completed", "in_progress"] as const).map((f) => (
+          {(["all", "completed", "submitted", "in_progress"] as const).map((f) => (
             <button
               key={f}
               onClick={() => setFilter(f)}
@@ -193,7 +196,7 @@ export default function AdminDashboard() {
                   : "border-2 border-slate-200 text-slate-500 hover:border-blue-300"
               }`}
             >
-              {f === "all" ? "All" : f === "completed" ? "✅ Completed" : "⏳ In Progress"}
+              {f === "all" ? "All" : f === "completed" ? "✅ Completed" : f === "submitted" ? "🔄 Evaluating" : "⏳ In Progress"}
             </button>
           ))}
         </div>
@@ -258,7 +261,7 @@ export default function AdminDashboard() {
                     </td>
                     <td className="px-4 py-3 whitespace-nowrap">
                       <span className={`text-xs font-bold rounded-full px-2.5 py-1 ${BADGE(s.status)}`}>
-                        {s.status === "completed" ? "✅ Complete" : "⏳ In Progress"}
+                        {s.status === "completed" ? "✅ Complete" : s.status === "submitted" ? "🔄 Evaluating" : "⏳ In Progress"}
                       </span>
                     </td>
                     <td className="px-4 py-3 whitespace-nowrap">
@@ -275,7 +278,7 @@ export default function AdminDashboard() {
                         </a>
 
                         {/* Download PDF */}
-                        {s.status === "completed" && (
+                        {(s.status === "completed" || s.status === "submitted") && (
                           <button
                             onClick={() => handleDownloadPDF(s.id, s.candidateName, s.assessmentType)}
                             disabled={downloadingId === s.id}

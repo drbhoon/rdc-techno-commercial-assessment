@@ -26,16 +26,20 @@ export async function POST(
       return NextResponse.json({ error: "Session not found" }, { status: 404 });
     }
 
-    // Build evaluation requests from stored questions + client transcripts
+    // ── Step 1: Save all transcripts immediately ─────────────────────────────
+    const recordedAt = new Date().toISOString();
     const evalRequests: EvalRequest[] = [];
-    const positionMap: Map<number, string> = new Map(); // position → transcript
 
     for (const cr of clientResponses) {
       const stub = session.responses[cr.position];
       if (!stub) continue;
 
       const transcript = (cr.transcript ?? "").trim();
-      positionMap.set(cr.position, transcript);
+      session.responses[cr.position] = {
+        ...stub,
+        transcript,
+        recordedAt,
+      };
 
       evalRequests.push({
         questionId: stub.questionId,
@@ -47,36 +51,65 @@ export async function POST(
       });
     }
 
-    // Single batch AI call for all questions
-    const evaluations = await evaluateBatch(evalRequests);
-
-    // Update session with all evaluations
-    const recordedAt = new Date().toISOString();
-    for (let i = 0; i < clientResponses.length; i++) {
-      const pos = clientResponses[i].position;
-      const stub = session.responses[pos];
-      if (!stub) continue;
-
-      session.responses[pos] = {
-        ...stub,
-        transcript: positionMap.get(pos) ?? "",
-        score: evaluations[i].score,
-        evaluation: evaluations[i],
-        recordedAt,
-      };
-    }
-
-    session.status = "completed";
+    session.status = "submitted";
     session.completedAt = recordedAt;
-
     await updateSession(session);
 
+    // ── Step 2: Fire AI evaluation in background (don't await) ───────────────
+    // Railway runs a persistent Node server, so this background promise
+    // continues after the HTTP response is sent to the client.
+    runBackgroundEvaluation(sessionId, evalRequests).catch((err) => {
+      console.error(`[Background eval failed for ${sessionId}]`, err);
+    });
+
+    // ── Return immediately — candidate sees "Thank you" right away ───────────
     return NextResponse.json({ success: true, completedAt: recordedAt });
   } catch (err) {
     console.error("[POST /api/session/[id]/submit-all]", err);
     return NextResponse.json(
-      { error: "Batch evaluation failed", details: String(err) },
+      { error: "Submission failed", details: String(err) },
       { status: 500 }
     );
   }
+}
+
+/**
+ * Runs batch AI evaluation in the background.
+ * Updates the session from "submitted" to "completed" when done.
+ */
+async function runBackgroundEvaluation(
+  sessionId: string,
+  evalRequests: EvalRequest[]
+): Promise<void> {
+  console.log(`[Background eval] Starting for session ${sessionId} (${evalRequests.length} questions)`);
+
+  const evaluations = await evaluateBatch(evalRequests);
+
+  // Reload session (may have been updated since we saved transcripts)
+  const session = await getSession(sessionId);
+  if (!session) {
+    console.error(`[Background eval] Session ${sessionId} not found`);
+    return;
+  }
+
+  // Apply evaluations
+  for (let i = 0; i < evalRequests.length; i++) {
+    const req = evalRequests[i];
+    // Find the position by matching questionId
+    const pos = Object.values(session.responses).find(
+      (r) => r.questionId === req.questionId
+    );
+    if (pos) {
+      session.responses[pos.position] = {
+        ...session.responses[pos.position],
+        score: evaluations[i].score,
+        evaluation: evaluations[i],
+      };
+    }
+  }
+
+  session.status = "completed";
+  await updateSession(session);
+
+  console.log(`[Background eval] Completed for session ${sessionId}`);
 }

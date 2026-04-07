@@ -47,6 +47,13 @@ export default function ReportPage({ params }: { params: Promise<{ sessionId: st
   const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
+    // Admin-only: check for admin password in sessionStorage
+    const adminPwd = sessionStorage.getItem("adminPassword");
+    if (!adminPwd) {
+      setError("Access denied. Reports are available only through the Admin Console.");
+      setLoading(false);
+      return;
+    }
     params.then(({ sessionId: sid }) => {
       setSessionId(sid);
       fetch(`/api/report/${sid}`)

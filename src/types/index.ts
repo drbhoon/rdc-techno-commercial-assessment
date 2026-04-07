@@ -52,7 +52,7 @@ export interface Session {
   questions: ClientQuestion[];
   startedAt: string;
   completedAt: string | null;
-  status: "in_progress" | "completed";
+  status: "in_progress" | "submitted" | "completed";
 }
 
 export interface CompetencyScore {

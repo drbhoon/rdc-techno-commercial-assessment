@@ -29,7 +29,6 @@ function AssessmentContent() {
   const [transcript, setTranscript] = useState("");
   const [error, setError] = useState("");
   const [timeLeft, setTimeLeft] = useState(TOTAL_TIME);
-  const [submitProgress, setSubmitProgress] = useState("");
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // Store all transcripts keyed by position
@@ -128,16 +127,12 @@ function AssessmentContent() {
   // Final batch submission
   const handleFinalSubmit = useCallback(async () => {
     setStage("submitting");
-    setSubmitProgress("Preparing responses...");
 
     try {
-      // Build responses array from saved transcripts
       const responses = questions.map((q) => ({
         position: q.position,
         transcript: transcriptsRef.current[q.position] ?? "",
       }));
-
-      setSubmitProgress("AI is evaluating all 20 responses in one go... This may take 30-60 seconds.");
 
       const res = await fetch(`/api/session/${sessionId}/submit-all`, {
         method: "POST",
@@ -186,18 +181,17 @@ function AssessmentContent() {
   );
 
   if (stage === "complete") return (
-    <div className="max-w-xl mx-auto text-center space-y-6 py-16 animate-slide-up">
-      <div className="w-24 h-24 gradient-navy rounded-full flex items-center justify-center text-5xl mx-auto shadow-xl">✅</div>
+    <div className="max-w-xl mx-auto text-center space-y-8 py-20 animate-slide-up">
+      <div className="w-28 h-28 gradient-navy rounded-full flex items-center justify-center text-6xl mx-auto shadow-xl">✅</div>
       <div>
-        <h2 className="text-3xl font-black text-slate-800 mb-2">Assessment Complete!</h2>
-        <p className="text-slate-500">All responses have been evaluated. Your detailed report is ready.</p>
+        <h2 className="text-3xl font-black text-slate-800 mb-3">Thank You!</h2>
+        <p className="text-lg text-slate-600 font-semibold">Your assessment has been successfully submitted.</p>
+        <p className="text-slate-400 mt-2">Your responses are being evaluated by AI. Results will be available to your manager shortly.</p>
       </div>
-      <button
-        onClick={() => router.push(`/report/${sessionId}`)}
-        className="px-10 py-4 gradient-navy text-white rounded-xl font-bold text-base shadow-lg hover:opacity-90 transition-all"
-      >
-        View Full Report →
-      </button>
+      <div className="bg-slate-100 rounded-2xl p-6 text-sm text-slate-500">
+        <p className="font-bold text-slate-700 mb-1">You may now close this window.</p>
+        <p>If you have any questions, please contact your reporting manager.</p>
+      </div>
     </div>
   );
 
@@ -221,12 +215,8 @@ function AssessmentContent() {
         </svg>
       </div>
       <div>
-        <h2 className="text-2xl font-black text-slate-800 mb-2">Evaluating Your Assessment</h2>
-        <p className="text-slate-500 text-sm">{submitProgress}</p>
-        <div className="mt-4 w-full bg-slate-100 rounded-full h-2 overflow-hidden">
-          <div className="gradient-orange h-2 rounded-full animate-pulse" style={{ width: "80%" }} />
-        </div>
-        <p className="text-xs text-slate-400 mt-3">Please do not close this page.</p>
+        <h2 className="text-2xl font-black text-slate-800 mb-2">Submitting Your Assessment</h2>
+        <p className="text-slate-500 text-sm">Saving your responses... Please wait a moment.</p>
       </div>
     </div>
   );

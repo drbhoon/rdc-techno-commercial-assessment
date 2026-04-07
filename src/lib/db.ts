@@ -36,7 +36,7 @@ export interface StoredSession {
   questions: ClientQuestion[];
   startedAt: string;
   completedAt?: string;
-  status: "in_progress" | "completed";
+  status: "in_progress" | "submitted" | "completed";
   responses: Record<number, StoredResponse>; // keyed by position 1-20
 }
 
