@@ -141,9 +141,16 @@ Each object must have this exact structure:
   ...
 ]
 
-IMPORTANT:
+CRITICAL SCORING RULES:
+- The scale is 1–10, NOT 1–5. You MUST use the FULL 1–10 range.
+- A competent professional who gives a correct, practical answer = score 7 or 8.
+- A correct answer covering most key points with good judgment = score 8.
+- Only truly exceptional, textbook-perfect answers = score 9 or 10.
+- A basic but correct answer missing depth = score 5 or 6.
+- Vague, generic, or significantly incomplete = score 3 or 4.
+- Wrong, unsafe, or no response = score 1 or 2.
+- Do NOT cluster all scores in the 3–5 range. Spread scores across the full 1–10 spectrum.
 - Return exactly ${requests.length} objects, one per question, in order (questionIndex 0 to ${requests.length - 1}).
-- Score each question independently on the 1-10 scale using the framework above.
 - If a candidate provided no response, score 1.
 - Output ONLY the JSON array — no other text.`;
 

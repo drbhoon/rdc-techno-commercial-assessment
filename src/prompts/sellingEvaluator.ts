@@ -55,7 +55,17 @@ Before scoring, normalize the transcript:
 - "debit note" = commercial credit note
 - Mixed Hindi-English is acceptable if the technical/commercial meaning is clear
 
-## Scoring Framework (1–10)
+## CRITICAL: Scoring Scale is 1–10 (NOT 1–5)
+
+You MUST use the FULL 1–10 range. This is a 10-point scale. Do NOT compress scores into the 1–5 range.
+
+**Calibration guide — read carefully before scoring:**
+- A competent sales professional who gives a correct, practical answer with minor gaps = **7 or 8**
+- An experienced professional who covers most key points with good judgment = **8**
+- Only truly exceptional, textbook-perfect answers with comprehensive detail = **9 or 10**
+- A basic but correct answer that misses depth or specifics = **5 or 6**
+- A vague, generic, or significantly incomplete answer = **3 or 4**
+- A wrong, harmful, or empty answer = **1 or 2**
 
 Sub-scores and weights:
 - A. Situational understanding (20%): Did the candidate understand the real issue, urgency, and customer risk?
@@ -64,12 +74,17 @@ Sub-scores and weights:
 - D. Commercial judgment (20%): Did the candidate protect price/margin/payment discipline and avoid casual concessions?
 - E. Ownership & escalation logic (10%): Did the candidate show clear follow-through and appropriate escalation?
 
-Score Anchors:
-- 9–10 (Exceptional): Expert-level RMX understanding, comprehensive action plan, excellent customer handling, strong commercial protection, proactive ownership
-- 7–8 (Strong): RMX-grounded, clear action sequence, good customer handling, commercially balanced, strong ownership
-- 5–6 (Acceptable): Basic answer correct, intent to solve, but generic, incomplete, or weak on commercial/control aspects
-- 3–4 (Weak): Misses important actions, too vague, poor escalation, risk of operational or commercial damage
-- 1–2 (Poor): Unsafe, unrealistic, careless, or commercially harmful — no ownership, no RMX understanding
+**Score Anchors (use the FULL 1–10 range):**
+- **10**: Perfect — covers every key point from model answer, adds practical insight, flawless judgment
+- **9**: Near-perfect — covers almost all key points, minor omission only, excellent practical grounding
+- **8**: Strong — technically correct, practical, well-structured, good commercial awareness, minor gaps
+- **7**: Good — correct approach, covers main points, some gaps in depth or structure, still reliable
+- **6**: Above average — basic understanding correct, reasonable approach, but missing important specifics or commercial nuance
+- **5**: Average — gets the general direction right but generic, incomplete, or lacks RMX-specific grounding
+- **4**: Below average — misses important actions, too vague, weak escalation, some commercial risk
+- **3**: Weak — significant gaps, incorrect approach on key aspects, operational risk
+- **2**: Poor — mostly wrong, potentially harmful advice, no ownership shown
+- **1**: Fail — no meaningful response, completely wrong, or dangerous recommendation
 
 ## Mandatory Downgrade Rules
 CAP at 6 if ANY of these apply:
@@ -88,13 +103,13 @@ CAP at 4 if ANY of these apply:
 CAP at 2 if:
 - Candidate recommends falsification, concealment, manipulation of documents, or supply continuation against approved stop-supply controls without authorization
 
-## What to Reward
-- Proactive ETA updates
-- Realistic alternate plan
-- Check of pump / site readiness / unloading speed
-- Document verification before commercial commitment
-- Complaint logging and closure tracking
-- Protecting trust without surrendering discipline
+## What to Reward (push score HIGHER for these)
+- Proactive ETA updates → +1
+- Realistic alternate plan → +1
+- Check of pump / site readiness / unloading speed → +1
+- Document verification before commercial commitment → +1
+- Complaint logging and closure tracking → +1
+- Protecting trust without surrendering discipline → +1
 
 ## Output Format
 Respond with ONLY a valid JSON object — no markdown, no prose, no code fences:
