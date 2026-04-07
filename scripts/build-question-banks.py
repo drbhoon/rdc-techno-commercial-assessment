@@ -1,13 +1,16 @@
 """
 build-question-banks.py
-Converts Excel question banks to JSON with competency tags.
-Run once after updating Excel files: py scripts/build-question-banks.py
+Converts Excel/Word question banks to JSON with competency tags.
+Run once after updating source files: py scripts/build-question-banks.py
+
+Requirements: pip install pandas openpyxl python-docx
 """
 
 import pandas as pd
 import json
 import os
 import re
+from docx import Document
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(SCRIPT_DIR)
@@ -41,29 +44,21 @@ def selling_competencies(q: int) -> list[str]:
     if 98 <= q <= 109:         return ["C2", "C7"]   # complaint + relationship
     return ["C1"]
 
-# ── Technical skill competency assignment ────────────────────────────────────
-# Based on zone ranges from rdc_sales_technical_skill.md
+# ── Technical skill competency assignment (revised 50-question bank) ─────────
+# Based on 12 sections in the revised Word document question bank
 def technical_competencies(q: int) -> list[str]:
-    if 1 <= q <= 11:                          return ["T1"]
-    # T2 primary: site condition diagnosis — transit delay, weather, site handling
-    if q in (12, 13, 14):                     return ["T2", "T3"]   # site diagnosis → fresh complaint
-    if q in (16, 17):                         return ["T3", "T2"]   # fresh concrete → site
-    if q == 15:                               return ["T3", "T4"]   # fresh + hardened
-    if q in (18, 19, 20):                     return ["T2", "T4"]   # site diagnosis → hardened
-    if q == 21:                               return ["T3", "T2"]   # fresh concrete
-    if q == 22:                               return ["T4", "T5"]   # hardened + corrective
-    if q == 23:                               return ["T3", "T5"]   # fresh + corrective
-    if q in (24, 25):                         return ["T4", "T6"]   # structural + risk
-    if q == 26:                               return ["T3", "T2"]   # fresh
-    if q == 27:                               return ["T7", "T3"]   # communication (escalation discipline)
-    # T5 primary: corrective action & preventive guidance
-    if q in (28, 29, 30):                     return ["T5", "T4"]   # corrective → hardened
-    if q in (31, 32, 34):                     return ["T4", "T5"]   # hardened + corrective
-    if q == 33:                               return ["T4", "T6"]   # durability + risk
-    if q in (35, 36, 37, 38):                return ["T4", "T6"]   # structural issues
-    if q in (39, 40):                         return ["T5", "T4"]   # corrective (preventive guidance)
-    if q in (41, 42, 43):                     return ["T6", "T4"]   # risk judgment
-    if q in (44, 45, 46, 47, 48):            return ["T3", "T2"]   # fresh concrete
+    if 1 <= q <= 5:    return ["T3"]   # S1: Cracks in Concrete → Fresh Concrete
+    if 6 <= q <= 9:    return ["T3"]   # S2: Delay Setting → Fresh Concrete
+    if 10 <= q <= 13:  return ["T2"]   # S3: Quantity Shortage → Site Diagnosis
+    if 14 <= q <= 15:  return ["T2"]   # S4: Retention Time → Site Diagnosis
+    if 16 <= q <= 20:  return ["T1"]   # S5: Sampling & Curing → RMX Fundamentals
+    if 21 <= q <= 24:  return ["T4"]   # S6: Factors Affecting Cube Strength → Hardened
+    if 25 <= q <= 28:  return ["T4"]   # S7: Cube Failure → Hardened
+    if 29 <= q <= 31:  return ["T6"]   # S8: Evidence Collection → Risk Judgment
+    if 32 <= q <= 34:  return ["T5"]   # S9: IS Code Provisions → Corrective Action
+    if 35 <= q <= 38:  return ["T1"]   # S10: VAS Products → RMX Fundamentals
+    if 39 <= q <= 43:  return ["T6"]   # S11: Case Studies → Risk Judgment
+    if 44 <= q <= 50:  return ["T7"]   # S12: Customer Communication → Escalation
     return ["T1"]
 
 # ── Competency metadata ──────────────────────────────────────────────────────
@@ -125,31 +120,61 @@ for _, row in df_s.iterrows():
 
 print(f"  Selling: {len(selling_questions)} questions (excluded Q85, Q86)")
 
-# ── Build technical question bank ─────────────────────────────────────────────
-print("Building technical question bank...")
-df_t = pd.read_excel(
-    os.path.join(ROOT, "rdc-Techno-commercial-technical - question bank.xlsx"),
-    header=1,
-    sheet_name="Technical questions"
-)
-df_t.columns = ["sr_no", "question", "answer"]
-df_t = df_t[pd.to_numeric(df_t["sr_no"], errors="coerce").notna()].copy()
-df_t["sr_no"] = df_t["sr_no"].astype(int)
+# ── Build technical question bank (from revised .docx) ───────────────────────
+print("Building technical question bank from revised Word document...")
+
+DOCX_PATH = os.path.join(ROOT, "rdc-Techno-commercial-technical - question bank - revised.docx")
+# Also try without extension (the original file has no extension)
+if not os.path.exists(DOCX_PATH):
+    DOCX_PATH = os.path.join(ROOT, "rdc-Techno-commercial-technical - question bank - revised")
+if not os.path.exists(DOCX_PATH):
+    # Try the external source path
+    DOCX_PATH = r"D:\RDC Drive\AI\Assessments\Techno-commercial\rdc-Techno-commercial-technical - question bank - revised"
+
+doc = Document(DOCX_PATH)
+paragraphs = [p.text.strip() for p in doc.paragraphs if p.text.strip()]
 
 technical_questions = []
-for _, row in df_t.iterrows():
-    q_num = int(row["sr_no"])
-    comps = technical_competencies(q_num)
-    technical_questions.append({
-        "id": f"T{q_num:03d}",
-        "sourceNum": q_num,
-        "text": clean_text(row["question"]),
-        "modelAnswer": clean_text(row["answer"]),
-        "competencies": comps,
-        "assessmentType": "technical",
-    })
+i = 0
+while i < len(paragraphs):
+    text = paragraphs[i]
+    # Detect QUESTION N
+    m = re.match(r'^QUESTION\s+(\d+)$', text)
+    if m:
+        q_num = int(m.group(1))
+        i += 1
+        # Collect question text (paragraphs until MODEL ANSWER)
+        q_parts = []
+        while i < len(paragraphs) and paragraphs[i] != "MODEL ANSWER":
+            if not paragraphs[i].startswith("SECTION "):
+                q_parts.append(paragraphs[i])
+            i += 1
+        q_text = " ".join(q_parts)
+        # Skip "MODEL ANSWER" header
+        if i < len(paragraphs) and paragraphs[i] == "MODEL ANSWER":
+            i += 1
+        # Collect answer text (paragraphs until next QUESTION or SECTION or end)
+        a_parts = []
+        while i < len(paragraphs):
+            if re.match(r'^QUESTION\s+\d+$', paragraphs[i]) or paragraphs[i].startswith("SECTION "):
+                break
+            a_parts.append(paragraphs[i])
+            i += 1
+        a_text = "\n".join(a_parts)
 
-print(f"  Technical: {len(technical_questions)} questions")
+        comps = technical_competencies(q_num)
+        technical_questions.append({
+            "id": f"T{q_num:03d}",
+            "sourceNum": q_num,
+            "text": clean_text(q_text),
+            "modelAnswer": clean_text(a_text),
+            "competencies": comps,
+            "assessmentType": "technical",
+        })
+    else:
+        i += 1
+
+print(f"  Technical: {len(technical_questions)} questions (from revised .docx)")
 
 # ── Write JSON outputs ────────────────────────────────────────────────────────
 with open(os.path.join(DATA_DIR, "selling-questions.json"), "w", encoding="utf-8") as f:

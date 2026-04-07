@@ -1,11 +1,13 @@
 "use client";
-import { useState, useEffect, useCallback, Suspense } from "react";
+import { useState, useEffect, useCallback, useRef, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import VoiceRecorder from "@/components/VoiceRecorder";
 import ScoreCard from "@/components/ScoreCard";
 import type { ClientQuestion, EvaluationResult } from "@/types";
 
-type Stage = "loading" | "question" | "recorded" | "submitting" | "evaluated" | "complete" | "error";
+type Stage = "loading" | "question" | "recorded" | "submitting" | "evaluated" | "complete" | "error" | "timeup";
+
+const TOTAL_TIME = 60 * 60; // 60 minutes in seconds
 
 interface SessionData { sessionId: string; questions: ClientQuestion[] }
 
@@ -28,19 +30,53 @@ function AssessmentContent() {
   const [transcript, setTranscript] = useState("");
   const [evaluation, setEvaluation] = useState<EvaluationResult | null>(null);
   const [error, setError] = useState("");
+  const [timeLeft, setTimeLeft] = useState(TOTAL_TIME);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
+  // Load session and restore timer from sessionStorage
   useEffect(() => {
     if (!sessionId) { setError("No session ID. Please start from the home page."); setStage("error"); return; }
     const stored = sessionStorage.getItem(`session_${sessionId}`);
     if (stored) {
       const data = JSON.parse(stored) as SessionData;
       setQuestions(data.questions);
+      // Restore timer — save start timestamp so refresh doesn't reset
+      const timerKey = `timer_${sessionId}`;
+      const savedStart = sessionStorage.getItem(timerKey);
+      if (savedStart) {
+        const elapsed = Math.floor((Date.now() - parseInt(savedStart, 10)) / 1000);
+        setTimeLeft(Math.max(0, TOTAL_TIME - elapsed));
+      } else {
+        sessionStorage.setItem(timerKey, String(Date.now()));
+      }
       setStage("question");
     } else {
       setError("Session not found. Please start from the home page.");
       setStage("error");
     }
   }, [sessionId]);
+
+  // Countdown timer — runs while assessment is active
+  useEffect(() => {
+    if (stage === "loading" || stage === "error" || stage === "complete" || stage === "timeup") return;
+    timerRef.current = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          clearInterval(timerRef.current!);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => { if (timerRef.current) clearInterval(timerRef.current); };
+  }, [stage]);
+
+  // Handle timer expiry
+  useEffect(() => {
+    if (timeLeft === 0 && stage !== "complete" && stage !== "timeup" && stage !== "error") {
+      setStage("timeup");
+    }
+  }, [timeLeft, stage]);
 
   const currentQuestion = questions.find((q) => q.position === position);
 
@@ -113,10 +149,41 @@ function AssessmentContent() {
     </div>
   );
 
+  if (stage === "timeup") return (
+    <div className="max-w-xl mx-auto text-center space-y-6 py-16 animate-slide-up">
+      <div className="w-24 h-24 bg-red-600 rounded-full flex items-center justify-center text-5xl mx-auto shadow-xl">⏰</div>
+      <div>
+        <h2 className="text-3xl font-black text-red-700 mb-2">Time&apos;s Up!</h2>
+        <p className="text-slate-500">The 60-minute assessment time has expired.</p>
+        <p className="text-slate-400 text-sm mt-1">You answered {position - 1} of 20 questions. Your partial report is available.</p>
+      </div>
+      <button
+        onClick={() => router.push(`/report/${sessionId}`)}
+        className="px-10 py-4 bg-red-600 text-white rounded-xl font-bold text-base shadow-lg hover:bg-red-700 transition-all"
+      >
+        View Report →
+      </button>
+    </div>
+  );
+
   const pctDone = ((position - 1) / 20) * 100;
+  const fmtTimer = (s: number) => `${Math.floor(s / 60).toString().padStart(2, "0")}:${(s % 60).toString().padStart(2, "0")}`;
+  const timerColor = timeLeft > 15 * 60 ? "text-green-400" : timeLeft > 5 * 60 ? "text-orange-400" : "text-red-400";
+  const timerBg = timeLeft > 15 * 60 ? "bg-slate-900" : timeLeft > 5 * 60 ? "bg-orange-950" : "bg-red-950";
 
   return (
     <div className="max-w-2xl mx-auto space-y-5">
+      {/* 60-minute assessment timer */}
+      <div className={`${timerBg} rounded-2xl shadow-card px-5 py-3 flex items-center justify-between`}>
+        <div className="flex items-center gap-3">
+          <span className="text-white text-xs font-bold uppercase tracking-wide">Time Remaining</span>
+          {timeLeft <= 5 * 60 && <span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse"/>}
+        </div>
+        <span className={`font-mono font-black text-3xl ${timerColor}`}>
+          {fmtTimer(timeLeft)}
+        </span>
+      </div>
+
       {/* Progress header */}
       <div className="bg-white rounded-2xl shadow-card p-4 flex items-center gap-4">
         <div className="gradient-navy text-white rounded-xl px-3 py-1.5 text-xs font-black uppercase tracking-wide whitespace-nowrap">

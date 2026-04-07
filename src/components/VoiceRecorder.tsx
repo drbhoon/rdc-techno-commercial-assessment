@@ -102,6 +102,7 @@ export default function VoiceRecorder({ onTranscript, disabled = false, maxRecor
         </div>
         <textarea
           value={textInput} onChange={(e) => setTextInput(e.target.value)}
+          onPaste={(e) => e.preventDefault()}
           placeholder="Type your answer here…" disabled={disabled} rows={5}
           className="w-full border-2 border-slate-200 rounded-xl p-4 text-sm resize-none focus:outline-none focus:border-blue-500 transition-colors font-medium"
         />
@@ -180,18 +181,31 @@ export default function VoiceRecorder({ onTranscript, disabled = false, maxRecor
       {(state === "recording" || state === "done") && (
         <div className="bg-slate-50 border-2 border-slate-200 rounded-xl p-4 min-h-[90px]">
           <div className="flex items-center gap-2 mb-2">
-            <span className="text-xs font-bold text-slate-400 uppercase tracking-wide">Live transcript</span>
+            <span className="text-xs font-bold text-slate-400 uppercase tracking-wide">
+              {state === "recording" ? "Live transcript" : "Edit your answer"}
+            </span>
             {state === "recording" && (
               <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"/>
             )}
           </div>
-          <p className="text-sm text-slate-800 leading-relaxed font-medium">
-            {transcript}
-            {interim && <span className="text-slate-400 italic"> {interim}</span>}
-            {!transcript && !interim && state === "recording" && (
-              <span className="text-slate-300 italic">Listening for your voice…</span>
-            )}
-          </p>
+          {state === "recording" ? (
+            <p className="text-sm text-slate-800 leading-relaxed font-medium">
+              {transcript}
+              {interim && <span className="text-slate-400 italic"> {interim}</span>}
+              {!transcript && !interim && (
+                <span className="text-slate-300 italic">Listening for your voice…</span>
+              )}
+            </p>
+          ) : (
+            <textarea
+              value={transcript}
+              onChange={(e) => { setTranscript(e.target.value); onTranscript(e.target.value); }}
+              onPaste={(e) => e.preventDefault()}
+              rows={5}
+              className="w-full border border-slate-300 rounded-lg p-3 text-sm text-slate-800 leading-relaxed font-medium resize-y focus:outline-none focus:border-blue-500 transition-colors"
+              placeholder="Your transcript appears here. You can edit it before submitting."
+            />
+          )}
         </div>
       )}
     </div>
