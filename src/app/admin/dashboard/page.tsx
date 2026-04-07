@@ -84,13 +84,16 @@ export default function AdminDashboard() {
     }
   }, [adminPwd]);
 
-  const handleDownloadPDF = useCallback(async (id: string, name: string, type: string) => {
+  const handleDownloadPDF = useCallback(async (id: string) => {
     setDownloadingId(id);
     try {
       const res = await fetch(`/api/report/${id}`);
+      if (!res.ok) throw new Error(`Report API returned ${res.status}`);
       const report = await res.json() as FinalReport;
+      if (!report || !report.candidate) throw new Error("Invalid report data");
       await generatePDF(report);
     } catch (e) {
+      console.error("PDF generation error:", e);
       alert("PDF generation failed: " + String(e));
     } finally {
       setDownloadingId(null);
@@ -280,7 +283,7 @@ export default function AdminDashboard() {
                         {/* Download PDF */}
                         {(s.status === "completed" || s.status === "submitted") && (
                           <button
-                            onClick={() => handleDownloadPDF(s.id, s.candidateName, s.assessmentType)}
+                            onClick={() => handleDownloadPDF(s.id)}
                             disabled={downloadingId === s.id}
                             className="px-2.5 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-lg text-xs font-bold transition-colors disabled:opacity-50"
                             title="Download PDF"
@@ -518,5 +521,15 @@ async function generatePDF(report: FinalReport) {
   doc.text("RDC Concrete India Ltd — Confidential Assessment Report", W / 2, 290, { align: "center" });
 
   const fileName = `RDC-${report.assessmentType}-${report.candidate.name.replace(/\s+/g, "_")}-${new Date(report.completedAt).toLocaleDateString("en-IN").replace(/\//g, "-")}.pdf`;
-  doc.save(fileName);
+
+  // Manual blob download — more reliable across browsers than doc.save()
+  const pdfBlob = doc.output("blob");
+  const url = URL.createObjectURL(pdfBlob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = fileName;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
