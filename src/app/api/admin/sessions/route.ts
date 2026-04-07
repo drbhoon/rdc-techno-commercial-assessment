@@ -33,5 +33,5 @@ function calcScore(s: Awaited<ReturnType<typeof listSessions>>[0]): number | nul
   const scored = Object.values(s.responses).filter((r) => r.score != null);
   if (!scored.length) return null;
   const total = scored.reduce((sum, r) => sum + (r.score ?? 0), 0);
-  return Math.round((total / (scored.length * 5)) * 100);
+  return Math.round((total / (scored.length * 10)) * 100);
 }

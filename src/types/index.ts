@@ -28,7 +28,7 @@ export interface ClientQuestion {
 export interface EvaluationResult {
   questionId: string;
   competencies: string[];
-  score: number; // 1–5
+  score: number; // 1–10
   whyThisScore: string;
   whatWasGood: string;
   whatWasMissing: string;
@@ -72,7 +72,9 @@ export interface FinalReport {
   completedAt: string;
   responses: SessionResponse[];
   overallScore: number;       // 0–100 %
-  overallAvg: number;         // avg score 1–5
+  overallAvg: number;         // avg score 1–10
+  totalPoints: number;        // sum of all scores (max 200)
+  maxPoints: number;          // max possible (questions * 10)
   competencyScores: CompetencyScore[];
   topStrengths: string[];
   developmentAreas: string[];

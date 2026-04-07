@@ -2,10 +2,9 @@
 import { useState, useEffect, useCallback, useRef, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import VoiceRecorder from "@/components/VoiceRecorder";
-import ScoreCard from "@/components/ScoreCard";
-import type { ClientQuestion, EvaluationResult } from "@/types";
+import type { ClientQuestion } from "@/types";
 
-type Stage = "loading" | "question" | "recorded" | "submitting" | "evaluated" | "complete" | "error" | "timeup";
+type Stage = "loading" | "question" | "recorded" | "review" | "submitting" | "complete" | "error" | "timeup";
 
 const TOTAL_TIME = 60 * 60; // 60 minutes in seconds
 
@@ -28,19 +27,22 @@ function AssessmentContent() {
   const [questions, setQuestions] = useState<ClientQuestion[]>([]);
   const [position, setPosition] = useState(1);
   const [transcript, setTranscript] = useState("");
-  const [evaluation, setEvaluation] = useState<EvaluationResult | null>(null);
   const [error, setError] = useState("");
   const [timeLeft, setTimeLeft] = useState(TOTAL_TIME);
+  const [submitProgress, setSubmitProgress] = useState("");
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // Load session and restore timer from sessionStorage
+  // Store all transcripts keyed by position
+  const transcriptsRef = useRef<Record<number, string>>({});
+
+  // Load session and restore timer
   useEffect(() => {
     if (!sessionId) { setError("No session ID. Please start from the home page."); setStage("error"); return; }
     const stored = sessionStorage.getItem(`session_${sessionId}`);
     if (stored) {
       const data = JSON.parse(stored) as SessionData;
       setQuestions(data.questions);
-      // Restore timer — save start timestamp so refresh doesn't reset
+      // Restore timer
       const timerKey = `timer_${sessionId}`;
       const savedStart = sessionStorage.getItem(timerKey);
       if (savedStart) {
@@ -49,6 +51,11 @@ function AssessmentContent() {
       } else {
         sessionStorage.setItem(timerKey, String(Date.now()));
       }
+      // Restore any previously saved transcripts
+      const savedTranscripts = sessionStorage.getItem(`transcripts_${sessionId}`);
+      if (savedTranscripts) {
+        transcriptsRef.current = JSON.parse(savedTranscripts) as Record<number, string>;
+      }
       setStage("question");
     } else {
       setError("Session not found. Please start from the home page.");
@@ -56,7 +63,7 @@ function AssessmentContent() {
     }
   }, [sessionId]);
 
-  // Countdown timer — runs while assessment is active
+  // Countdown timer
   useEffect(() => {
     if (stage === "loading" || stage === "error" || stage === "complete" || stage === "timeup") return;
     timerRef.current = setInterval(() => {
@@ -73,42 +80,87 @@ function AssessmentContent() {
 
   // Handle timer expiry
   useEffect(() => {
-    if (timeLeft === 0 && stage !== "complete" && stage !== "timeup" && stage !== "error") {
-      setStage("timeup");
+    if (timeLeft === 0 && stage !== "complete" && stage !== "timeup" && stage !== "error" && stage !== "submitting") {
+      // Save current transcript if any
+      if (transcript.trim()) {
+        transcriptsRef.current[position] = transcript.trim();
+      }
+      // Auto-submit whatever we have
+      handleFinalSubmit();
     }
-  }, [timeLeft, stage]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [timeLeft]);
 
   const currentQuestion = questions.find((q) => q.position === position);
 
   const handleTranscript = useCallback((text: string) => {
-    setTranscript(text); setStage("recorded");
-  }, []);
+    setTranscript(text);
+    if (stage === "question") setStage("recorded");
+  }, [stage]);
 
-  const handleSubmit = useCallback(async () => {
-    if (!transcript.trim() || !currentQuestion) return;
+  // Save transcript and go to next question
+  const handleNext = useCallback(() => {
+    if (transcript.trim()) {
+      transcriptsRef.current[position] = transcript.trim();
+      // Persist to sessionStorage
+      sessionStorage.setItem(`transcripts_${sessionId}`, JSON.stringify(transcriptsRef.current));
+    }
+    if (position >= 20) {
+      setStage("review");
+    } else {
+      setPosition((p) => p + 1);
+      setTranscript("");
+      setStage("question");
+    }
+  }, [position, transcript, sessionId]);
+
+  // Skip question (no answer)
+  const handleSkip = useCallback(() => {
+    if (position >= 20) {
+      setStage("review");
+    } else {
+      setPosition((p) => p + 1);
+      setTranscript("");
+      setStage("question");
+    }
+  }, [position]);
+
+  // Final batch submission
+  const handleFinalSubmit = useCallback(async () => {
     setStage("submitting");
+    setSubmitProgress("Preparing responses...");
+
     try {
-      const res = await fetch(`/api/session/${sessionId}/submit`, {
+      // Build responses array from saved transcripts
+      const responses = questions.map((q) => ({
+        position: q.position,
+        transcript: transcriptsRef.current[q.position] ?? "",
+      }));
+
+      setSubmitProgress("AI is evaluating all 20 responses in one go... This may take 30-60 seconds.");
+
+      const res = await fetch(`/api/session/${sessionId}/submit-all`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ position, transcript: transcript.trim() }),
+        body: JSON.stringify({ responses }),
       });
+
       if (!res.ok) {
         const data = await res.json() as { error?: string; details?: string };
         throw new Error(data.details ?? data.error ?? "Evaluation failed");
       }
-      const data = await res.json() as { evaluation: EvaluationResult };
-      setEvaluation(data.evaluation);
-      setStage("evaluated");
-    } catch (err) {
-      setError(String(err)); setStage("error");
-    }
-  }, [transcript, currentQuestion, sessionId, position]);
 
-  const handleNext = useCallback(() => {
-    if (position >= 20) { setStage("complete"); }
-    else { setPosition((p) => p + 1); setTranscript(""); setEvaluation(null); setStage("question"); }
-  }, [position]);
+      setStage("complete");
+    } catch (err) {
+      setError(String(err));
+      setStage("error");
+    }
+  }, [questions, sessionId]);
+
+  // Count answered
+  const answeredCount = Object.keys(transcriptsRef.current).filter(
+    (k) => transcriptsRef.current[Number(k)]?.trim()
+  ).length + (transcript.trim() && !transcriptsRef.current[position] ? 1 : 0);
 
   if (stage === "loading") return (
     <div className="flex items-center justify-center py-32">
@@ -138,7 +190,7 @@ function AssessmentContent() {
       <div className="w-24 h-24 gradient-navy rounded-full flex items-center justify-center text-5xl mx-auto shadow-xl">✅</div>
       <div>
         <h2 className="text-3xl font-black text-slate-800 mb-2">Assessment Complete!</h2>
-        <p className="text-slate-500">All 20 questions answered. Your AI-evaluated report is ready.</p>
+        <p className="text-slate-500">All responses have been evaluated. Your detailed report is ready.</p>
       </div>
       <button
         onClick={() => router.push(`/report/${sessionId}`)}
@@ -155,17 +207,92 @@ function AssessmentContent() {
       <div>
         <h2 className="text-3xl font-black text-red-700 mb-2">Time&apos;s Up!</h2>
         <p className="text-slate-500">The 60-minute assessment time has expired.</p>
-        <p className="text-slate-400 text-sm mt-1">You answered {position - 1} of 20 questions. Your partial report is available.</p>
+        <p className="text-slate-400 text-sm mt-1">Your responses are being evaluated...</p>
       </div>
-      <button
-        onClick={() => router.push(`/report/${sessionId}`)}
-        className="px-10 py-4 bg-red-600 text-white rounded-xl font-bold text-base shadow-lg hover:bg-red-700 transition-all"
-      >
-        View Report →
-      </button>
     </div>
   );
 
+  if (stage === "submitting") return (
+    <div className="max-w-xl mx-auto text-center space-y-6 py-16 animate-slide-up">
+      <div className="w-24 h-24 gradient-navy rounded-full flex items-center justify-center mx-auto shadow-xl">
+        <svg className="animate-spin w-12 h-12 text-white" fill="none" viewBox="0 0 24 24">
+          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
+          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+        </svg>
+      </div>
+      <div>
+        <h2 className="text-2xl font-black text-slate-800 mb-2">Evaluating Your Assessment</h2>
+        <p className="text-slate-500 text-sm">{submitProgress}</p>
+        <div className="mt-4 w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+          <div className="gradient-orange h-2 rounded-full animate-pulse" style={{ width: "80%" }} />
+        </div>
+        <p className="text-xs text-slate-400 mt-3">Please do not close this page.</p>
+      </div>
+    </div>
+  );
+
+  // Review screen before final submit
+  if (stage === "review") {
+    const answered = questions.filter((q) => transcriptsRef.current[q.position]?.trim());
+    const unanswered = questions.filter((q) => !transcriptsRef.current[q.position]?.trim());
+
+    return (
+      <div className="max-w-2xl mx-auto space-y-5 animate-slide-up">
+        <div className="gradient-navy rounded-2xl p-6 text-white shadow-card">
+          <h2 className="text-2xl font-black mb-1">Review &amp; Submit</h2>
+          <p className="text-blue-300 text-sm">
+            You answered {answered.length} of 20 questions. Review below and submit for AI evaluation.
+          </p>
+        </div>
+
+        {unanswered.length > 0 && (
+          <div className="bg-amber-50 border-2 border-amber-200 rounded-2xl p-4">
+            <p className="text-sm font-bold text-amber-700 mb-1">⚠ {unanswered.length} questions unanswered</p>
+            <p className="text-xs text-amber-600">
+              Questions: {unanswered.map((q) => `Q${q.position}`).join(", ")}. Unanswered questions will receive a score of 1/10.
+            </p>
+          </div>
+        )}
+
+        <div className="bg-white rounded-2xl shadow-card divide-y divide-slate-100">
+          {questions.map((q) => {
+            const t = transcriptsRef.current[q.position];
+            return (
+              <div key={q.position} className="px-5 py-3 flex items-start gap-3">
+                <span className={`w-7 h-7 rounded-lg flex items-center justify-center text-xs font-black shrink-0 ${
+                  t?.trim() ? "gradient-navy text-white" : "bg-slate-200 text-slate-400"
+                }`}>
+                  {q.position}
+                </span>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-semibold text-slate-700 line-clamp-1">{q.text}</p>
+                  {t?.trim() ? (
+                    <p className="text-xs text-slate-400 mt-0.5 line-clamp-1 italic">{t}</p>
+                  ) : (
+                    <p className="text-xs text-red-400 mt-0.5 italic">No response</p>
+                  )}
+                </div>
+                <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${
+                  t?.trim() ? "bg-green-100 text-green-700" : "bg-red-100 text-red-500"
+                }`}>
+                  {t?.trim() ? "✓" : "✗"}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+
+        <button
+          onClick={handleFinalSubmit}
+          className="w-full py-4 gradient-navy text-white rounded-xl font-bold text-base shadow-lg hover:opacity-90 transition-all flex items-center justify-center gap-2"
+        >
+          Submit Assessment for AI Evaluation →
+        </button>
+      </div>
+    );
+  }
+
+  // Active question stage
   const pctDone = ((position - 1) / 20) * 100;
   const fmtTimer = (s: number) => `${Math.floor(s / 60).toString().padStart(2, "0")}:${(s % 60).toString().padStart(2, "0")}`;
   const timerColor = timeLeft > 15 * 60 ? "text-green-400" : timeLeft > 5 * 60 ? "text-orange-400" : "text-red-400";
@@ -203,7 +330,7 @@ function AssessmentContent() {
       </div>
 
       {/* Question card */}
-      {currentQuestion && (stage === "question" || stage === "recorded" || stage === "submitting") && (
+      {currentQuestion && (stage === "question" || stage === "recorded") && (
         <div className="bg-white rounded-2xl shadow-card overflow-hidden">
           {/* Question header */}
           <div className="gradient-navy px-6 py-4 flex items-center justify-between">
@@ -225,45 +352,33 @@ function AssessmentContent() {
               {currentQuestion.text}
             </p>
 
-            {stage !== "submitting" && (
-              <VoiceRecorder onTranscript={handleTranscript} maxRecords={2} />
-            )}
+            <VoiceRecorder onTranscript={handleTranscript} maxRecords={2} />
 
+            {/* Action buttons */}
             {stage === "recorded" && transcript && (
-              <div className="mt-5">
+              <div className="mt-5 flex gap-3">
                 <button
-                  onClick={handleSubmit}
-                  className="w-full py-4 gradient-navy text-white rounded-xl font-bold text-base shadow-lg hover:opacity-90 transition-all flex items-center justify-center gap-2"
+                  onClick={handleNext}
+                  className="flex-1 py-4 gradient-navy text-white rounded-xl font-bold text-base shadow-lg hover:opacity-90 transition-all flex items-center justify-center gap-2"
                 >
-                  Submit &amp; Evaluate →
+                  {position < 20 ? `Save & Next Question →` : "Review & Submit →"}
                 </button>
               </div>
             )}
 
-            {stage === "submitting" && (
-              <div className="flex items-center justify-center gap-3 py-10 text-slate-500">
-                <svg className="animate-spin w-6 h-6 text-[#1a3a6b]" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
-                </svg>
-                <span className="font-semibold">AI is evaluating your response…</span>
+            {/* Skip option */}
+            {stage === "question" && (
+              <div className="mt-4 text-center">
+                <button
+                  onClick={handleSkip}
+                  className="text-xs text-slate-400 underline hover:text-slate-600 transition-colors"
+                >
+                  Skip this question
+                </button>
               </div>
             )}
           </div>
         </div>
-      )}
-
-      {/* Evaluation result */}
-      {stage === "evaluated" && evaluation && currentQuestion && (
-        <>
-          <ScoreCard evaluation={evaluation} questionText={currentQuestion.text} transcript={transcript} position={position} />
-          <button
-            onClick={handleNext}
-            className="w-full py-4 gradient-orange text-white rounded-xl font-bold text-base shadow-lg hover:opacity-95 transition-all flex items-center justify-center gap-2"
-          >
-            {position < 20 ? `Next Question (${position + 1} of 20) →` : "View Final Report →"}
-          </button>
-        </>
       )}
     </div>
   );

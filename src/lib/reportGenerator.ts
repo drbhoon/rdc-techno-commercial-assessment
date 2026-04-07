@@ -72,7 +72,7 @@ export function generateReport(params: {
   const dist =
     assessmentType === "selling" ? SELLING_DIST : TECHNICAL_DIST;
 
-  // Compute competency-wise scores
+  // Compute competency-wise scores (scale 1-10)
   const compTotals: Record<string, { total: number; count: number }> = {};
   for (const r of responses) {
     if (!r.evaluation) continue;
@@ -85,7 +85,7 @@ export function generateReport(params: {
   const competencyScores: CompetencyScore[] = Object.entries(names).map(
     ([id, name]) => {
       const data = compTotals[id] ?? { total: 0, count: 0 };
-      const maxPossible = (dist[id] ?? 1) * 5;
+      const maxPossible = (dist[id] ?? 1) * 10; // scale is 1-10
       const avgScore = data.count > 0 ? data.total / data.count : 0;
       const pct = maxPossible > 0 ? (data.total / maxPossible) * 100 : 0;
       return {
@@ -100,18 +100,18 @@ export function generateReport(params: {
     }
   );
 
-  // Overall score
+  // Overall score — total out of 200 (20 questions * 10 max each)
   const scoredResponses = responses.filter((r) => r.evaluation?.score);
-  const totalScore = scoredResponses.reduce(
+  const totalPoints = scoredResponses.reduce(
     (sum, r) => sum + (r.evaluation?.score ?? 0),
     0
   );
-  const maxTotal = scoredResponses.length * 5;
+  const maxPoints = scoredResponses.length * 10;
   const overallScore =
-    maxTotal > 0 ? Math.round((totalScore / maxTotal) * 100) : 0;
+    maxPoints > 0 ? Math.round((totalPoints / maxPoints) * 100) : 0;
   const overallAvg =
     scoredResponses.length > 0
-      ? Math.round((totalScore / scoredResponses.length) * 10) / 10
+      ? Math.round((totalPoints / scoredResponses.length) * 10) / 10
       : 0;
 
   // Top 3 strengths = highest avg competency scores
@@ -120,21 +120,21 @@ export function generateReport(params: {
     .sort((a, b) => b.avgScore - a.avgScore);
 
   const topStrengths = sorted.slice(0, 3).map(
-    (c) => `${c.name} (avg ${c.avgScore}/5)`
+    (c) => `${c.name} (avg ${c.avgScore}/10)`
   );
 
   // Development areas = lowest avg competency scores
   const developmentAreas = sorted
     .slice(-3)
     .reverse()
-    .map((c) => `${c.name} (avg ${c.avgScore}/5)`);
+    .map((c) => `${c.name} (avg ${c.avgScore}/10)`);
 
-  // Red flags: competencies with avg < 2.5 or score 1 responses
+  // Red flags: competencies with avg < 5 or score ≤ 2 responses
   const redFlagCompetencies = competencyScores
-    .filter((c) => c.questionsAnswered > 0 && c.avgScore < 2.5)
+    .filter((c) => c.questionsAnswered > 0 && c.avgScore < 5)
     .map((c) => c.name);
 
-  const hasScore1 = responses.some((r) => r.evaluation?.score === 1);
+  const hasVeryLowScore = responses.some((r) => r.evaluation && r.evaluation.score <= 2);
   const redFlags: string[] = [];
 
   if (redFlagCompetencies.length > 0) {
@@ -143,22 +143,20 @@ export function generateReport(params: {
     );
   }
 
-  if (hasScore1) {
+  if (hasVeryLowScore) {
     const flagList =
       assessmentType === "selling" ? SELLING_RED_FLAGS : TECHNICAL_RED_FLAGS;
     redFlags.push(
-      `One or more critically poor responses (score 1). Manager review recommended.`
+      `One or more critically poor responses (score ≤ 2/10). Manager review recommended.`
     );
-    // Add domain-specific flag hints based on which questions scored 1
-    const score1Comps = responses
-      .filter((r) => r.evaluation?.score === 1)
+    const lowScoreComps = responses
+      .filter((r) => r.evaluation && r.evaluation.score <= 2)
       .map((r) => names[r.competencies[0]] ?? r.competencies[0]);
-    if (score1Comps.length > 0) {
+    if (lowScoreComps.length > 0) {
       redFlags.push(
-        `Critical failure in: ${Array.from(new Set(score1Comps)).join(", ")}`
+        `Critical failure in: ${Array.from(new Set(lowScoreComps)).join(", ")}`
       );
     }
-    // Add generic domain flag if relevant
     if (assessmentType === "technical") {
       redFlags.push(flagList[1]); // unsafe water advice flag
     }
@@ -174,6 +172,8 @@ export function generateReport(params: {
     responses,
     overallScore,
     overallAvg,
+    totalPoints,
+    maxPoints,
     competencyScores,
     topStrengths,
     developmentAreas,

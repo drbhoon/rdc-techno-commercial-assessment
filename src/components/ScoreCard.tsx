@@ -1,13 +1,13 @@
 "use client";
 import type { EvaluationResult } from "@/types";
 
-const SCORE_THEME: Record<number, { bar: string; bg: string; border: string; badge: string; label: string; icon: string }> = {
-  5: { bar: "bg-green-500",  bg: "bg-green-50",  border: "border-green-400", badge: "bg-green-500 text-white",  label: "Strong",     icon: "🌟" },
-  4: { bar: "bg-blue-500",   bg: "bg-blue-50",   border: "border-blue-400",  badge: "bg-blue-500 text-white",   label: "Good",       icon: "✅" },
-  3: { bar: "bg-yellow-500", bg: "bg-yellow-50", border: "border-yellow-400",badge: "bg-yellow-500 text-white", label: "Acceptable", icon: "🟡" },
-  2: { bar: "bg-orange-500", bg: "bg-orange-50", border: "border-orange-400",badge: "bg-orange-500 text-white", label: "Weak",       icon: "⚠️" },
-  1: { bar: "bg-red-600",    bg: "bg-red-50",    border: "border-red-500",   badge: "bg-red-600 text-white",    label: "Poor",       icon: "🔴" },
-};
+function getTheme(score: number) {
+  if (score >= 9) return { bar: "bg-green-500",  bg: "bg-green-50",  border: "border-green-400", badge: "bg-green-500 text-white",  label: "Exceptional", icon: "🌟" };
+  if (score >= 7) return { bar: "bg-blue-500",   bg: "bg-blue-50",   border: "border-blue-400",  badge: "bg-blue-500 text-white",   label: "Strong",      icon: "✅" };
+  if (score >= 5) return { bar: "bg-yellow-500", bg: "bg-yellow-50", border: "border-yellow-400",badge: "bg-yellow-500 text-white", label: "Acceptable",  icon: "🟡" };
+  if (score >= 3) return { bar: "bg-orange-500", bg: "bg-orange-50", border: "border-orange-400",badge: "bg-orange-500 text-white", label: "Weak",        icon: "⚠️" };
+  return { bar: "bg-red-600",    bg: "bg-red-50",    border: "border-red-500",   badge: "bg-red-600 text-white",    label: "Poor",        icon: "🔴" };
+}
 
 interface Props {
   evaluation: EvaluationResult;
@@ -17,8 +17,8 @@ interface Props {
 }
 
 export default function ScoreCard({ evaluation, questionText, transcript, position }: Props) {
-  const theme = SCORE_THEME[evaluation.score] ?? SCORE_THEME[3];
-  const pct = (evaluation.score / 5) * 100;
+  const theme = getTheme(evaluation.score);
+  const pct = (evaluation.score / 10) * 100;
 
   return (
     <div className={`rounded-2xl border-2 shadow-card overflow-hidden animate-slide-up ${theme.bg} ${theme.border}`}>
@@ -39,7 +39,7 @@ export default function ScoreCard({ evaluation, questionText, transcript, positi
         {/* Big score */}
         <div className={`flex items-baseline gap-1 rounded-2xl px-4 py-2 ${theme.badge} shadow-md animate-score-pop`}>
           <span className="text-4xl font-black">{evaluation.score}</span>
-          <span className="text-lg font-bold opacity-75">/5</span>
+          <span className="text-lg font-bold opacity-75">/10</span>
         </div>
       </div>
 

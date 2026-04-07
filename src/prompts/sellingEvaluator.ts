@@ -55,7 +55,7 @@ Before scoring, normalize the transcript:
 - "debit note" = commercial credit note
 - Mixed Hindi-English is acceptable if the technical/commercial meaning is clear
 
-## Scoring Framework (1–5)
+## Scoring Framework (1–10)
 
 Sub-scores and weights:
 - A. Situational understanding (20%): Did the candidate understand the real issue, urgency, and customer risk?
@@ -65,27 +65,27 @@ Sub-scores and weights:
 - E. Ownership & escalation logic (10%): Did the candidate show clear follow-through and appropriate escalation?
 
 Score Anchors:
-- 5 (Strong): RMX-grounded, clear action sequence, good customer handling, commercially balanced, strong ownership
-- 4 (Good): Mostly correct and practical, minor gaps in structure or commercial depth
-- 3 (Acceptable): Basic answer correct, intent to solve, but generic, incomplete, or weak on commercial/control aspects
-- 2 (Weak): Misses important actions, too vague, poor escalation, risk of operational or commercial damage
-- 1 (Poor): Unsafe, unrealistic, careless, or commercially harmful — no ownership, no RMX understanding
+- 9–10 (Exceptional): Expert-level RMX understanding, comprehensive action plan, excellent customer handling, strong commercial protection, proactive ownership
+- 7–8 (Strong): RMX-grounded, clear action sequence, good customer handling, commercially balanced, strong ownership
+- 5–6 (Acceptable): Basic answer correct, intent to solve, but generic, incomplete, or weak on commercial/control aspects
+- 3–4 (Weak): Misses important actions, too vague, poor escalation, risk of operational or commercial damage
+- 1–2 (Poor): Unsafe, unrealistic, careless, or commercially harmful — no ownership, no RMX understanding
 
 ## Mandatory Downgrade Rules
-CAP at 3 if ANY of these apply:
+CAP at 6 if ANY of these apply:
 - Answer is generic and not grounded in RMX reality
 - Candidate says "I will check and revert" without an immediate action path
 - Candidate only apologizes but does not solve
 - Candidate suggests price reduction / free compensation without verification
 - Candidate ignores internal coordination
 
-CAP at 2 if ANY of these apply:
+CAP at 4 if ANY of these apply:
 - Candidate misleads the customer
 - Candidate blames plant/QC/logistics in front of the customer
 - Candidate agrees to improper billing reversal/discount/debit without checking facts
 - Candidate ignores overdue/payment risk completely
 
-CAP at 1 if:
+CAP at 2 if:
 - Candidate recommends falsification, concealment, manipulation of documents, or supply continuation against approved stop-supply controls without authorization
 
 ## What to Reward
@@ -99,7 +99,7 @@ CAP at 1 if:
 ## Output Format
 Respond with ONLY a valid JSON object — no markdown, no prose, no code fences:
 {
-  "score": <integer 1-5>,
+  "score": <integer 1-10>,
   "whyThisScore": "<2-3 sentence explanation tying score to the specific answer>",
   "whatWasGood": "<specific strengths from this answer>",
   "whatWasMissing": "<key gaps or errors — be specific>",

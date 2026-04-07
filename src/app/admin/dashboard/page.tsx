@@ -373,7 +373,7 @@ async function generatePDF(report: FinalReport) {
   const scoreColor = report.overallScore >= 75 ? [34, 197, 94] : report.overallScore >= 60 ? [59, 130, 246] : report.overallScore >= 45 ? [245, 158, 11] : [239, 68, 68];
   const boxes = [
     { label: "Overall Score", value: `${report.overallScore}%`, color: scoreColor },
-    { label: "Avg per Question", value: `${report.overallAvg}/5`, color: navy },
+    { label: "Avg per Question", value: `${report.overallAvg}/10`, color: navy },
     { label: "Readiness", value: report.readinessRecommendation, color: orange },
   ];
   const bw = CW / 3 - 3;
@@ -411,7 +411,7 @@ async function generatePDF(report: FinalReport) {
     doc.setFillColor(...(fc as [number, number, number]));
     doc.roundedRect(barX, y + 2, Math.max(1, (barW * c.pct) / 100), 4, 1, 1, "F");
     doc.setTextColor(80, 80, 80);
-    doc.text(`${c.avgScore}/5 (${c.pct}%)`, W - M - 2, y + 5.5, { align: "right" });
+    doc.text(`${c.avgScore}/10 (${c.pct}%)`, W - M - 2, y + 5.5, { align: "right" });
     y += 9;
   });
   y += 4;
@@ -449,10 +449,9 @@ async function generatePDF(report: FinalReport) {
   doc.text("Question-by-Question Detail", M, 8.5);
   y = 18;
 
-  const SCORE_LABELS: Record<number, string> = { 5: "Strong", 4: "Good", 3: "Acceptable", 2: "Weak", 1: "Poor" };
-  const SCORE_COL: Record<number, readonly [number,number,number]> = {
-    5: [34,197,94], 4: [59,130,246], 3: [245,158,11], 2: [249,115,22], 1: [239,68,68]
-  };
+  const getScoreLabel = (s: number) => s >= 9 ? "Exceptional" : s >= 7 ? "Strong" : s >= 5 ? "Acceptable" : s >= 3 ? "Weak" : "Poor";
+  const getScoreColor = (s: number): readonly [number,number,number] =>
+    s >= 9 ? [34,197,94] : s >= 7 ? [59,130,246] : s >= 5 ? [245,158,11] : s >= 3 ? [249,115,22] : [239,68,68];
 
   report.responses.forEach((r) => {
     if (!r.evaluation) return;
@@ -461,12 +460,13 @@ async function generatePDF(report: FinalReport) {
     checkY(blockH);
 
     // Question header
-    doc.setFillColor(...(SCORE_COL[ev.score] ?? [150,150,150]));
+    const qScoreColor = getScoreColor(ev.score);
+    doc.setFillColor(qScoreColor[0], qScoreColor[1], qScoreColor[2]);
     doc.rect(M, y, CW, 8, "F");
     doc.setTextColor(...white);
     doc.setFontSize(8); doc.setFont("helvetica", "bold");
     doc.text(`Q${r.position}  ${r.competencies.join(", ")}`, M + 2, y + 5.5);
-    doc.text(`Score ${ev.score}/5 — ${SCORE_LABELS[ev.score] ?? ""}`, W - M - 2, y + 5.5, { align: "right" });
+    doc.text(`Score ${ev.score}/10 — ${getScoreLabel(ev.score)}`, W - M - 2, y + 5.5, { align: "right" });
     y += 9;
 
     // Question text

@@ -146,7 +146,7 @@ export default function ReportPage({ params }: { params: Promise<{ sessionId: st
         <div className="bg-white rounded-2xl shadow-card p-6 flex flex-col items-center justify-center gap-2">
           <ScoreRing score={report.overallScore} />
           <p className="text-xs font-bold text-slate-400 text-center">
-            Avg {report.overallAvg}/5 · {report.responses.length} questions
+            {report.totalPoints ?? "—"}/{report.maxPoints ?? "—"} points · Avg {report.overallAvg}/10
           </p>
         </div>
 
@@ -171,7 +171,7 @@ export default function ReportPage({ params }: { params: Promise<{ sessionId: st
                   <span className="text-sm font-bold text-slate-700">{c.name}</span>
                 </div>
                 <div className="flex items-center gap-3 text-right">
-                  <span className="text-xs text-slate-400 font-medium">{c.avgScore}/5</span>
+                  <span className="text-xs text-slate-400 font-medium">{c.avgScore}/10</span>
                   <span className={`text-xs font-black rounded-full px-2.5 py-0.5 ${
                     c.pct >= 75 ? "bg-green-100 text-green-700" :
                     c.pct >= 60 ? "bg-blue-100 text-blue-700" :
@@ -254,7 +254,7 @@ export default function ReportPage({ params }: { params: Promise<{ sessionId: st
           <div className="bg-white rounded-2xl shadow-card divide-y divide-slate-100">
             {report.responses.map((r) => {
               const s = r.evaluation?.score ?? 0;
-              const color = s >= 4 ? "text-green-600" : s === 3 ? "text-amber-600" : s > 0 ? "text-red-600" : "text-slate-400";
+              const color = s >= 7 ? "text-green-600" : s >= 5 ? "text-amber-600" : s > 0 ? "text-red-600" : "text-slate-400";
               return (
                 <details key={r.position} className="group">
                   <summary className="flex items-center gap-3 px-5 py-3.5 cursor-pointer hover:bg-slate-50 transition-colors list-none">
@@ -263,7 +263,7 @@ export default function ReportPage({ params }: { params: Promise<{ sessionId: st
                     </span>
                     <span className="flex-1 text-sm font-semibold text-slate-700 line-clamp-1">{r.questionText}</span>
                     <span className={`font-black text-base ${color} shrink-0`}>
-                      {s ? `${s}/5` : "—"}
+                      {s ? `${s}/10` : "—"}
                     </span>
                     <svg className="w-4 h-4 text-slate-400 shrink-0 group-open:rotate-180 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7"/>

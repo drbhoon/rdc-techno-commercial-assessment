@@ -103,6 +103,7 @@ export default function VoiceRecorder({ onTranscript, disabled = false, maxRecor
         <textarea
           value={textInput} onChange={(e) => setTextInput(e.target.value)}
           onPaste={(e) => e.preventDefault()}
+          onDrop={(e) => e.preventDefault()}
           placeholder="Type your answer here…" disabled={disabled} rows={5}
           className="w-full border-2 border-slate-200 rounded-xl p-4 text-sm resize-none focus:outline-none focus:border-blue-500 transition-colors font-medium"
         />
@@ -201,6 +202,7 @@ export default function VoiceRecorder({ onTranscript, disabled = false, maxRecor
               value={transcript}
               onChange={(e) => { setTranscript(e.target.value); onTranscript(e.target.value); }}
               onPaste={(e) => e.preventDefault()}
+              onDrop={(e) => e.preventDefault()}
               rows={5}
               className="w-full border border-slate-300 rounded-lg p-3 text-sm text-slate-800 leading-relaxed font-medium resize-y focus:outline-none focus:border-blue-500 transition-colors"
               placeholder="Your transcript appears here. You can edit it before submitting."
