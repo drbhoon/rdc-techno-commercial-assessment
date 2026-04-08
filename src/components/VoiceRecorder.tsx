@@ -16,15 +16,12 @@ type SRCtor = new () => SR;
 interface Props {
   onTranscript: (text: string) => void;
   disabled?: boolean;
-  maxRecords?: number;
 }
 
-export default function VoiceRecorder({ onTranscript, disabled = false, maxRecords = 2 }: Props) {
+export default function VoiceRecorder({ onTranscript, disabled = false }: Props) {
   const [state, setState] = useState<"idle" | "recording" | "done">("idle");
   const [transcript, setTranscript] = useState("");
   const [interim, setInterim] = useState("");
-  const [recordCount, setRecordCount] = useState(0);
-  const [elapsed, setElapsed] = useState(0);
   const [supported, setSupported] = useState(true);
   const [textMode, setTextMode] = useState(false);
   const [textInput, setTextInput] = useState("");
@@ -51,8 +48,7 @@ export default function VoiceRecorder({ onTranscript, disabled = false, maxRecor
     let finalText = "";
 
     rec.onstart = () => {
-      setState("recording"); setTranscript(""); setInterim(""); setElapsed(0);
-      timerRef.current = setInterval(() => setElapsed((e) => e + 1), 1000);
+      setState("recording"); setTranscript(""); setInterim("");
     };
     rec.onresult = (ev: SREvent) => {
       let intr = "", fin = "";
@@ -74,7 +70,6 @@ export default function VoiceRecorder({ onTranscript, disabled = false, maxRecor
       if (t) { setTranscript(t); onTranscript(t); }
     };
     recRef.current = rec;
-    setRecordCount((c) => c + 1);
     rec.start();
   }, [disabled, state, clearTimer, onTranscript]);
 
@@ -85,9 +80,7 @@ export default function VoiceRecorder({ onTranscript, disabled = false, maxRecor
     setTranscript(textInput.trim()); onTranscript(textInput.trim()); setState("done");
   }, [textInput, onTranscript]);
 
-  const canReRecord = recordCount < maxRecords && state === "done";
-  const fmtTime = (s: number) => `${Math.floor(s / 60)}:${(s % 60).toString().padStart(2, "0")}`;
-  const elapsedColor = elapsed < 30 ? "text-amber-400" : elapsed <= 75 ? "text-green-400" : "text-red-400";
+  const canReRecord = state === "done";
 
   if (!supported || textMode) {
     return (
@@ -144,9 +137,9 @@ export default function VoiceRecorder({ onTranscript, disabled = false, maxRecor
                 Press the button and speak your answer
               </p>
             )}
-            {state === "done" && canReRecord && (
+            {state === "done" && (
               <p className="text-xs text-amber-600 font-semibold text-center">
-                {maxRecords - recordCount} re-record remaining
+                Tap to re-record your answer
               </p>
             )}
           </div>
@@ -162,18 +155,11 @@ export default function VoiceRecorder({ onTranscript, disabled = false, maxRecor
           </button>
         ) : null}
 
-        {/* Timer */}
+        {/* Recording indicator */}
         {state === "recording" && (
           <div className="flex items-center gap-3 bg-slate-900 rounded-full px-5 py-2">
             <span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse shrink-0"/>
-            <span className={`font-mono font-black text-lg ${elapsedColor}`}>{fmtTime(elapsed)}</span>
-            <span className="text-slate-400 text-xs font-medium">Target 30–75 s</span>
-          </div>
-        )}
-
-        {state === "done" && recordCount >= maxRecords && (
-          <div className="bg-amber-50 border border-amber-200 rounded-xl px-4 py-2 text-xs text-amber-700 font-semibold text-center">
-            Re-record limit reached — please submit your answer below
+            <span className="text-white font-bold text-sm">Recording…</span>
           </div>
         )}
       </div>

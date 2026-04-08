@@ -342,7 +342,7 @@ function AssessmentContent() {
               {currentQuestion.text}
             </p>
 
-            <VoiceRecorder onTranscript={handleTranscript} maxRecords={2} />
+            <VoiceRecorder key={position} onTranscript={handleTranscript} />
 
             {/* Action buttons */}
             {stage === "recorded" && transcript && (
