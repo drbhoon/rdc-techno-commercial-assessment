@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { withBase } from "@/lib/basePath";
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -13,7 +14,7 @@ export default function AdminLoginPage() {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch("/api/admin/verify", {
+      const res = await fetch(withBase("/api/admin/verify"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ password }),
@@ -83,7 +84,7 @@ export default function AdminLoginPage() {
           </button>
 
           <p className="text-center text-xs text-slate-400">
-            <a href="/" className="underline hover:text-slate-600">← Back to assessment</a>
+            <a href={withBase("/")} className="underline hover:text-slate-600">← Back to assessment</a>
           </p>
         </form>
       </div>

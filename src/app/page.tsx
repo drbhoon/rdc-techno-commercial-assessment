@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import type { AssessmentType, CandidateInfo } from "@/types";
+import { withBase } from "@/lib/basePath";
 
 export default function HomePage() {
   const router = useRouter();
@@ -25,7 +26,7 @@ export default function HomePage() {
     if (!form.name.trim()) { setError("Candidate name is required."); return; }
     setLoading(true);
     try {
-      const res = await fetch("/api/session", {
+      const res = await fetch(withBase("/api/session"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

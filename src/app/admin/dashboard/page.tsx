@@ -2,6 +2,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import type { FinalReport } from "@/types";
+import { withBase } from "@/lib/basePath";
 
 interface SessionRow {
   id: string;
@@ -54,7 +55,7 @@ export default function AdminDashboard() {
   const fetchSessions = async (pwd: string) => {
     setLoading(true);
     try {
-      const res = await fetch("/api/admin/sessions", {
+      const res = await fetch(withBase("/api/admin/sessions"), {
         headers: { "x-admin-password": pwd },
       });
       if (res.status === 401) { router.push("/admin"); return; }
@@ -71,7 +72,7 @@ export default function AdminDashboard() {
   const handleDelete = useCallback(async (id: string) => {
     setDeletingId(id);
     try {
-      await fetch(`/api/admin/sessions/${id}`, {
+      await fetch(withBase(`/api/admin/sessions/${id}`), {
         method: "DELETE",
         headers: { "x-admin-password": adminPwd },
       });
@@ -87,7 +88,7 @@ export default function AdminDashboard() {
   const handleDownloadPDF = useCallback(async (id: string) => {
     setDownloadingId(id);
     try {
-      const res = await fetch(`/api/report/${id}`);
+      const res = await fetch(withBase(`/api/report/${id}`));
       if (!res.ok) throw new Error(`Report API returned ${res.status}`);
       const report = await res.json() as FinalReport;
       if (!report || !report.candidate) throw new Error("Invalid report data");
@@ -271,7 +272,7 @@ export default function AdminDashboard() {
                       <div className="flex items-center gap-2">
                         {/* View report */}
                         <a
-                          href={`/report/${s.id}`}
+                          href={withBase(`/report/${s.id}`)}
                           target="_blank"
                           rel="noreferrer"
                           className="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-xs font-bold transition-colors"

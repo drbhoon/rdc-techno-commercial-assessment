@@ -3,6 +3,7 @@ import { useState, useEffect, useCallback, useRef, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import VoiceRecorder from "@/components/VoiceRecorder";
 import type { ClientQuestion } from "@/types";
+import { withBase } from "@/lib/basePath";
 
 type Stage = "loading" | "question" | "recorded" | "review" | "submitting" | "complete" | "error" | "timeup";
 
@@ -134,7 +135,7 @@ function AssessmentContent() {
         transcript: transcriptsRef.current[q.position] ?? "",
       }));
 
-      const res = await fetch(`/api/session/${sessionId}/submit-all`, {
+      const res = await fetch(withBase(`/api/session/${sessionId}/submit-all`), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ responses }),

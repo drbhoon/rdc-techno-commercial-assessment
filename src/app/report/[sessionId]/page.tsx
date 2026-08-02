@@ -3,6 +3,7 @@ import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import ScoreCard from "@/components/ScoreCard";
 import type { FinalReport } from "@/types";
+import { withBase } from "@/lib/basePath";
 
 const READINESS: Record<string, { bg: string; text: string; icon: string }> = {
   "Ready":                        { bg: "gradient-navy",  text: "text-white", icon: "🏆" },
@@ -56,7 +57,7 @@ export default function ReportPage({ params }: { params: Promise<{ sessionId: st
     }
     params.then(({ sessionId: sid }) => {
       setSessionId(sid);
-      fetch(`/api/report/${sid}`)
+      fetch(withBase(`/api/report/${sid}`))
         .then((r) => r.json())
         .then((data: FinalReport | { error?: string }) => {
           if ("error" in data) throw new Error(data.error);
