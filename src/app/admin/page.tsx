@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { withBase } from "@/lib/basePath";
 
@@ -8,6 +8,30 @@ export default function AdminLoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [checkingSso, setCheckingSso] = useState(true);
+
+  // On the HR platform nginx has already verified this person against the HR
+  // allowlist, so a second password would be pointless friction. The marker
+  // below stands in for the password on subsequent API calls; the server
+  // ignores it and trusts X-Auth-Email instead.
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch(withBase("/api/admin/me"));
+        if (res.ok) {
+          const { email } = (await res.json()) as { email: string | null };
+          if (email && !cancelled) {
+            sessionStorage.setItem("adminPassword", "hr-sso");
+            router.replace("/admin/dashboard");
+            return;
+          }
+        }
+      } catch { /* fall through to the password form */ }
+      if (!cancelled) setCheckingSso(false);
+    })();
+    return () => { cancelled = true; };
+  }, [router]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,6 +56,11 @@ export default function AdminLoginPage() {
       setLoading(false);
     }
   };
+
+  // Avoid flashing the password form while the SSO check is in flight.
+  if (checkingSso) {
+    return <div className="min-h-[70vh] flex items-center justify-center text-slate-400">Checking sign-in…</div>;
+  }
 
   return (
     <div className="min-h-[70vh] flex items-center justify-center">

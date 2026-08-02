@@ -1,11 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getPool } from "@/lib/dbPool";
+import { checkAuth } from "@/lib/adminAuth";
 
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD ?? "admin@rdc2026";
-
-function checkAuth(req: NextRequest): boolean {
-  return req.headers.get("x-admin-password") === ADMIN_PASSWORD;
-}
 
 export async function DELETE(
   req: NextRequest,
