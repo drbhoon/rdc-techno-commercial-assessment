@@ -7,8 +7,12 @@ import { REQUIRE_SSO } from "@/lib/adminAuth";
  * appears on Railway and in local development.
  */
 export async function GET(req: NextRequest) {
+  // Only claim an identity when SSO is actually switched on. Reporting the
+  // header while REQUIRE_SSO is off sends the login page to the dashboard,
+  // whose API calls then fall back to the password check, fail, and bounce
+  // back here — an endless flicker instead of an honest password prompt.
   return NextResponse.json({
-    email: req.headers.get("x-auth-email"),
+    email: REQUIRE_SSO ? req.headers.get("x-auth-email") : null,
     sso: REQUIRE_SSO,
   });
 }
