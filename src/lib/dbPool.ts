@@ -24,6 +24,15 @@ export function getPool(): Pool {
       idleTimeoutMillis: 30000,
       connectionTimeoutMillis: 10000,
     });
+    // node-postgres emits 'error' on the Pool when an idle client loses its
+    // server — a Postgres restart, for instance. Pool is an EventEmitter, so
+    // an unhandled 'error' event terminates the Node process; the container
+    // then bounces under `restart: unless-stopped` and this app is briefly
+    // down for no visible reason. Logging lets the pool drop the dead client
+    // and reconnect on the next query.
+    globalForPg.__pgPool.on("error", (err) => {
+      console.error("[dbPool] idle client error:", err.message);
+    });
   }
   return globalForPg.__pgPool;
 }
