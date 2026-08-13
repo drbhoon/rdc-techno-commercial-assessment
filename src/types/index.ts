@@ -5,6 +5,14 @@ export interface CandidateInfo {
   employeeId: string;
   location: string;
   role: string;
+  /**
+   * Required from the candidate: this is the key the whole platform resolves
+   * people by. `employeeId` used to be free text typed into a box, which is
+   * why a techno score could not be tied to the person who earned it.
+   */
+  email?: string;
+  /** The portal's id, filled in server-side. Never sent by the browser. */
+  personId?: string | null;
 }
 
 export interface Question {

@@ -13,17 +13,58 @@ export default function HomePage() {
     employeeId: "",
     location: "",
     role: "",
+    email: "",
     assessmentType: "selling",
   });
 
+  // Identity confirmed by the lookup. Cleared whenever the code or e-mail is
+  // edited, so a candidate cannot confirm as one person and then start as
+  // another by changing a field afterwards.
+  const [identity, setIdentity] = useState<{
+    employee_code: string | null;
+    full_name: string;
+    designation: string | null;
+    location: string | null;
+  } | null>(null);
+  const [verifying, setVerifying] = useState(false);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+    setForm((f) => ({ ...f, [name]: value }));
     setError("");
+    if (name === "employeeId" || name === "email") setIdentity(null);
+  };
+
+  const handleVerify = async () => {
+    if (!form.employeeId.trim() || !form.email?.trim()) {
+      setError("Employee code and company e-mail are both required.");
+      return;
+    }
+    setVerifying(true);
+    setError("");
+    try {
+      const res = await fetch(withBase("/api/identity/lookup"), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          employee_code: form.employeeId.trim(),
+          email: form.email.trim(),
+        }),
+      });
+      const data = (await res.json()) as { error?: string } & Record<string, never>;
+      if (!res.ok) throw new Error(data.error ?? "Could not confirm those details.");
+      setIdentity(data as never);
+    } catch (err) {
+      setIdentity(null);
+      setError(err instanceof Error ? err.message : String(err));
+    } finally {
+      setVerifying(false);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.name.trim()) { setError("Candidate name is required."); return; }
+    if (!identity) { setError("Please confirm your details first."); return; }
     setLoading(true);
     try {
       const res = await fetch(withBase("/api/session"), {
@@ -31,10 +72,13 @@ export default function HomePage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           candidate: {
-            name: form.name.trim(),
+            // Name and location are sent for continuity only — the server
+            // takes both from the employee master and ignores these.
+            name: identity.full_name,
             employeeId: form.employeeId.trim(),
-            location: form.location.trim(),
-            role: form.role.trim(),
+            location: identity.location ?? "",
+            role: identity.designation ?? form.role.trim(),
+            email: form.email!.trim(),
           },
           assessmentType: form.assessmentType,
         }),
@@ -76,56 +120,64 @@ export default function HomePage() {
         <div>
           <h2 className="text-lg font-bold text-slate-800 mb-4">Candidate Details</h2>
           <div className="space-y-4">
-            <div>
-              <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5">
-                Full Name <span className="text-red-500">*</span>
-              </label>
-              <input
-                name="name"
-                value={form.name}
-                onChange={handleChange}
-                placeholder="Enter candidate's full name"
-                className="w-full border-2 border-slate-200 rounded-xl px-4 py-3 text-sm font-medium focus:outline-none focus:border-blue-500 transition-colors"
-              />
-            </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5">
-                  Employee ID
+                  Employee Code <span className="text-red-500">*</span>
                 </label>
                 <input
                   name="employeeId"
                   value={form.employeeId}
                   onChange={handleChange}
-                  placeholder="EMP-001"
+                  placeholder="e.g. A00388"
                   className="w-full border-2 border-slate-200 rounded-xl px-4 py-3 text-sm font-medium focus:outline-none focus:border-blue-500 transition-colors"
                 />
               </div>
               <div>
                 <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5">
-                  Location
+                  Company E-mail <span className="text-red-500">*</span>
                 </label>
                 <input
-                  name="location"
-                  value={form.location}
+                  name="email"
+                  type="email"
+                  value={form.email ?? ""}
                   onChange={handleChange}
-                  placeholder="City / Plant"
+                  placeholder="name@rdc.in"
                   className="w-full border-2 border-slate-200 rounded-xl px-4 py-3 text-sm font-medium focus:outline-none focus:border-blue-500 transition-colors"
                 />
               </div>
             </div>
-            <div>
-              <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5">
-                Role / Designation
-              </label>
-              <input
-                name="role"
-                value={form.role}
-                onChange={handleChange}
-                placeholder="e.g. Sales Executive, Area Manager"
-                className="w-full border-2 border-slate-200 rounded-xl px-4 py-3 text-sm font-medium focus:outline-none focus:border-blue-500 transition-colors"
-              />
-            </div>
+
+            {/* Shown before the assessment starts so a mistyped code is caught
+                here rather than discovered later in somebody else's report. */}
+            {identity ? (
+              <div className="rounded-xl border-2 border-emerald-200 bg-emerald-50 px-4 py-3 text-sm">
+                <div className="font-bold text-slate-800">
+                  {identity.full_name}
+                  {identity.employee_code ? ` · ${identity.employee_code}` : ""}
+                </div>
+                {identity.designation && (
+                  <div className="text-slate-600">{identity.designation}</div>
+                )}
+                {identity.location && <div className="text-slate-600">{identity.location}</div>}
+                <div className="mt-1 text-xs text-slate-500">
+                  Not you? Correct the employee code or e-mail above.
+                </div>
+              </div>
+            ) : (
+              <button
+                type="button"
+                onClick={handleVerify}
+                disabled={verifying}
+                className="w-full rounded-xl border-2 border-blue-500 px-4 py-3 text-sm font-bold text-blue-600 transition-colors hover:bg-blue-50 disabled:opacity-50"
+              >
+                {verifying ? "Checking…" : "Confirm My Details"}
+              </button>
+            )}
+            <p className="text-xs text-slate-500">
+              Your name, designation and location come from the employee master, so
+              they appear on the report exactly as HR holds them.
+            </p>
           </div>
         </div>
 

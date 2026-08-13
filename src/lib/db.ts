@@ -55,6 +55,23 @@ async function ensureSchema(): Promise<void> {
     );
     CREATE INDEX IF NOT EXISTS idx_rdc_sessions_created
       ON rdc_sessions (created_at DESC);
+
+    -- Identity, as real columns rather than only inside the JSONB blob. The
+    -- session record stays the blob; these exist so a person's assessments can
+    -- be found without every query digging through JSON.
+    --
+    -- CREATE TABLE IF NOT EXISTS is a no-op on an existing table, so new
+    -- columns need saying explicitly or they appear only on fresh installs.
+    ALTER TABLE rdc_sessions ADD COLUMN IF NOT EXISTS person_id BIGINT;
+    ALTER TABLE rdc_sessions ADD COLUMN IF NOT EXISTS employee_code TEXT;
+    -- The address exactly as given, kept beside the resolved id: the address
+    -- book can change afterwards, and without this there is no record of what
+    -- the link was actually made from.
+    ALTER TABLE rdc_sessions ADD COLUMN IF NOT EXISTS captured_email TEXT;
+    CREATE INDEX IF NOT EXISTS idx_rdc_sessions_person
+      ON rdc_sessions (person_id);
+    CREATE INDEX IF NOT EXISTS idx_rdc_sessions_employee_code
+      ON rdc_sessions (employee_code);
   `);
   schemaReady = true;
 }
@@ -63,8 +80,15 @@ async function ensureSchema(): Promise<void> {
 export async function createSession(session: StoredSession): Promise<void> {
   await ensureSchema();
   await getPool().query(
-    "INSERT INTO rdc_sessions (id, data) VALUES ($1, $2)",
-    [session.id, JSON.stringify(session)]
+    `INSERT INTO rdc_sessions (id, data, person_id, employee_code, captured_email)
+     VALUES ($1, $2, $3, $4, $5)`,
+    [
+      session.id,
+      JSON.stringify(session),
+      session.candidate.personId ?? null,
+      session.candidate.employeeId || null,
+      session.candidate.email || null,
+    ]
   );
 }
 
