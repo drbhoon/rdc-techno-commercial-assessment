@@ -286,6 +286,20 @@ export default function HomePage() {
           </div>
         ))}
       </div>
+
+      {/* The way BACK to the console. This app is two pages with no navigation
+          between them: the portal tile lands HR on the dashboard, and until now
+          neither page mentioned the other, so whichever door you came through
+          was a dead end. Kept small and plain — a candidate has no use for it,
+          and the console is gated anyway. */}
+      <p className="text-center">
+        <a
+          href={withBase("/admin")}
+          className="text-xs text-slate-400 hover:text-slate-600 underline underline-offset-4 transition-colors"
+        >
+          Admin console — view past assessments and reports
+        </a>
+      </p>
     </div>
   );
 }

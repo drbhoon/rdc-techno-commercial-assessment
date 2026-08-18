@@ -149,6 +149,18 @@ export default function AdminDashboard() {
             <p className="text-blue-300 text-sm mt-0.5">All sessions — RDC Techno-Commercial Assessment</p>
           </div>
           <div className="flex gap-2">
+            {/* The way IN to an assessment. The portal tile points here, at the
+                admin console, and this dashboard listed past sessions with no
+                route to the form that creates one — so HR arrived from the
+                portal and found a dead end. Unlike DISC or the recruitment
+                console, techno has no link to generate: the candidate sits down
+                at the form itself, so the console has to offer the door. */}
+            <a
+              href={withBase("/")}
+              className="px-4 py-2 bg-emerald-500/90 hover:bg-emerald-500 text-white rounded-xl text-sm font-bold transition-all"
+            >
+              + Start Assessment
+            </a>
             <button
               onClick={() => fetchSessions(adminPwd)}
               className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-xl text-sm font-bold transition-all"
@@ -217,6 +229,21 @@ export default function AdminDashboard() {
           <div className="text-center py-16 text-slate-400">
             <div className="text-4xl mb-3">📭</div>
             <p className="font-semibold">No assessments found</p>
+            {/* An empty list is the FIRST thing a new console shows, so it is
+                the worst place to offer nothing to do. sessions.length rather
+                than filtered.length: with records present but filtered out,
+                the answer is to clear the filter, not to start an assessment. */}
+            {sessions.length === 0 && (
+              <>
+                <p className="text-sm mt-1">Nobody has taken one yet.</p>
+                <a
+                  href={withBase("/")}
+                  className="inline-block mt-5 px-5 py-2.5 gradient-navy text-white rounded-xl text-sm font-bold transition-all hover:opacity-90"
+                >
+                  + Start the first assessment
+                </a>
+              </>
+            )}
           </div>
         ) : (
           <div className="overflow-x-auto">
