@@ -7,7 +7,7 @@ import { withBase } from "@/lib/basePath";
 
 type Stage = "loading" | "question" | "recorded" | "review" | "submitting" | "complete" | "error" | "timeup";
 
-const TOTAL_TIME = 60 * 60; // 60 minutes in seconds
+const TOTAL_TIME = 50 * 60; // 50 minutes in seconds
 
 interface SessionData { sessionId: string; questions: ClientQuestion[] }
 
@@ -30,6 +30,10 @@ function AssessmentContent() {
   const [transcript, setTranscript] = useState("");
   const [error, setError] = useState("");
   const [timeLeft, setTimeLeft] = useState(TOTAL_TIME);
+  // Once the candidate has seen Review & Submit, jumping back to a question
+  // must not strand them: without this, returning to Q3 from review meant
+  // pressing through seventeen more questions to reach submit again.
+  const [reachedReview, setReachedReview] = useState(false);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // Store all transcripts keyed by position
@@ -106,6 +110,7 @@ function AssessmentContent() {
       sessionStorage.setItem(`transcripts_${sessionId}`, JSON.stringify(transcriptsRef.current));
     }
     if (position >= 20) {
+      setReachedReview(true);
       setStage("review");
     } else {
       setPosition((p) => p + 1);
@@ -117,6 +122,7 @@ function AssessmentContent() {
   // Skip question (no answer)
   const handleSkip = useCallback(() => {
     if (position >= 20) {
+      setReachedReview(true);
       setStage("review");
     } else {
       setPosition((p) => p + 1);
@@ -124,6 +130,29 @@ function AssessmentContent() {
       setStage("question");
     }
   }, [position]);
+
+  // Move to any question, keeping whatever has been said so far.
+  //
+  // "Skip this question" is a small underlined link sitting directly under the
+  // recorder, and a candidate who taps it by mistake had no way back: the only
+  // controls moved forward. Reported by Dr Bhoon. Going back has to preserve
+  // work in BOTH directions — the answer being left behind is saved on the way
+  // out, and the answer at the destination is restored on the way in, so a
+  // wrong turn costs nothing.
+  const goToQuestion = useCallback((target: number) => {
+    if (target < 1 || target > 20) return;
+    if (transcript.trim()) {
+      transcriptsRef.current[position] = transcript.trim();
+      sessionStorage.setItem(`transcripts_${sessionId}`, JSON.stringify(transcriptsRef.current));
+    }
+    const saved = transcriptsRef.current[target] ?? "";
+    setPosition(target);
+    setTranscript(saved);
+    // A question already answered opens in "recorded", so its Save & Next
+    // button is there and the existing answer is visible rather than looking
+    // lost. An unanswered one opens ready to record.
+    setStage(saved.trim() ? "recorded" : "question");
+  }, [position, transcript, sessionId]);
 
   // Final batch submission
   const handleFinalSubmit = useCallback(async () => {
@@ -201,7 +230,7 @@ function AssessmentContent() {
       <div className="w-24 h-24 bg-red-600 rounded-full flex items-center justify-center text-5xl mx-auto shadow-xl">⏰</div>
       <div>
         <h2 className="text-3xl font-black text-red-700 mb-2">Time&apos;s Up!</h2>
-        <p className="text-slate-500">The 60-minute assessment time has expired.</p>
+        <p className="text-slate-500">The 50-minute assessment time has expired.</p>
         <p className="text-slate-400 text-sm mt-1">Your responses are being evaluated...</p>
       </div>
     </div>
@@ -240,7 +269,7 @@ function AssessmentContent() {
           <div className="bg-amber-50 border-2 border-amber-200 rounded-2xl p-4">
             <p className="text-sm font-bold text-amber-700 mb-1">⚠ {unanswered.length} questions unanswered</p>
             <p className="text-xs text-amber-600">
-              Questions: {unanswered.map((q) => `Q${q.position}`).join(", ")}. Unanswered questions will receive a score of 1/10.
+              Questions: {unanswered.map((q) => `Q${q.position}`).join(", ")}. Unanswered questions will receive a score of 1/10 — tap any question below to go back and answer it.
             </p>
           </div>
         )}
@@ -249,7 +278,15 @@ function AssessmentContent() {
           {questions.map((q) => {
             const t = transcriptsRef.current[q.position];
             return (
-              <div key={q.position} className="px-5 py-3 flex items-start gap-3">
+              // The whole row returns to that question. A single-step Back is
+              // no use to somebody who skipped Q3 and noticed at Q15 — from
+              // here any question is one tap away, right up until submission.
+              <button
+                key={q.position}
+                type="button"
+                onClick={() => goToQuestion(q.position)}
+                className="w-full text-left px-5 py-3 flex items-start gap-3 hover:bg-slate-50 transition-colors"
+              >
                 <span className={`w-7 h-7 rounded-lg flex items-center justify-center text-xs font-black shrink-0 ${
                   t?.trim() ? "gradient-navy text-white" : "bg-slate-200 text-slate-400"
                 }`}>
@@ -260,7 +297,7 @@ function AssessmentContent() {
                   {t?.trim() ? (
                     <p className="text-xs text-slate-400 mt-0.5 line-clamp-1 italic">{t}</p>
                   ) : (
-                    <p className="text-xs text-red-400 mt-0.5 italic">No response</p>
+                    <p className="text-xs text-red-400 mt-0.5 italic">No response — tap to answer</p>
                   )}
                 </div>
                 <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${
@@ -268,7 +305,7 @@ function AssessmentContent() {
                 }`}>
                   {t?.trim() ? "✓" : "✗"}
                 </span>
-              </div>
+              </button>
             );
           })}
         </div>
@@ -291,7 +328,7 @@ function AssessmentContent() {
 
   return (
     <div className="max-w-2xl mx-auto space-y-5">
-      {/* 60-minute assessment timer */}
+      {/* 50-minute assessment timer */}
       <div className={`${timerBg} rounded-2xl shadow-card px-5 py-3 flex items-center justify-between`}>
         <div className="flex items-center gap-3">
           <span className="text-white text-xs font-bold uppercase tracking-wide">Time Remaining</span>
@@ -343,7 +380,11 @@ function AssessmentContent() {
               {currentQuestion.text}
             </p>
 
-            <VoiceRecorder key={position} onTranscript={handleTranscript} />
+            <VoiceRecorder
+              key={position}
+              initialTranscript={transcriptsRef.current[position] ?? ""}
+              onTranscript={handleTranscript}
+            />
 
             {/* Action buttons */}
             {stage === "recorded" && transcript && (
@@ -357,17 +398,38 @@ function AssessmentContent() {
               </div>
             )}
 
-            {/* Skip option */}
-            {stage === "question" && (
-              <div className="mt-4 text-center">
-                <button
-                  onClick={handleSkip}
-                  className="text-xs text-slate-400 underline hover:text-slate-600 transition-colors"
-                >
-                  Skip this question
-                </button>
+            {/* Back / Skip. Back is always available from question 2 onward,
+                including after an answer has been recorded — a mistaken Skip is
+                just as likely to be noticed one question later as immediately.
+                It is a proper button, not an underlined link, because the way
+                OUT of a mistake should not be harder to hit than the way in. */}
+            <div className="mt-4 flex items-center justify-between gap-3">
+              <button
+                onClick={() => goToQuestion(position - 1)}
+                disabled={position <= 1}
+                className="text-xs font-bold text-slate-600 border border-slate-300 rounded-lg px-3 py-2 hover:bg-slate-50 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                ← Previous question
+              </button>
+              <div className="flex items-center gap-4">
+                {stage === "question" && (
+                  <button
+                    onClick={handleSkip}
+                    className="text-xs text-slate-400 underline hover:text-slate-600 transition-colors"
+                  >
+                    Skip this question
+                  </button>
+                )}
+                {reachedReview && (
+                  <button
+                    onClick={() => setStage("review")}
+                    className="text-xs font-bold text-slate-600 border border-slate-300 rounded-lg px-3 py-2 hover:bg-slate-50 transition-colors"
+                  >
+                    Back to review →
+                  </button>
+                )}
               </div>
-            )}
+            </div>
           </div>
         </div>
       )}

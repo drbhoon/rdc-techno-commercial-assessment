@@ -16,11 +16,25 @@ type SRCtor = new () => SR;
 interface Props {
   onTranscript: (text: string) => void;
   disabled?: boolean;
+  /**
+   * An answer already given to this question, shown when the candidate returns
+   * to it. Without this, going back landed on a blank recorder above a "Save &
+   * Next" button — the answer was safely stored but invisible, which reads as
+   * lost and invites re-recording something that was already fine.
+   *
+   * The parent remounts this component per question (key={position}), so a
+   * useState initialiser is the whole mechanism.
+   */
+  initialTranscript?: string;
 }
 
-export default function VoiceRecorder({ onTranscript, disabled = false }: Props) {
-  const [state, setState] = useState<"idle" | "recording" | "done">("idle");
-  const [transcript, setTranscript] = useState("");
+export default function VoiceRecorder({ onTranscript, disabled = false, initialTranscript = "" }: Props) {
+  // Opens straight in "done" when there is an answer to show, so the transcript
+  // panel renders it and it can be edited in place.
+  const [state, setState] = useState<"idle" | "recording" | "done">(
+    initialTranscript.trim() ? "done" : "idle",
+  );
+  const [transcript, setTranscript] = useState(initialTranscript);
   const [interim, setInterim] = useState("");
   const [supported, setSupported] = useState(true);
   const [textMode, setTextMode] = useState(false);
