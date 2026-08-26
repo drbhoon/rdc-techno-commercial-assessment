@@ -101,7 +101,9 @@ export function generateReport(params: {
   );
 
   // Overall score — total out of 200 (20 questions * 10 max each)
-  const scoredResponses = responses.filter((r) => r.evaluation?.score);
+  // Checks for a scored evaluation, not a truthy score — a 0 (blank/nonsense
+  // answer) must still count toward the average, not be dropped from it.
+  const scoredResponses = responses.filter((r) => typeof r.evaluation?.score === "number");
   const totalPoints = scoredResponses.reduce(
     (sum, r) => sum + (r.evaluation?.score ?? 0),
     0

@@ -55,9 +55,9 @@ Before scoring, normalize the transcript:
 - "debit note" = commercial credit note
 - Mixed Hindi-English is acceptable if the technical/commercial meaning is clear
 
-## CRITICAL: Scoring Scale is 1–10 (NOT 1–5)
+## CRITICAL: Scoring Scale is 0–10 (NOT 1–5)
 
-You MUST use the FULL 1–10 range. This is a 10-point scale. Do NOT compress scores into the 1–5 range.
+You MUST use the FULL 1–10 range for genuine attempts. This is a 10-point scale plus a 0 floor reserved for non-answers. Do NOT compress scores into the 1–5 range.
 
 **Calibration guide — read carefully before scoring:**
 - A competent sales professional who gives a correct, practical answer with minor gaps = **7 or 8**
@@ -65,7 +65,8 @@ You MUST use the FULL 1–10 range. This is a 10-point scale. Do NOT compress sc
 - Only truly exceptional, textbook-perfect answers with comprehensive detail = **9 or 10**
 - A basic but correct answer that misses depth or specifics = **5 or 6**
 - A vague, generic, or significantly incomplete answer = **3 or 4**
-- A wrong, harmful, or empty answer = **1 or 2**
+- A wrong or harmful answer, but a genuine attempt at the question = **1 or 2**
+- Blank, no response, or a meaningless non-answer (a single word like "OK"/"test"/"yes", gibberish, or text that does not attempt to address the question) = **0**. Never score this a 1 — 0 is reserved for exactly this case.
 
 Sub-scores and weights:
 - A. Situational understanding (20%): Did the candidate understand the real issue, urgency, and customer risk?
@@ -84,7 +85,8 @@ Sub-scores and weights:
 - **4**: Below average — misses important actions, too vague, weak escalation, some commercial risk
 - **3**: Weak — significant gaps, incorrect approach on key aspects, operational risk
 - **2**: Poor — mostly wrong, potentially harmful advice, no ownership shown
-- **1**: Fail — no meaningful response, completely wrong, or dangerous recommendation
+- **1**: Fail — a genuine attempt that is completely wrong or a dangerous recommendation
+- **0**: No response, blank, or a meaningless non-answer (single word, gibberish, or text that doesn't attempt the question)
 
 ## Mandatory Downgrade Rules
 CAP at 6 if ANY of these apply:
@@ -114,7 +116,7 @@ CAP at 2 if:
 ## Output Format
 Respond with ONLY a valid JSON object — no markdown, no prose, no code fences:
 {
-  "score": <integer 1-10>,
+  "score": <integer 0-10>,
   "whyThisScore": "<2-3 sentence explanation tying score to the specific answer>",
   "whatWasGood": "<specific strengths from this answer>",
   "whatWasMissing": "<key gaps or errors — be specific>",

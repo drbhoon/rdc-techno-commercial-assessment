@@ -36,7 +36,7 @@ export interface ClientQuestion {
 export interface EvaluationResult {
   questionId: string;
   competencies: string[];
-  score: number; // 1–10
+  score: number; // 0–10 (0 reserved for blank/meaningless non-answers)
   whyThisScore: string;
   whatWasGood: string;
   whatWasMissing: string;

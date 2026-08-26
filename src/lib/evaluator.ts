@@ -35,7 +35,7 @@ async function callAnthropic(prompt: string, maxTokens: number): Promise<string>
 
 function parseResult(raw: Record<string, unknown>, questionId: string, competencies: string[]): EvaluationResult {
   const score = Math.round(Number(raw.score));
-  if (!score || score < 1 || score > 10) {
+  if (Number.isNaN(score) || score < 0 || score > 10) {
     throw new Error(`Invalid score from AI: ${raw.score}`);
   }
   return {
@@ -132,7 +132,7 @@ Each object must have this exact structure:
 [
   {
     "questionIndex": 0,
-    "score": <integer 1-10>,
+    "score": <integer 0-10>,
     "whyThisScore": "<2-3 sentence explanation>",
     "whatWasGood": "<specific strengths>",
     "whatWasMissing": "<key gaps or errors>",
@@ -142,16 +142,16 @@ Each object must have this exact structure:
 ]
 
 CRITICAL SCORING RULES:
-- The scale is 1–10, NOT 1–5. You MUST use the FULL 1–10 range.
+- The scale is 0–10, NOT 1–5. You MUST use the FULL 1–10 range for real attempts.
 - A competent professional who gives a correct, practical answer = score 7 or 8.
 - A correct answer covering most key points with good judgment = score 8.
 - Only truly exceptional, textbook-perfect answers = score 9 or 10.
 - A basic but correct answer missing depth = score 5 or 6.
 - Vague, generic, or significantly incomplete = score 3 or 4.
-- Wrong, unsafe, or no response = score 1 or 2.
-- Do NOT cluster all scores in the 3–5 range. Spread scores across the full 1–10 spectrum.
+- Wrong or unsafe, but a genuine attempt at the question = score 1 or 2.
+- Blank, no response, or a meaningless non-answer (a single word like "OK"/"test"/"yes", gibberish, or text that does not attempt to address the question at all) = score 0. Do NOT give these a 1 — 0 is reserved for exactly this case.
+- Do NOT cluster all scores in the 3–5 range. Spread scores across the full 0–10 spectrum.
 - Return exactly ${requests.length} objects, one per question, in order (questionIndex 0 to ${requests.length - 1}).
-- If a candidate provided no response, score 1.
 - Output ONLY the JSON array — no other text.`;
 
   const rawText = await callAnthropic(batchPrompt, 8192);
