@@ -81,11 +81,13 @@ export default function ReportPage({ params }: { params: Promise<{ sessionId: st
   const exportCSV = useCallback(() => {
     if (!report) return;
     const rows = [
-      ["Q#","Question ID","Competency","Score","Transcript (first 100 chars)","What was good","What was missing"],
+      ["Q#","Question ID","Competency","Score","Transcript","What was good","What was missing"],
       ...report.responses.map((r) => [
         r.position, r.questionId, r.competencies[0],
         r.evaluation?.score ?? "",
-        (r.transcript ?? "").slice(0, 100),
+        // Full answer. Every field is quoted and internal quotes doubled below,
+        // so newlines and commas survive the CSV intact.
+        r.transcript ?? "",
         r.evaluation?.whatWasGood ?? "",
         r.evaluation?.whatWasMissing ?? "",
       ]),

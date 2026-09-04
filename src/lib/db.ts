@@ -104,6 +104,50 @@ export async function getSession(
   return res.rows[0].data as StoredSession;
 }
 
+/**
+ * How long a candidate has to finish once they begin, in milliseconds.
+ *
+ * Two hours, not the 50 minutes the paper takes. The extra is slack for the
+ * thing this exists to survive — losing signal, a laptop dying, coming back on
+ * a phone — measured from the ORIGINAL start so the window cannot be extended
+ * by disconnecting on purpose.
+ */
+export const SESSION_WINDOW_MS = 2 * 60 * 60 * 1000;
+
+/**
+ * The candidate's own unfinished attempt at this assessment, if it is still
+ * inside the window.
+ *
+ * Reconnecting used to mint a brand new session, which is how one person ended
+ * up with two in-progress rows and a timer that restarted from full. Matching
+ * on employee_code — a real indexed column, not a JSONB dig — plus the
+ * assessment type, so Selling and Technical stay independent attempts.
+ *
+ * An attempt older than the window is deliberately NOT returned: it is spent,
+ * and the candidate starts cleanly rather than resuming into an expired timer.
+ */
+export async function findResumableSession(
+  employeeCode: string,
+  assessmentType: AssessmentType
+): Promise<StoredSession | null> {
+  await ensureSchema();
+  const res = await getPool().query(
+    `SELECT data FROM rdc_sessions
+      WHERE employee_code = $1
+        AND data->>'assessmentType' = $2
+        AND data->>'status' = 'in_progress'
+      ORDER BY created_at DESC
+      LIMIT 1`,
+    [employeeCode, assessmentType]
+  );
+  if (res.rows.length === 0) return null;
+  const session = res.rows[0].data as StoredSession;
+  const startedAt = Date.parse(session.startedAt);
+  if (!Number.isFinite(startedAt)) return null;
+  if (Date.now() - startedAt > SESSION_WINDOW_MS) return null;
+  return session;
+}
+
 export async function updateSession(session: StoredSession): Promise<void> {
   await ensureSchema();
   await getPool().query(

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
-import { createSession, type StoredSession } from "@/lib/db";
+import { createSession, findResumableSession, type StoredSession } from "@/lib/db";
 import { assembleAssessment } from "@/lib/randomizer";
 import { getBank } from "@/lib/questionBank";
 import { resolveEmployee } from "@/lib/identity";
@@ -60,6 +60,30 @@ export async function POST(req: NextRequest) {
       email: person.email ?? candidate.email,
       personId: person.person_id,
     };
+
+    // Resume before creating. A candidate whose connection dropped comes back
+    // through this same endpoint, and minting a second session gave them two
+    // in-progress attempts and a timer restarted from full. The questions and
+    // original startedAt are handed straight back, so they carry on where they
+    // stopped with the clock still running from the first attempt.
+    const existing = await findResumableSession(identified.employeeId, assessmentType);
+    if (existing) {
+      // Answers already saved come back too. They live only in the browser
+      // until the final submit, so a candidate returning on another device — or
+      // after clearing the tab — would otherwise get their questions back and
+      // an empty form, which is not resuming in any sense that helps them.
+      const transcripts: Record<number, string> = {};
+      for (const response of Object.values(existing.responses ?? {})) {
+        if (response?.transcript?.trim()) transcripts[response.position] = response.transcript;
+      }
+      return NextResponse.json({
+        sessionId: existing.id,
+        questions: existing.questions,
+        startedAt: existing.startedAt,
+        transcripts,
+        resumed: true,
+      });
+    }
 
     const { questions: fullQuestions, clientQuestions } =
       assembleAssessment(assessmentType);

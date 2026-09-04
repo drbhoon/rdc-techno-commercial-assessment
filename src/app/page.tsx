@@ -1,11 +1,26 @@
 "use client";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { Suspense, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import type { AssessmentType, CandidateInfo } from "@/types";
 import { withBase } from "@/lib/basePath";
 
-export default function HomePage() {
+/**
+ * `?type=selling` / `?type=technical` fixes the module, so HR can hand out one
+ * link per assessment instead of one link and a verbal instruction about which
+ * tile to pick. The picker is then shown as a locked, single tile rather than
+ * hidden entirely, so the candidate can still see which paper they are sitting.
+ *
+ * Plain /techno with no parameter keeps the two-tile chooser exactly as it was,
+ * so links already circulating keep working.
+ */
+function assessmentTypeFromParam(value: string | null): AssessmentType | null {
+  return value === "selling" || value === "technical" ? value : null;
+}
+
+function HomeContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const lockedType = assessmentTypeFromParam(searchParams.get("type"));
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [form, setForm] = useState<CandidateInfo & { assessmentType: AssessmentType }>({
@@ -14,7 +29,7 @@ export default function HomePage() {
     location: "",
     role: "",
     email: "",
-    assessmentType: "selling",
+    assessmentType: lockedType ?? "selling",
   });
 
   // Identity confirmed by the lookup. Cleared whenever the code or e-mail is
@@ -184,9 +199,9 @@ export default function HomePage() {
         {/* Assessment type */}
         <div>
           <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-3">
-            Select Assessment Module
+            {lockedType ? "Assessment Module" : "Select Assessment Module"}
           </label>
-          <div className="grid grid-cols-2 gap-3">
+          <div className={lockedType ? "grid grid-cols-1 gap-3" : "grid grid-cols-2 gap-3"}>
             {([
               {
                 value: "selling" as AssessmentType,
@@ -202,7 +217,7 @@ export default function HomePage() {
                 desc: "48-question pool",
                 tags: ["Concrete defects", "Site diagnosis", "QC escalation"],
               },
-            ] as const).map((opt) => (
+            ] as const).filter((opt) => !lockedType || opt.value === lockedType).map((opt) => (
               <label
                 key={opt.value}
                 className={`cursor-pointer rounded-xl border-2 p-4 transition-all ${
@@ -301,5 +316,15 @@ export default function HomePage() {
         </a>
       </p>
     </div>
+  );
+}
+
+export default function HomePage() {
+  // useSearchParams needs a Suspense boundary, or the whole route is forced
+  // into client-side rendering at build time.
+  return (
+    <Suspense fallback={null}>
+      <HomeContent />
+    </Suspense>
   );
 }

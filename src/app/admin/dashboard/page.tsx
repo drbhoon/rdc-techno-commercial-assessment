@@ -534,8 +534,12 @@ async function generatePDF(report: FinalReport) {
     if (r.transcript) {
       checkY(10);
       doc.setFontSize(6.5); doc.setFont("helvetica", "italic"); doc.setTextColor(120, 120, 120);
-      const tLines = doc.splitTextToSize(`Transcript: "${r.transcript.slice(0, 200)}${r.transcript.length > 200 ? "…" : ""}"`, CW - 4);
-      tLines.slice(0, 2).forEach((ln: string) => { checkY(4); doc.text(ln, M + 2, y + 3); y += 4; });
+      // The whole answer, not the first 200 characters clipped to two lines.
+      // It was cut twice over, so a report showed a sentence dying mid-word and
+      // a manager could not judge an answer they could not read. checkY() adds
+      // a page whenever the block runs past the margin, so length is fine.
+      const tLines = doc.splitTextToSize(`Transcript: "${r.transcript}"`, CW - 4);
+      tLines.forEach((ln: string) => { checkY(4); doc.text(ln, M + 2, y + 3); y += 4; });
     }
 
     y += 5;

@@ -7,9 +7,20 @@ import { withBase } from "@/lib/basePath";
 
 type Stage = "loading" | "question" | "recorded" | "review" | "submitting" | "complete" | "error" | "timeup";
 
-const TOTAL_TIME = 50 * 60; // 50 minutes in seconds
+// Two hours, matching SESSION_WINDOW_MS on the server. The paper is a 50
+// minute one; the rest is slack for losing signal and coming back, which is
+// the whole point of being able to resume. The clock runs from the ORIGINAL
+// start, so disconnecting cannot buy extra time.
+const TOTAL_TIME = 2 * 60 * 60;
 
-interface SessionData { sessionId: string; questions: ClientQuestion[] }
+interface SessionData {
+  sessionId: string;
+  questions: ClientQuestion[];
+  /** ISO start time from the server — the clock is anchored to this. */
+  startedAt?: string;
+  /** Answers already saved server-side, keyed by position. Present on a resume. */
+  transcripts?: Record<number, string>;
+}
 
 const COMP_SHORT: Record<string, string> = {
   C1:"Customer Diagnosis", C2:"Service Recovery", C3:"Delivery Coord.",
@@ -46,19 +57,23 @@ function AssessmentContent() {
     if (stored) {
       const data = JSON.parse(stored) as SessionData;
       setQuestions(data.questions);
-      // Restore timer
-      const timerKey = `timer_${sessionId}`;
-      const savedStart = sessionStorage.getItem(timerKey);
-      if (savedStart) {
-        const elapsed = Math.floor((Date.now() - parseInt(savedStart, 10)) / 1000);
-        setTimeLeft(Math.max(0, TOTAL_TIME - elapsed));
-      } else {
-        sessionStorage.setItem(timerKey, String(Date.now()));
-      }
-      // Restore any previously saved transcripts
+      // The clock is anchored to the server's startedAt, not to a timestamp
+      // this browser wrote. A candidate resuming on a different device has no
+      // such timestamp, and the old code handed them a full timer again.
+      const startedAt = data.startedAt ? Date.parse(data.startedAt) : NaN;
+      const anchor = Number.isFinite(startedAt) ? startedAt : Date.now();
+      setTimeLeft(Math.max(0, TOTAL_TIME - Math.floor((Date.now() - anchor) / 1000)));
+
+      // Answers the server already holds win over whatever this browser has:
+      // on a resume they ARE this browser's copy, and they are the only copy
+      // that survived the disconnection.
       const savedTranscripts = sessionStorage.getItem(`transcripts_${sessionId}`);
       if (savedTranscripts) {
         transcriptsRef.current = JSON.parse(savedTranscripts) as Record<number, string>;
+      }
+      if (data.transcripts) {
+        transcriptsRef.current = { ...transcriptsRef.current, ...data.transcripts };
+        sessionStorage.setItem(`transcripts_${sessionId}`, JSON.stringify(transcriptsRef.current));
       }
       setStage("question");
     } else {
@@ -97,6 +112,24 @@ function AssessmentContent() {
 
   const currentQuestion = questions.find((q) => q.position === position);
 
+  /**
+   * Save one answer to the server as soon as it is captured.
+   *
+   * Answers used to travel only in this browser until the final submit, so a
+   * dropped connection lost every one of them and "resume" could only ever
+   * return the questions. Fire-and-forget on purpose: a failed save must not
+   * block the candidate mid-paper, and the browser copy plus the final
+   * submit-all remain as the fallback.
+   */
+  const persistAnswer = useCallback((pos: number, text: string) => {
+    if (!sessionId || !text.trim()) return;
+    void fetch(withBase(`/api/session/${sessionId}/submit`), {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ position: pos, transcript: text.trim() }),
+    }).catch(() => { /* browser copy still holds it; submit-all will carry it */ });
+  }, [sessionId]);
+
   const handleTranscript = useCallback((text: string) => {
     setTranscript(text);
     if (stage === "question") setStage("recorded");
@@ -108,6 +141,7 @@ function AssessmentContent() {
       transcriptsRef.current[position] = transcript.trim();
       // Persist to sessionStorage
       sessionStorage.setItem(`transcripts_${sessionId}`, JSON.stringify(transcriptsRef.current));
+      persistAnswer(position, transcript);
     }
     if (position >= 20) {
       setReachedReview(true);
@@ -117,7 +151,7 @@ function AssessmentContent() {
       setTranscript("");
       setStage("question");
     }
-  }, [position, transcript, sessionId]);
+  }, [position, transcript, sessionId, persistAnswer]);
 
   // Skip question (no answer)
   const handleSkip = useCallback(() => {
@@ -144,6 +178,7 @@ function AssessmentContent() {
     if (transcript.trim()) {
       transcriptsRef.current[position] = transcript.trim();
       sessionStorage.setItem(`transcripts_${sessionId}`, JSON.stringify(transcriptsRef.current));
+      persistAnswer(position, transcript);
     }
     const saved = transcriptsRef.current[target] ?? "";
     setPosition(target);
@@ -152,7 +187,7 @@ function AssessmentContent() {
     // button is there and the existing answer is visible rather than looking
     // lost. An unanswered one opens ready to record.
     setStage(saved.trim() ? "recorded" : "question");
-  }, [position, transcript, sessionId]);
+  }, [position, transcript, sessionId, persistAnswer]);
 
   // Final batch submission
   const handleFinalSubmit = useCallback(async () => {
