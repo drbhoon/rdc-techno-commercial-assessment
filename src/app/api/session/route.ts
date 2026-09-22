@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 import { createSession, findFinishedSession, findResumableSession, type StoredSession } from "@/lib/db";
+import { accrue, remainingMs } from "@/lib/examClock";
+import { updateSession } from "@/lib/db";
 import { assembleAssessment } from "@/lib/randomizer";
 import { getBank } from "@/lib/questionBank";
 import { resolveEmployee } from "@/lib/identity";
@@ -76,10 +78,16 @@ export async function POST(req: NextRequest) {
       for (const response of Object.values(existing.responses ?? {})) {
         if (response?.transcript?.trim()) transcripts[response.position] = response.transcript;
       }
+      // Banks whatever the last sitting was owed and opens a new one, so the
+      // candidate comes back to the balance they left with — not a fresh 55
+      // minutes, and not a clock that ran while they were disconnected.
+      const resumed = accrue(existing, true);
+      await updateSession(resumed);
       return NextResponse.json({
-        sessionId: existing.id,
-        questions: existing.questions,
-        startedAt: existing.startedAt,
+        sessionId: resumed.id,
+        questions: resumed.questions,
+        startedAt: resumed.startedAt,
+        remainingMs: remainingMs(resumed),
         transcripts,
         resumed: true,
       });
@@ -133,12 +141,21 @@ export async function POST(req: NextRequest) {
       questions: clientQuestions,
       startedAt,
       status: "in_progress",
+      // The first sitting starts now; the clock runs from here until the page
+      // stops reporting in.
+      timeSpentMs: 0,
+      activeSince: startedAt,
       responses,
     };
 
     await createSession(session);
 
-    return NextResponse.json({ sessionId, questions: clientQuestions, startedAt });
+    return NextResponse.json({
+      sessionId,
+      questions: clientQuestions,
+      startedAt,
+      remainingMs: remainingMs(session),
+    });
   } catch (err) {
     console.error("[POST /api/session]", err);
     return NextResponse.json({ error: "Failed to create session" }, { status: 500 });

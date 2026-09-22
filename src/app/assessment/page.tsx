@@ -15,8 +15,10 @@ const TOTAL_TIME = 55 * 60;
 interface SessionData {
   sessionId: string;
   questions: ClientQuestion[];
-  /** ISO start time from the server — the clock is anchored to this. */
+  /** ISO start time from the server. */
   startedAt?: string;
+  /** Exam time left, in ms, as the server counts it. Authoritative. */
+  remainingMs?: number;
   /** Answers already saved server-side, keyed by position. Present on a resume. */
   transcripts?: Record<number, string>;
 }
@@ -56,12 +58,15 @@ function AssessmentContent() {
     if (stored) {
       const data = JSON.parse(stored) as SessionData;
       setQuestions(data.questions);
-      // The clock is anchored to the server's startedAt, not to a timestamp
-      // this browser wrote. A candidate resuming on a different device has no
-      // such timestamp, and the old code handed them a full timer again.
-      const startedAt = data.startedAt ? Date.parse(data.startedAt) : NaN;
-      const anchor = Number.isFinite(startedAt) ? startedAt : Date.now();
-      setTimeLeft(Math.max(0, TOTAL_TIME - Math.floor((Date.now() - anchor) / 1000)));
+      // The balance comes from the server, which counts only the time the
+      // candidate was actually sitting the paper. Computing it here from the
+      // start time would charge them for the disconnection this is meant to
+      // survive, and a browser's own timestamp does not travel between devices.
+      setTimeLeft(
+        typeof data.remainingMs === "number"
+          ? Math.max(0, Math.round(data.remainingMs / 1000))
+          : TOTAL_TIME
+      );
 
       // Answers the server already holds win over whatever this browser has:
       // on a resume they ARE this browser's copy, and they are the only copy
@@ -95,6 +100,50 @@ function AssessmentContent() {
     }, 1000);
     return () => { if (timerRef.current) clearInterval(timerRef.current); };
   }, [stage]);
+
+  /**
+   * Tell the server the candidate is still here, and take its balance back.
+   *
+   * The clock only runs while these arrive, so the pause after a power cut is
+   * real rather than inferred — and the returned balance is what survives a
+   * refresh or a move to another device.
+   */
+  useEffect(() => {
+    if (!sessionId) return;
+    if (stage === "loading" || stage === "error" || stage === "complete" || stage === "timeup" || stage === "submitting") return;
+
+    let stopped = false;
+    const beat = async (active: boolean) => {
+      try {
+        const res = await fetch(withBase(`/api/session/${sessionId}/heartbeat`), {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ active }),
+          keepalive: !active,
+        });
+        if (!res.ok || stopped || !active) return;
+        const data = (await res.json()) as { remainingMs?: number };
+        if (typeof data.remainingMs === "number") {
+          setTimeLeft(Math.max(0, Math.round(data.remainingMs / 1000)));
+        }
+      } catch { /* the local countdown carries on; the next beat re-syncs */ }
+    };
+
+    void beat(true);
+    const interval = setInterval(() => void beat(true), 30_000);
+    // Leaving the page pauses the clock at the right moment instead of letting
+    // the server infer it from silence.
+    const onHidden = () => { if (document.visibilityState === "hidden") void beat(false); };
+    document.addEventListener("visibilitychange", onHidden);
+    window.addEventListener("pagehide", () => void beat(false));
+
+    return () => {
+      stopped = true;
+      clearInterval(interval);
+      document.removeEventListener("visibilitychange", onHidden);
+      void beat(false);
+    };
+  }, [sessionId, stage]);
 
   // Handle timer expiry
   useEffect(() => {

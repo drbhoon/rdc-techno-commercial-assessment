@@ -18,17 +18,19 @@
  */
 import { evaluateBatch, type EvalRequest } from "./evaluator";
 import {
-  SESSION_WINDOW_MS,
   getSession,
   listStaleSessions,
   updateSession,
   type StoredSession,
 } from "./db";
+import { accrue, isSpent } from "./examClock";
 
+/**
+ * Nothing more is coming: the 55 minutes of exam time are used up, or the
+ * two-hour outer limit has passed with the paper still open.
+ */
 export function windowExpired(session: StoredSession, now = Date.now()): boolean {
-  const startedAt = Date.parse(session.startedAt);
-  if (!Number.isFinite(startedAt)) return true;
-  return now - startedAt > SESSION_WINDOW_MS;
+  return isSpent(session, now);
 }
 
 export function answeredCount(session: StoredSession): number {
@@ -58,7 +60,7 @@ export async function finaliseSession(sessionId: string): Promise<{
   if (answered === 0) {
     session.status = "expired";
     session.completedAt = session.completedAt ?? new Date().toISOString();
-    await updateSession(session);
+    await updateSession(accrue(session, false));
     return { status: "expired", answered: 0, evaluated: 0 };
   }
 
@@ -86,14 +88,14 @@ export async function finaliseSession(sessionId: string): Promise<{
     });
     fresh.status = "completed";
     fresh.completedAt = fresh.completedAt ?? new Date().toISOString();
-    await updateSession(fresh);
+    await updateSession(accrue(fresh, false));
     evaluated = pending.length;
     return { status: "completed", answered: answeredCount(fresh), evaluated };
   }
 
   session.status = "completed";
   session.completedAt = session.completedAt ?? new Date().toISOString();
-  await updateSession(session);
+  await updateSession(accrue(session, false));
   return { status: "completed", answered, evaluated };
 }
 

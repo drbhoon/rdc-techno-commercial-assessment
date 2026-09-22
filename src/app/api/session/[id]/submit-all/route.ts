@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSession, updateSession } from "@/lib/db";
 import { evaluateBatch } from "@/lib/evaluator";
+import { accrue } from "@/lib/examClock";
 import type { EvalRequest } from "@/lib/evaluator";
 
 export async function POST(
@@ -53,7 +54,8 @@ export async function POST(
 
     session.status = "submitted";
     session.completedAt = recordedAt;
-    await updateSession(session);
+    // The paper is in; the clock stops.
+    await updateSession(accrue(session, false));
 
     // ── Step 2: Fire AI evaluation in background (don't await) ───────────────
     // Railway runs a persistent Node server, so this background promise

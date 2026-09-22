@@ -7,6 +7,7 @@
  * For local dev, add DATABASE_URL to .env.local.
  */
 import { getPool } from "./dbPool";
+import { isSpent } from "./examClock";
 import type {
   CandidateInfo,
   ClientQuestion,
@@ -36,6 +37,11 @@ export interface StoredSession {
   questions: ClientQuestion[];
   startedAt: string;
   completedAt?: string;
+  /** Exam time used, in ms — see lib/examClock.ts. The clock counts only while
+   *  the candidate is actually sitting the paper. */
+  timeSpentMs?: number;
+  /** When the current sitting began; null when they are away. */
+  activeSince?: string | null;
   // expired = the window passed with nothing saved, so there is no paper to
   // publish. Kept distinct from completed so an empty report never reaches a
   // manager, and from in_progress so nobody waits for an answer that is not
@@ -114,20 +120,10 @@ export async function getSession(
   return res.rows[0].data as StoredSession;
 }
 
-/**
- * How long a candidate has to finish once they begin, in milliseconds.
- *
- * 55 minutes — the exam itself. It was two hours, to leave slack for losing
- * signal and coming back, but a candidate cannot tell a generous window from a
- * generous paper: they read 2:00 on the clock and paced themselves for two
- * hours. So the clock now shows the exam.
- *
- * Measured from the ORIGINAL start, so a candidate who is cut off resumes with
- * the time that is left rather than a fresh 55 minutes, and disconnecting
- * deliberately buys nothing. Past it the attempt is spent: it is not resumed,
- * and the sweep in lib/finalise.ts publishes whatever was answered.
- */
-export const SESSION_WINDOW_MS = 55 * 60 * 1000;
+// The clock itself lives in examClock.ts: 55 minutes of exam time that counts
+// only while the candidate is sitting the paper, inside a two-hour outer
+// limit. Re-exported so callers have one place to import from.
+export { EXAM_DURATION_MS, SESSION_WINDOW_MS } from "./examClock";
 
 /**
  * The candidate's own unfinished attempt at this assessment, if it is still
@@ -157,9 +153,8 @@ export async function findResumableSession(
   );
   if (res.rows.length === 0) return null;
   const session = res.rows[0].data as StoredSession;
-  const startedAt = Date.parse(session.startedAt);
-  if (!Number.isFinite(startedAt)) return null;
-  if (Date.now() - startedAt > SESSION_WINDOW_MS) return null;
+  // Spent = the 55 minutes are gone, or the two-hour outer limit has passed.
+  if (isSpent(session)) return null;
   return session;
 }
 

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSession, updateSession } from "@/lib/db";
 import { evaluateResponse } from "@/lib/evaluator";
+import { accrue } from "@/lib/examClock";
 
 export async function POST(
   req: NextRequest,
@@ -55,7 +56,9 @@ export async function POST(
       session.completedAt = recordedAt;
     }
 
-    await updateSession(session);
+    // A saved answer is proof the candidate is here, so it banks time too —
+    // useful when a heartbeat is lost but answers are still arriving.
+    await updateSession(accrue(session, session.status === "in_progress"));
 
     return NextResponse.json({ evaluation, recordedAt });
   } catch (err) {
