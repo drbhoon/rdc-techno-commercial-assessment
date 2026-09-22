@@ -7,11 +7,10 @@ import { withBase } from "@/lib/basePath";
 
 type Stage = "loading" | "question" | "recorded" | "review" | "submitting" | "complete" | "error" | "timeup";
 
-// Two hours, matching SESSION_WINDOW_MS on the server. The paper is a 50
-// minute one; the rest is slack for losing signal and coming back, which is
-// the whole point of being able to resume. The clock runs from the ORIGINAL
-// start, so disconnecting cannot buy extra time.
-const TOTAL_TIME = 2 * 60 * 60;
+// 55 minutes, matching SESSION_WINDOW_MS on the server. The clock runs from
+// the ORIGINAL start, so a candidate who is cut off comes back to the time
+// that is left — and disconnecting cannot buy more.
+const TOTAL_TIME = 55 * 60;
 
 interface SessionData {
   sessionId: string;
@@ -265,7 +264,7 @@ function AssessmentContent() {
       <div className="w-24 h-24 bg-red-600 rounded-full flex items-center justify-center text-5xl mx-auto shadow-xl">⏰</div>
       <div>
         <h2 className="text-3xl font-black text-red-700 mb-2">Time&apos;s Up!</h2>
-        <p className="text-slate-500">Your two-hour assessment window has closed. Everything you answered has been saved and submitted.</p>
+        <p className="text-slate-500">Your 55 minutes are up. Everything you answered has been saved and submitted.</p>
         <p className="text-slate-400 text-sm mt-1">Your responses are being evaluated...</p>
       </div>
     </div>
@@ -363,7 +362,7 @@ function AssessmentContent() {
 
   return (
     <div className="max-w-2xl mx-auto space-y-5">
-      {/* The two-hour window, not the ~50 minutes the paper takes. */}
+      {/* The 55-minute exam clock, anchored to the server's start time. */}
       <div className={`${timerBg} rounded-2xl shadow-card px-5 py-3 flex items-center justify-between`}>
         <div className="flex items-center gap-3">
           <span className="text-white text-xs font-bold uppercase tracking-wide">Time Remaining</span>

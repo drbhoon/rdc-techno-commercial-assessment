@@ -21,7 +21,7 @@ function InstructionsContent() {
     { n: "06", icon: "🤖", title: "Instant AI evaluation", body: "Each answer is scored out of 10 as you go, with written feedback for your manager." },
     // The window and the paper are different lengths on purpose, and a
     // candidate who loses power needs to know the link still works.
-    { n: "07", icon: "🔌", title: "If you get cut off, come back", body: "The paper takes about 50 minutes, but your link stays open for 2 hours from when you started. Answers already given are saved — open the same link and you carry on where you stopped." },
+    { n: "07", icon: "🔌", title: "55 minutes, and you can come back", body: "The clock runs for 55 minutes from when you start. If you are cut off, every answer you have already given is saved — open the same link and carry on with the time that is left." },
   ];
 
   const domainTip = isSelling

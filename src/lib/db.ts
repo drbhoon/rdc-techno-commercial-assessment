@@ -117,12 +117,17 @@ export async function getSession(
 /**
  * How long a candidate has to finish once they begin, in milliseconds.
  *
- * Two hours, not the 50 minutes the paper takes. The extra is slack for the
- * thing this exists to survive — losing signal, a laptop dying, coming back on
- * a phone — measured from the ORIGINAL start so the window cannot be extended
- * by disconnecting on purpose.
+ * 55 minutes — the exam itself. It was two hours, to leave slack for losing
+ * signal and coming back, but a candidate cannot tell a generous window from a
+ * generous paper: they read 2:00 on the clock and paced themselves for two
+ * hours. So the clock now shows the exam.
+ *
+ * Measured from the ORIGINAL start, so a candidate who is cut off resumes with
+ * the time that is left rather than a fresh 55 minutes, and disconnecting
+ * deliberately buys nothing. Past it the attempt is spent: it is not resumed,
+ * and the sweep in lib/finalise.ts publishes whatever was answered.
  */
-export const SESSION_WINDOW_MS = 2 * 60 * 60 * 1000;
+export const SESSION_WINDOW_MS = 55 * 60 * 1000;
 
 /**
  * The candidate's own unfinished attempt at this assessment, if it is still
