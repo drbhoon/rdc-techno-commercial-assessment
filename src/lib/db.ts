@@ -36,7 +36,17 @@ export interface StoredSession {
   questions: ClientQuestion[];
   startedAt: string;
   completedAt?: string;
-  status: "in_progress" | "submitted" | "completed";
+  // expired = the window passed with nothing saved, so there is no paper to
+  // publish. Kept distinct from completed so an empty report never reaches a
+  // manager, and from in_progress so nobody waits for an answer that is not
+  // coming.
+  status: "in_progress" | "submitted" | "completed" | "expired";
+  /**
+   * Set by HR when somebody must sit the paper again. A finished attempt
+   * normally blocks a second one; this is the deliberate exception, recorded
+   * on the attempt it releases so the reason is visible in the data.
+   */
+  retakeAllowedAt?: string;
   responses: Record<number, StoredResponse>; // keyed by position 1-20
 }
 
@@ -146,6 +156,45 @@ export async function findResumableSession(
   if (!Number.isFinite(startedAt)) return null;
   if (Date.now() - startedAt > SESSION_WINDOW_MS) return null;
   return session;
+}
+
+/**
+ * Attempts still open that the browser was meant to submit and never did.
+ * Deliberately not filtered on age here — the caller decides what counts as
+ * past its window, and it is the same rule findResumableSession applies.
+ */
+export async function listStaleSessions(): Promise<StoredSession[]> {
+  await ensureSchema();
+  const res = await getPool().query(
+    `SELECT data FROM rdc_sessions
+      WHERE data->>'status' = 'in_progress'
+      ORDER BY created_at ASC
+      LIMIT 200`
+  );
+  return res.rows.map((r) => r.data as StoredSession);
+}
+
+/**
+ * A finished attempt by this person at this paper, if any — the thing that
+ * makes a second sitting a re-take rather than a first go. An attempt HR has
+ * released for a re-take does not count.
+ */
+export async function findFinishedSession(
+  employeeCode: string,
+  assessmentType: AssessmentType
+): Promise<StoredSession | null> {
+  await ensureSchema();
+  const res = await getPool().query(
+    `SELECT data FROM rdc_sessions
+      WHERE employee_code = $1
+        AND data->>'assessmentType' = $2
+        AND data->>'status' IN ('submitted', 'completed')
+        AND data->>'retakeAllowedAt' IS NULL
+      ORDER BY created_at DESC
+      LIMIT 1`,
+    [employeeCode, assessmentType]
+  );
+  return res.rows.length ? (res.rows[0].data as StoredSession) : null;
 }
 
 export async function updateSession(session: StoredSession): Promise<void> {

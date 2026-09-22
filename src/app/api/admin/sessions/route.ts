@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { listSessions } from "@/lib/db";
+import { finaliseExpiredSessions } from "@/lib/finalise";
 import { checkAuth } from "@/lib/adminAuth";
 
 
@@ -7,6 +8,20 @@ export async function GET(req: NextRequest) {
   if (!checkAuth(req)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
+  // Close anything the browser never submitted before listing. An attempt past
+  // its window cannot be resumed, so whatever was saved is the paper: it is
+  // evaluated and published here rather than sitting as "In Progress" with a
+  // report nobody can open.
+  try {
+    const swept = await finaliseExpiredSessions();
+    if (swept.closed || swept.expired) {
+      console.log(`[admin/sessions] finalised ${swept.closed}, marked ${swept.expired} expired`);
+    }
+  } catch (err) {
+    // A sweep failure must not take the console down with it.
+    console.error("[admin/sessions] sweep failed", err);
+  }
+
   const sessions = await listSessions();
   // Return summary rows (no model answers)
   const rows = sessions.map((s) => ({

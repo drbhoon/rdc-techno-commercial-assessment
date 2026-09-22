@@ -111,6 +111,17 @@ CAP at 2 if:
 - Preserving customer confidence without making unsupported technical claims → +1
 - Citing specific IS code references or concrete science principles → +1
 
+## Length and phrasing
+Judge substance, not length. An answer in short bullets, or in terse phrasing,
+scores exactly the same as a flowing one WHEN the required actions, reasons and
+checks are actually present — never deduct for brevity, telegraphic style, or
+missing pleasantries.
+
+Do deduct when brevity means something required is absent: an action named with
+no reason, a step with no owner, a commercial check not mentioned at all. Score
+what is missing, not what is unsaid stylistically. If an answer is so short that
+the reasoning cannot be inferred from it, say so in whatWasMissing.
+
 ## Output Format
 Respond with ONLY a valid JSON object — no markdown, no prose, no code fences:
 {

@@ -12,10 +12,16 @@ function InstructionsContent() {
   const steps = [
     { n: "01", icon: "📋", title: "20 Questions", body: "You will answer 20 questions drawn from a randomised pool, covering all key competency areas." },
     { n: "02", icon: "🎤", title: "Voice-first answering", body: "Press the mic button and speak your answer. A text-input fallback is available if needed." },
-    { n: "03", icon: "⏱️", title: "30–75 seconds per answer", body: "Aim for concise, practical answers. Quality and judgment matter more than speaking duration." },
+    // Candidates were answering in clipped bullet points and scoring below
+    // what they know, because an answer that names an action without saying
+    // why, how or who reads as thin. So the expectation is now stated.
+    { n: "03", icon: "⏱️", title: "45–90 seconds per answer", body: "Aim for roughly 60–100 words. Say what you would do, why, and who you would involve — an answer that lists two or three words per point cannot show your reasoning, and scores lower than the same person's fuller answer." },
     { n: "04", icon: "🔁", title: "One re-record allowed", body: "You may re-record your answer once before submitting. After that, you must submit." },
     { n: "05", icon: "🗣️", title: "English, Hindi, or Hinglish", body: "Speak in whichever language you are most comfortable. Grammar is not scored." },
-    { n: "06", icon: "🤖", title: "Instant AI evaluation", body: "Each answer is scored 1–5 immediately with detailed feedback before you move to the next question." },
+    { n: "06", icon: "🤖", title: "Instant AI evaluation", body: "Each answer is scored out of 10 as you go, with written feedback for your manager." },
+    // The window and the paper are different lengths on purpose, and a
+    // candidate who loses power needs to know the link still works.
+    { n: "07", icon: "🔌", title: "If you get cut off, come back", body: "The paper takes about 50 minutes, but your link stays open for 2 hours from when you started. Answers already given are saved — open the same link and you carry on where you stopped." },
   ];
 
   const domainTip = isSelling

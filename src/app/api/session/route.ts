@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
-import { createSession, findResumableSession, type StoredSession } from "@/lib/db";
+import { createSession, findFinishedSession, findResumableSession, type StoredSession } from "@/lib/db";
 import { assembleAssessment } from "@/lib/randomizer";
 import { getBank } from "@/lib/questionBank";
 import { resolveEmployee } from "@/lib/identity";
@@ -83,6 +83,23 @@ export async function POST(req: NextRequest) {
         transcripts,
         resumed: true,
       });
+    }
+
+    // A finished paper is finished. The link used to open a brand new attempt
+    // every time it was clicked, which is how one candidate collected three
+    // rows in the console and could have answered the same paper twice. HR
+    // releases a re-take deliberately from the console when one is warranted.
+    const finished = await findFinishedSession(identified.employeeId, assessmentType);
+    if (finished) {
+      return NextResponse.json(
+        {
+          error:
+            "You have already completed this assessment. If you need to take it again, "
+            + "please ask HR to release it for you.",
+          alreadyCompleted: true,
+        },
+        { status: 409 }
+      );
     }
 
     const { questions: fullQuestions, clientQuestions } =

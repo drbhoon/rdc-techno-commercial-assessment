@@ -265,7 +265,7 @@ function AssessmentContent() {
       <div className="w-24 h-24 bg-red-600 rounded-full flex items-center justify-center text-5xl mx-auto shadow-xl">⏰</div>
       <div>
         <h2 className="text-3xl font-black text-red-700 mb-2">Time&apos;s Up!</h2>
-        <p className="text-slate-500">The 50-minute assessment time has expired.</p>
+        <p className="text-slate-500">Your two-hour assessment window has closed. Everything you answered has been saved and submitted.</p>
         <p className="text-slate-400 text-sm mt-1">Your responses are being evaluated...</p>
       </div>
     </div>
@@ -363,7 +363,7 @@ function AssessmentContent() {
 
   return (
     <div className="max-w-2xl mx-auto space-y-5">
-      {/* 50-minute assessment timer */}
+      {/* The two-hour window, not the ~50 minutes the paper takes. */}
       <div className={`${timerBg} rounded-2xl shadow-card px-5 py-3 flex items-center justify-between`}>
         <div className="flex items-center gap-3">
           <span className="text-white text-xs font-bold uppercase tracking-wide">Time Remaining</span>
@@ -411,8 +411,17 @@ function AssessmentContent() {
 
           {/* Question text */}
           <div className="px-6 py-6">
-            <p className="text-slate-900 font-bold text-lg leading-snug mb-6">
+            <p className="text-slate-900 font-bold text-lg leading-snug mb-3">
               {currentQuestion.text}
+            </p>
+
+            {/* Said here as well as in the instructions, because this is where
+                a candidate decides how much to say. Short bullet answers were
+                scoring below what the person actually knows. */}
+            <p className="text-xs text-slate-500 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 mb-6">
+              Aim for about <strong>45–90 seconds</strong> (roughly 60–100 words): what you would do,
+              why, and who you would involve. One-line or bullet answers leave your reasoning unsaid
+              and score lower than a fuller answer from the same person.
             </p>
 
             <VoiceRecorder

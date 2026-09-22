@@ -11,7 +11,7 @@ interface SessionRow {
   location: string;
   role: string;
   assessmentType: "selling" | "technical";
-  status: "in_progress" | "submitted" | "completed";
+  status: "in_progress" | "submitted" | "completed" | "expired";
   startedAt: string;
   completedAt: string | null;
   questionsAnswered: number;
@@ -31,13 +31,26 @@ const BADGE = (status: string) =>
     ? "bg-green-100 text-green-700 border border-green-200"
     : status === "submitted"
     ? "bg-blue-100 text-blue-700 border border-blue-200"
+    : status === "expired"
+    ? "bg-slate-100 text-slate-500 border border-slate-200"
     : "bg-amber-100 text-amber-700 border border-amber-200";
+
+const STATUS_LABEL: Record<string, string> = {
+  completed: "✅ Complete",
+  submitted: "🔄 Evaluating",
+  // The window ran out with nothing answered — there is no paper to publish,
+  // and saying so is kinder than leaving it looking like somebody is still typing.
+  expired: "⌛ Expired",
+  in_progress: "⏳ In Progress",
+};
 
 export default function AdminDashboard() {
   const router = useRouter();
   const [sessions, setSessions] = useState<SessionRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [actingId, setActingId] = useState<string | null>(null);
+  const [notice, setNotice] = useState("");
   const [filter, setFilter] = useState<"all" | "completed" | "submitted" | "in_progress">("all");
   const [search, setSearch] = useState("");
   const [deletingId, setDeletingId] = useState<string | null>(null);
@@ -68,6 +81,29 @@ export default function AdminDashboard() {
       setLoading(false);
     }
   };
+
+  /** Close an abandoned attempt, or release a candidate for another sitting. */
+  const handleAction = useCallback(async (id: string, action: "finalise" | "allow-retake") => {
+    setActingId(id);
+    setNotice("");
+    try {
+      const res = await fetch(withBase(`/api/admin/sessions/${id}`), {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-admin-password": adminPwd },
+        body: JSON.stringify({ action }),
+      });
+      const data = await res.json() as { message?: string; error?: string };
+      if (!res.ok) throw new Error(data.error ?? "That did not work.");
+      setNotice(data.message ?? "Done.");
+      await fetchSessions(adminPwd);
+    } catch (err) {
+      setNotice(String(err instanceof Error ? err.message : err));
+    } finally {
+      setActingId(null);
+    }
+    // fetchSessions is stable for this page's lifetime; adminPwd is what matters.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [adminPwd]);
 
   const handleDelete = useCallback(async (id: string) => {
     setDeletingId(id);
@@ -111,6 +147,10 @@ export default function AdminDashboard() {
       s.role.toLowerCase().includes(q);
     return matchStatus && matchSearch;
   });
+
+  // Built in the browser: the console is a client component and the server has
+  // no idea which hostname HR reached it on.
+  const origin = typeof window === "undefined" ? "" : window.location.origin;
 
   const stats = {
     total: sessions.length,
@@ -191,6 +231,45 @@ export default function AdminDashboard() {
             <div className="text-xs text-slate-400 font-medium mt-0.5">{stat.label}</div>
           </div>
         ))}
+      </div>
+
+      {notice && (
+        <div className="bg-blue-50 border border-blue-200 text-blue-900 rounded-2xl px-4 py-3 text-sm flex items-start justify-between gap-3">
+          <span>{notice}</span>
+          <button onClick={() => setNotice("")} className="text-xs font-bold">Dismiss</button>
+        </div>
+      )}
+
+      {/* One link per paper. HR was sending the plain address, which shows both
+          tiles and lets a candidate open whichever they like — these fix the
+          module, so a technical candidate cannot land on the selling paper. */}
+      <div className="bg-white rounded-2xl shadow-card p-4">
+        <div className="text-sm font-bold text-slate-700 mb-2">Assessment links</div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          {[
+            { label: "💼 Selling Skill", type: "selling" },
+            { label: "🔬 Technical Skill", type: "technical" },
+          ].map((item) => {
+            const link = `${origin}${withBase(`/?type=${item.type}`)}`;
+            return (
+              <div key={item.type} className="border border-slate-200 rounded-xl px-3 py-2 flex items-center gap-2">
+                <span className="text-xs font-bold text-slate-600 whitespace-nowrap">{item.label}</span>
+                <input readOnly value={link} onFocus={(e) => e.currentTarget.select()}
+                  className="flex-1 min-w-0 text-xs text-slate-500 bg-slate-50 rounded-lg px-2 py-1" />
+                <button
+                  onClick={() => { void navigator.clipboard?.writeText(link); setNotice(`${item.label} link copied.`); }}
+                  className="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-xs font-bold"
+                >
+                  Copy
+                </button>
+              </div>
+            );
+          })}
+        </div>
+        <p className="text-xs text-slate-400 mt-2">
+          Send a candidate the link for the paper they are meant to sit. Each candidate may sit a paper once;
+          use ↻ Retake on their row to release it again.
+        </p>
       </div>
 
       {/* Filters & search */}
@@ -292,7 +371,7 @@ export default function AdminDashboard() {
                     </td>
                     <td className="px-4 py-3 whitespace-nowrap">
                       <span className={`text-xs font-bold rounded-full px-2.5 py-1 ${BADGE(s.status)}`}>
-                        {s.status === "completed" ? "✅ Complete" : s.status === "submitted" ? "🔄 Evaluating" : "⏳ In Progress"}
+                        {STATUS_LABEL[s.status] ?? s.status}
                       </span>
                     </td>
                     <td className="px-4 py-3 whitespace-nowrap">
@@ -322,6 +401,31 @@ export default function AdminDashboard() {
                                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
                               </svg>
                             ) : "⬇ PDF"}
+                          </button>
+                        )}
+
+                        {/* Close an attempt whose candidate has clearly gone:
+                            evaluates whatever was answered and publishes it. */}
+                        {s.status === "in_progress" && s.questionsAnswered > 0 && (
+                          <button
+                            onClick={() => handleAction(s.id, "finalise")}
+                            disabled={actingId === s.id}
+                            className="px-2.5 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-800 rounded-lg text-xs font-bold transition-colors disabled:opacity-50"
+                            title="Close this attempt and evaluate the answers already given"
+                          >
+                            {actingId === s.id ? "…" : "🔒 Close"}
+                          </button>
+                        )}
+
+                        {/* Let somebody sit the paper again. */}
+                        {(s.status === "completed" || s.status === "submitted" || s.status === "expired") && (
+                          <button
+                            onClick={() => handleAction(s.id, "allow-retake")}
+                            disabled={actingId === s.id}
+                            className="px-2.5 py-1.5 bg-slate-50 hover:bg-slate-100 text-slate-600 rounded-lg text-xs font-bold transition-colors disabled:opacity-50"
+                            title="Release this candidate to take the assessment again"
+                          >
+                            {actingId === s.id ? "…" : "↻ Retake"}
                           </button>
                         )}
 
