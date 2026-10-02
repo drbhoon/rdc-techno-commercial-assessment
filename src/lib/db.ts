@@ -197,6 +197,31 @@ export async function findFinishedSession(
   return res.rows.length ? (res.rows[0].data as StoredSession) : null;
 }
 
+/**
+ * Which report this attempt is for the person at this paper: 1 for their
+ * first finished attempt, 2 for the one after HR pressed Retake, and so on.
+ *
+ * Counted, not stored, so attempts finished before numbering existed get the
+ * right number too. Expired attempts have no report and are not counted. Rows
+ * from before the employee_code column fall back to the code in the blob.
+ */
+export async function reportNumber(sessionId: string): Promise<number> {
+  await ensureSchema();
+  const res = await getPool().query(
+    `SELECT COUNT(*)::int AS n
+       FROM rdc_sessions me
+       JOIN rdc_sessions s
+         ON COALESCE(s.employee_code, s.data->'candidate'->>'employeeId')
+          = COALESCE(me.employee_code, me.data->'candidate'->>'employeeId')
+        AND s.data->>'assessmentType' = me.data->>'assessmentType'
+        AND s.created_at <= me.created_at
+        AND (s.id = me.id OR s.data->>'status' IN ('submitted', 'completed'))
+      WHERE me.id = $1`,
+    [sessionId]
+  );
+  return Math.max(1, res.rows[0]?.n ?? 1);
+}
+
 export async function updateSession(session: StoredSession): Promise<void> {
   await ensureSchema();
   await getPool().query(

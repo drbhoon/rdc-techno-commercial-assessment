@@ -89,4 +89,7 @@ export interface FinalReport {
   redFlags: string[];
   readinessRecommendation: string; // "Ready" | "Ready with coaching" | "Borderline" | "Not ready"
   readinessLabel: string;
+  /** Which finished attempt at this paper this is for the candidate: 1 for
+   *  the first, 2 for the sitting HR released with Retake, and so on. */
+  reportNumber?: number;
 }

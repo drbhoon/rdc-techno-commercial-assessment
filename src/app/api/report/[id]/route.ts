@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getSession } from "@/lib/db";
+import { getSession, reportNumber } from "@/lib/db";
 import { generateReport } from "@/lib/reportGenerator";
 import type { SessionResponse } from "@/types";
 
@@ -27,13 +27,16 @@ export async function GET(
         recordedAt: r.recordedAt ?? "",
       }));
 
-    const report = generateReport({
-      sessionId,
-      candidate: session.candidate,
-      assessmentType: session.assessmentType,
-      completedAt: session.completedAt ?? new Date().toISOString(),
-      responses,
-    });
+    const report = {
+      ...generateReport({
+        sessionId,
+        candidate: session.candidate,
+        assessmentType: session.assessmentType,
+        completedAt: session.completedAt ?? new Date().toISOString(),
+        responses,
+      }),
+      reportNumber: await reportNumber(sessionId),
+    };
 
     return NextResponse.json(report);
   } catch (err) {

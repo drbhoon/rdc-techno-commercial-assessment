@@ -490,7 +490,10 @@ async function generatePDF(report: FinalReport) {
   doc.setFontSize(16); doc.setFont("helvetica", "bold");
   doc.text("RDC Concrete", M, 11);
   doc.setFontSize(9); doc.setFont("helvetica", "normal");
-  doc.text("Techno-Commercial Assessment Report", M, 18);
+  // The number tells a manager holding two PDFs for one person which sitting
+  // each is — a re-take released from the console becomes Report No 2.
+  const reportNo = report.reportNumber ?? 1;
+  doc.text(`Techno-Commercial Assessment Report  ·  Report No ${reportNo}`, M, 18);
   doc.setFontSize(8);
   doc.text(`Generated: ${new Date().toLocaleString("en-IN")}`, W - M, 18, { align: "right" });
   y = 36;
@@ -656,7 +659,7 @@ async function generatePDF(report: FinalReport) {
   doc.setFontSize(7); doc.setFont("helvetica", "normal"); doc.setTextColor(150, 150, 150);
   doc.text("RDC Concrete India Ltd — Confidential Assessment Report", W / 2, 290, { align: "center" });
 
-  const fileName = `RDC-${report.assessmentType}-${report.candidate.name.replace(/\s+/g, "_")}-${new Date(report.completedAt).toLocaleDateString("en-IN").replace(/\//g, "-")}.pdf`;
+  const fileName = `RDC-${report.assessmentType}-${report.candidate.name.replace(/\s+/g, "_")}-Report-No-${reportNo}-${new Date(report.completedAt).toLocaleDateString("en-IN").replace(/\//g, "-")}.pdf`;
 
   // Manual blob download — more reliable across browsers than doc.save()
   const pdfBlob = doc.output("blob");
