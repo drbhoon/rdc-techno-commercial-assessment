@@ -30,7 +30,7 @@ export interface ClientQuestion {
   sourceNum: number;
   text: string;
   competencies: string[];
-  position: number; // 1–20
+  position: number; // 1–15
 }
 
 export interface EvaluationResult {

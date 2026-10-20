@@ -26,7 +26,7 @@ import {
 import { accrue, isSpent } from "./examClock";
 
 /**
- * Nothing more is coming: the 55 minutes of exam time are used up, or the
+ * Nothing more is coming: the 60 minutes of exam time are used up, or the
  * two-hour outer limit has passed with the paper still open.
  */
 export function windowExpired(session: StoredSession, now = Date.now()): boolean {

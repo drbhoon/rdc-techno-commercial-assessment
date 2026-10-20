@@ -1,5 +1,5 @@
 /**
- * AI evaluation layer — batch mode: single API call for all 20 questions.
+ * AI evaluation layer — batch mode: single API call for all the paper's questions.
  * Current default: Anthropic Claude.
  */
 import type { EvaluationResult } from "@/types";
@@ -72,7 +72,7 @@ export async function evaluateResponse(req: EvalRequest): Promise<EvaluationResu
 
 /**
  * Batch evaluate all responses in a single API call.
- * Sends all 20 Q&A pairs to AI and gets back 20 evaluations.
+ * Sends every Q&A pair to AI and gets back one evaluation per question.
  */
 export async function evaluateBatch(
   requests: EvalRequest[]
@@ -143,11 +143,14 @@ Each object must have this exact structure:
 
 CRITICAL SCORING RULES:
 - The scale is 0–10, NOT 1–5. You MUST use the FULL 1–10 range for real attempts.
-- A competent professional who gives a correct, practical answer = score 7 or 8.
-- A correct answer covering most key points with good judgment = score 8.
-- Only truly exceptional, textbook-perfect answers = score 9 or 10.
-- A basic but correct answer missing depth = score 5 or 6.
-- Vague, generic, or significantly incomplete = score 3 or 4.
+- These are SPOKEN answers of 60–90 seconds. Score the 2–3 essential points, not
+  the share of the model answer covered; missing secondary points alone must not
+  pull a sound answer below 7.
+- Right essentials and sound judgment, said plainly = score 7 or 8.
+- Right essentials plus a useful check, follow-up or escalation = score 8 or 9.
+- Essentials and most of the useful detail = score 9 or 10 (10 does not require reciting the model answer).
+- Right direction but thin — one essential present, another missing = score 5 or 6.
+- On-topic but vague or generic, essentials largely missing = score 3 or 4.
 - Wrong or unsafe, but a genuine attempt at the question = score 1 or 2.
 - Blank, no response, or a meaningless non-answer (a single word like "OK"/"test"/"yes", gibberish, or text that does not attempt to address the question at all) = score 0. Do NOT give these a 1 — 0 is reserved for exactly this case.
 - Do NOT cluster all scores in the 3–5 range. Spread scores across the full 0–10 spectrum.

@@ -59,12 +59,27 @@ Before scoring, normalize the transcript:
 
 You MUST use the FULL 1–10 range for genuine attempts. This is a 10-point scale plus a 0 floor reserved for non-answers. Do NOT compress scores into the 1–5 range.
 
+## Moderation: what a spoken answer can be expected to cover
+This is a SPOKEN answer of about 60–90 seconds, given under exam time by a
+working sales professional. The model answer is a full written reference and lists more
+points than anyone can say in that time. So:
+- Do NOT score by the share of model-answer points covered. Identify the 2–3
+  ESSENTIAL points — the right first action and the judgment that matters most —
+  and score mainly on whether those are present and right.
+- Secondary points, extra steps, names of documents or systems, and exact figures from the model answer are a bonus,
+  not a requirement. Their absence alone must not pull a sound answer below 7.
+- Conversational, unstructured, Hindi/Hinglish or speech-to-text-garbled
+  phrasing is normal. Read for the intended meaning, and give the benefit of
+  the doubt where a reasonable listener would understand what was meant.
+- This moderation is about completeness only. It never softens the downgrade
+  rules below: a wrong, unsafe or dishonest answer is scored as strictly as before.
+
 **Calibration guide — read carefully before scoring:**
-- A competent sales professional who gives a correct, practical answer with minor gaps = **7 or 8**
-- An experienced professional who covers most key points with good judgment = **8**
-- Only truly exceptional, textbook-perfect answers with comprehensive detail = **9 or 10**
-- A basic but correct answer that misses depth or specifics = **5 or 6**
-- A vague, generic, or significantly incomplete answer = **3 or 4**
+- Right essential action(s) and sound judgment, said plainly, even with secondary points missing = **7 or 8**
+- Right essentials plus a useful check, follow-up or escalation = **8 or 9**
+- Essentials and most of the useful detail, with clear practical sense = **9 or 10** (a 10 does not require reciting the model answer)
+- Right general direction but thin — one essential point present, another missing = **5 or 6**
+- On-topic but vague or generic, essentials largely missing = **3 or 4**
 - A wrong or harmful answer, but a genuine attempt at the question = **1 or 2**
 - Blank, no response, or a meaningless non-answer (a single word like "OK"/"test"/"yes", gibberish, or text that does not attempt to address the question) = **0**. Never score this a 1 — 0 is reserved for exactly this case.
 
@@ -76,25 +91,28 @@ Sub-scores and weights:
 - E. Ownership & escalation logic (10%): Did the candidate show clear follow-through and appropriate escalation?
 
 **Score Anchors (use the FULL 1–10 range):**
-- **10**: Perfect — covers every key point from model answer, adds practical insight, flawless judgment
-- **9**: Near-perfect — covers almost all key points, minor omission only, excellent practical grounding
-- **8**: Strong — technically correct, practical, well-structured, good commercial awareness, minor gaps
-- **7**: Good — correct approach, covers main points, some gaps in depth or structure, still reliable
-- **6**: Above average — basic understanding correct, reasonable approach, but missing important specifics or commercial nuance
-- **5**: Average — gets the general direction right but generic, incomplete, or lacks RMX-specific grounding
-- **4**: Below average — misses important actions, too vague, weak escalation, some commercial risk
-- **3**: Weak — significant gaps, incorrect approach on key aspects, operational risk
+- **10**: Excellent — essentials right, most of the useful detail present, nothing important missing (need not match the model answer point for point)
+- **9**: Very strong — essentials right, backed by good check, follow-up or escalation
+- **8**: Strong — essentials right and practical; some secondary points missing
+- **7**: Good — right approach and right first action, limited detail
+- **6**: Fair — right direction; one essential point present, another important one missing
+- **5**: Thin — right direction but mostly generic
+- **4**: Below par — on-topic but misses the essentials, some commercial risk
+- **3**: Weak — wrong on a key aspect, or largely misses the point
 - **2**: Poor — mostly wrong, potentially harmful advice, no ownership shown
 - **1**: Fail — a genuine attempt that is completely wrong or a dangerous recommendation
 - **0**: No response, blank, or a meaningless non-answer (single word, gibberish, or text that doesn't attempt the question)
 
 ## Mandatory Downgrade Rules
+Apply a cap only when the answer actually does what the rule describes — not
+because a point was simply not mentioned. Omissions are handled by the
+calibration above.
+
 CAP at 6 if ANY of these apply:
-- Answer is generic and not grounded in RMX reality
-- Candidate says "I will check and revert" without an immediate action path
-- Candidate only apologizes but does not solve
+- Answer is entirely generic, with nothing specific to the situation asked
+- Candidate's only action is "I will check and revert", with no immediate step at all
+- Candidate only apologizes and proposes no solution at all
 - Candidate suggests price reduction / free compensation without verification
-- Candidate ignores internal coordination
 
 CAP at 4 if ANY of these apply:
 - Candidate misleads the customer

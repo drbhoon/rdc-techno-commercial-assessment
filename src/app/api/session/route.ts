@@ -79,7 +79,7 @@ export async function POST(req: NextRequest) {
         if (response?.transcript?.trim()) transcripts[response.position] = response.transcript;
       }
       // Banks whatever the last sitting was owed and opens a new one, so the
-      // candidate comes back to the balance they left with — not a fresh 55
+      // candidate comes back to the balance they left with — not a fresh 60
       // minutes, and not a clock that ran while they were disconnected.
       const resumed = accrue(existing, true);
       await updateSession(resumed);

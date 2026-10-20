@@ -53,7 +53,7 @@ export interface StoredSession {
    * on the attempt it releases so the reason is visible in the data.
    */
   retakeAllowedAt?: string;
-  responses: Record<number, StoredResponse>; // keyed by position 1-20
+  responses: Record<number, StoredResponse>; // keyed by position 1-15 (1-20 before the change)
 }
 
 // ── Schema init (idempotent) ──────────────────────────────────────────────────
@@ -120,7 +120,7 @@ export async function getSession(
   return res.rows[0].data as StoredSession;
 }
 
-// The clock itself lives in examClock.ts: 55 minutes of exam time that counts
+// The clock itself lives in examClock.ts: 60 minutes of exam time that counts
 // only while the candidate is sitting the paper, inside a two-hour outer
 // limit. Re-exported so callers have one place to import from.
 export { EXAM_DURATION_MS, SESSION_WINDOW_MS } from "./examClock";
@@ -153,7 +153,7 @@ export async function findResumableSession(
   );
   if (res.rows.length === 0) return null;
   const session = res.rows[0].data as StoredSession;
-  // Spent = the 55 minutes are gone, or the two-hour outer limit has passed.
+  // Spent = the 60 minutes are gone, or the two-hour outer limit has passed.
   if (isSpent(session)) return null;
   return session;
 }

@@ -10,7 +10,7 @@ function InstructionsContent() {
   const isSelling = type === "selling";
 
   const steps = [
-    { n: "01", icon: "📋", title: "20 Questions", body: "You will answer 20 questions drawn from a randomised pool, covering all key competency areas." },
+    { n: "01", icon: "📋", title: "15 Questions", body: "You will answer 15 questions drawn from a randomised pool, covering all key competency areas." },
     { n: "02", icon: "🎤", title: "Voice-first answering", body: "Press the mic button and speak your answer. A text-input fallback is available if needed." },
     // Candidates were answering in clipped bullet points and scoring below
     // what they know, because an answer that names an action without saying
@@ -21,7 +21,7 @@ function InstructionsContent() {
     { n: "06", icon: "🤖", title: "Instant AI evaluation", body: "Each answer is scored out of 10 as you go, with written feedback for your manager." },
     // The window and the paper are different lengths on purpose, and a
     // candidate who loses power needs to know the link still works.
-    { n: "07", icon: "🔌", title: "55 minutes, and you can come back", body: "The clock runs for 55 minutes from when you start. If you are cut off, every answer you have already given is saved — open the same link and carry on with the time that is left." },
+    { n: "07", icon: "🔌", title: "60 minutes, and you can come back", body: "The clock runs for 60 minutes from when you start. If you are cut off, every answer you have already given is saved — open the same link and carry on with the time that is left." },
   ];
 
   const domainTip = isSelling

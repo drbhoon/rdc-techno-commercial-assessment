@@ -122,7 +122,7 @@ function HomeContent() {
           Techno-Commercial<br />Assessment
         </h1>
         <p className="text-blue-200 text-sm leading-relaxed">
-          Voice-based evaluation for RDC sales professionals. 20 questions,
+          Voice-based evaluation for RDC sales professionals. 15 questions,
           AI-evaluated, competency-mapped results.
         </p>
       </div>
@@ -236,7 +236,7 @@ function HomeContent() {
                 />
                 <div className="text-3xl mb-2">{opt.emoji}</div>
                 <div className="font-bold text-slate-800 text-sm mb-0.5">{opt.label}</div>
-                <div className="text-xs text-slate-400 font-medium mb-2">{opt.desc} • 20 questions</div>
+                <div className="text-xs text-slate-400 font-medium mb-2">{opt.desc} • 15 questions</div>
                 <div className="flex flex-wrap gap-1">
                   {opt.tags.map((t) => (
                     <span key={t} className="text-xs bg-slate-100 text-slate-500 rounded-md px-2 py-0.5 font-medium">

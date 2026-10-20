@@ -7,7 +7,7 @@
  * paper while nobody was even looking at it. So time is ACCRUED instead. The
  * attempt carries how much has been used, and a marker for when the current
  * sitting began; closing the page ends that sitting and reopening the link
- * starts another. The balance is what is left of the 55 minutes.
+ * starts another. The balance is what is left of the 60 minutes.
  *
  * Two things stop this becoming an open-ended exam:
  *
@@ -17,10 +17,10 @@
  *     enough to cover a missed report or two without charging somebody for an
  *     hour of being disconnected.
  *   - The attempt still expires two hours after it began, however little of
- *     the 55 minutes has been used. Otherwise a candidate could pause on
+ *     the 60 minutes has been used. Otherwise a candidate could pause on
  *     question one and come back tomorrow having thought about it.
  */
-export const EXAM_DURATION_MS = 55 * 60 * 1000;
+export const EXAM_DURATION_MS = 60 * 60 * 1000;
 export const SESSION_WINDOW_MS = 2 * 60 * 60 * 1000;
 /**
  * How much silence counts as time spent.

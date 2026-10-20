@@ -7,10 +7,10 @@ import { withBase } from "@/lib/basePath";
 
 type Stage = "loading" | "question" | "recorded" | "review" | "submitting" | "complete" | "error" | "timeup";
 
-// 55 minutes, matching SESSION_WINDOW_MS on the server. The clock runs from
-// the ORIGINAL start, so a candidate who is cut off comes back to the time
-// that is left — and disconnecting cannot buy more.
-const TOTAL_TIME = 55 * 60;
+// 60 minutes, matching EXAM_DURATION_MS on the server. Only a fallback: the
+// server sends the balance actually left, so a candidate who is cut off comes
+// back to the time that is left — and disconnecting cannot buy more.
+const TOTAL_TIME = 60 * 60;
 
 interface SessionData {
   sessionId: string;
@@ -184,6 +184,10 @@ function AssessmentContent() {
   }, [stage]);
 
   // Save transcript and go to next question
+  // Taken from the paper, not fixed: papers are 15 questions now, and one
+  // started on 20 before the change must still run to its own end.
+  const total = questions.length;
+
   const handleNext = useCallback(() => {
     if (transcript.trim()) {
       transcriptsRef.current[position] = transcript.trim();
@@ -191,7 +195,7 @@ function AssessmentContent() {
       sessionStorage.setItem(`transcripts_${sessionId}`, JSON.stringify(transcriptsRef.current));
       persistAnswer(position, transcript);
     }
-    if (position >= 20) {
+    if (position >= total) {
       setReachedReview(true);
       setStage("review");
     } else {
@@ -199,11 +203,11 @@ function AssessmentContent() {
       setTranscript("");
       setStage("question");
     }
-  }, [position, transcript, sessionId, persistAnswer]);
+  }, [position, total, transcript, sessionId, persistAnswer]);
 
   // Skip question (no answer)
   const handleSkip = useCallback(() => {
-    if (position >= 20) {
+    if (position >= total) {
       setReachedReview(true);
       setStage("review");
     } else {
@@ -211,7 +215,7 @@ function AssessmentContent() {
       setTranscript("");
       setStage("question");
     }
-  }, [position]);
+  }, [position, total]);
 
   // Move to any question, keeping whatever has been said so far.
   //
@@ -222,7 +226,7 @@ function AssessmentContent() {
   // out, and the answer at the destination is restored on the way in, so a
   // wrong turn costs nothing.
   const goToQuestion = useCallback((target: number) => {
-    if (target < 1 || target > 20) return;
+    if (target < 1 || target > total) return;
     if (transcript.trim()) {
       transcriptsRef.current[position] = transcript.trim();
       sessionStorage.setItem(`transcripts_${sessionId}`, JSON.stringify(transcriptsRef.current));
@@ -313,7 +317,7 @@ function AssessmentContent() {
       <div className="w-24 h-24 bg-red-600 rounded-full flex items-center justify-center text-5xl mx-auto shadow-xl">⏰</div>
       <div>
         <h2 className="text-3xl font-black text-red-700 mb-2">Time&apos;s Up!</h2>
-        <p className="text-slate-500">Your 55 minutes are up. Everything you answered has been saved and submitted.</p>
+        <p className="text-slate-500">Your 60 minutes are up. Everything you answered has been saved and submitted.</p>
         <p className="text-slate-400 text-sm mt-1">Your responses are being evaluated...</p>
       </div>
     </div>
@@ -344,7 +348,7 @@ function AssessmentContent() {
         <div className="gradient-navy rounded-2xl p-6 text-white shadow-card">
           <h2 className="text-2xl font-black mb-1">Review &amp; Submit</h2>
           <p className="text-blue-300 text-sm">
-            You answered {answered.length} of 20 questions. Review below and submit for AI evaluation.
+            You answered {answered.length} of {total} questions. Review below and submit for AI evaluation.
           </p>
         </div>
 
@@ -352,7 +356,7 @@ function AssessmentContent() {
           <div className="bg-amber-50 border-2 border-amber-200 rounded-2xl p-4">
             <p className="text-sm font-bold text-amber-700 mb-1">⚠ {unanswered.length} questions unanswered</p>
             <p className="text-xs text-amber-600">
-              Questions: {unanswered.map((q) => `Q${q.position}`).join(", ")}. Unanswered questions will receive a score of 1/10 — tap any question below to go back and answer it.
+              Questions: {unanswered.map((q) => `Q${q.position}`).join(", ")}. Unanswered questions will receive a score of 0/10 — tap any question below to go back and answer it.
             </p>
           </div>
         )}
@@ -404,14 +408,14 @@ function AssessmentContent() {
   }
 
   // Active question stage
-  const pctDone = ((position - 1) / 20) * 100;
+  const pctDone = total ? ((position - 1) / total) * 100 : 0;
   const fmtTimer = (s: number) => `${Math.floor(s / 60).toString().padStart(2, "0")}:${(s % 60).toString().padStart(2, "0")}`;
   const timerColor = timeLeft > 15 * 60 ? "text-green-400" : timeLeft > 5 * 60 ? "text-orange-400" : "text-red-400";
   const timerBg = timeLeft > 15 * 60 ? "bg-slate-900" : timeLeft > 5 * 60 ? "bg-orange-950" : "bg-red-950";
 
   return (
     <div className="max-w-2xl mx-auto space-y-5">
-      {/* The 55-minute exam clock, anchored to the server's start time. */}
+      {/* The 60-minute exam clock, anchored to the server's balance. */}
       <div className={`${timerBg} rounded-2xl shadow-card px-5 py-3 flex items-center justify-between`}>
         <div className="flex items-center gap-3">
           <span className="text-white text-xs font-bold uppercase tracking-wide">Time Remaining</span>
@@ -425,7 +429,7 @@ function AssessmentContent() {
       {/* Progress header */}
       <div className="bg-white rounded-2xl shadow-card p-4 flex items-center gap-4">
         <div className="gradient-navy text-white rounded-xl px-3 py-1.5 text-xs font-black uppercase tracking-wide whitespace-nowrap">
-          Q {position} / 20
+          Q {position} / {total}
         </div>
         <div className="flex-1">
           <div className="w-full bg-slate-100 rounded-full h-3 overflow-hidden">
@@ -485,7 +489,7 @@ function AssessmentContent() {
                   onClick={handleNext}
                   className="flex-1 py-4 gradient-navy text-white rounded-xl font-bold text-base shadow-lg hover:opacity-90 transition-all flex items-center justify-center gap-2"
                 >
-                  {position < 20 ? `Save & Next Question →` : "Review & Submit →"}
+                  {position < total ? `Save & Next Question →` : "Review & Submit →"}
                 </button>
               </div>
             )}

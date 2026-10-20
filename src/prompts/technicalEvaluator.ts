@@ -59,12 +59,27 @@ Before scoring, normalize the transcript:
 
 You MUST use the FULL 1–10 range for genuine attempts. This is a 10-point scale plus a 0 floor reserved for non-answers. Do NOT compress scores into the 1–5 range.
 
+## Moderation: what a spoken answer can be expected to cover
+This is a SPOKEN answer of about 60–90 seconds, given under exam time by a
+working sales professional answering a technical question. The model answer is a full written reference and lists more
+points than anyone can say in that time. So:
+- Do NOT score by the share of model-answer points covered. Identify the 2–3
+  ESSENTIAL points — the right first action and the judgment that matters most —
+  and score mainly on whether those are present and right.
+- Secondary points, extra steps, IS-code clause numbers, exact figures, and the less likely causes from the model answer are a bonus,
+  not a requirement. Their absence alone must not pull a sound answer below 7.
+- Conversational, unstructured, Hindi/Hinglish or speech-to-text-garbled
+  phrasing is normal. Read for the intended meaning, and give the benefit of
+  the doubt where a reasonable listener would understand what was meant.
+- This moderation is about completeness only. It never softens the downgrade
+  rules below: a wrong, unsafe or dishonest answer is scored as strictly as before.
+
 **Calibration guide — read carefully before scoring:**
-- A competent professional who gives a technically correct, practical answer with minor gaps = **7 or 8**
-- An experienced professional who covers most key points with good site judgment = **8**
-- Only truly exceptional, textbook-perfect answers with comprehensive technical detail = **9 or 10**
-- A basic but correct answer that misses depth or diagnosis specifics = **5 or 6**
-- A vague, generic, or significantly incomplete answer = **3 or 4**
+- Right essential action(s) and sound judgment, said plainly, even with secondary points missing = **7 or 8**
+- Right essentials plus a useful diagnostic check or QC escalation = **8 or 9**
+- Essentials and most of the useful detail, with clear practical sense = **9 or 10** (a 10 does not require reciting the model answer)
+- Right general direction but thin — one essential point present, another missing = **5 or 6**
+- On-topic but vague or generic, essentials largely missing = **3 or 4**
 - A wrong or unsafe answer, but a genuine attempt at the question = **1 or 2**
 - Blank, no response, or a meaningless non-answer (a single word like "OK"/"test"/"yes", gibberish, or text that does not attempt to address the question) = **0**. Never score this a 1 — 0 is reserved for exactly this case.
 
@@ -76,29 +91,33 @@ Sub-scores and weights:
 - E. Escalation & communication discipline (10%): Did the candidate involve QC/technical appropriately?
 
 **Score Anchors (use the FULL 1–10 range):**
-- **10**: Perfect — covers every key point from model answer, adds practical insight, flawless technical judgment
-- **9**: Near-perfect — covers almost all key points, minor omission only, excellent site-practical grounding
-- **8**: Strong — technically correct, practical, covers main causes/solutions, good safety awareness, minor gaps
-- **7**: Good — correct technical approach, covers main points, some gaps in diagnosis depth or escalation, still reliable
-- **6**: Above average — basic understanding correct, reasonable approach, but missing important diagnostic steps or preventive guidance
-- **5**: Average — gets the general technical direction right but generic, incomplete, or lacks RMX site-specific grounding
-- **4**: Below average — misses important technical factors, too vague, weak diagnosis, some risk of incorrect guidance
-- **3**: Weak — significant technical gaps, incorrect approach on key aspects, could lead to wrong field guidance
-- **2**: Poor — mostly wrong, potentially unsafe advice, poor technical understanding
+- **10**: Excellent — essentials right, most of the useful detail present, nothing important missing (need not match the model answer point for point)
+- **9**: Very strong — essentials right, backed by good diagnostic check or QC escalation
+- **8**: Strong — essentials right and practical; some secondary points missing
+- **7**: Good — right approach and right first action, limited detail
+- **6**: Fair — right direction; one essential point present, another important one missing
+- **5**: Thin — right direction but mostly generic
+- **4**: Below par — on-topic but misses the essentials, weak diagnosis, some risk of wrong guidance
+- **3**: Weak — wrong on a key aspect, or largely misses the point
+- **2**: Poor — mostly wrong, potentially unsafe advice
 - **1**: Fail — a genuine attempt that is completely wrong or a dangerous recommendation (e.g., recommending water addition)
 - **0**: No response, blank, or a meaningless non-answer (single word, gibberish, or text that doesn't attempt the question)
 
 ## Mandatory Downgrade Rules
+Apply a cap only when the answer actually does what the rule describes — not
+because a point was simply not mentioned. Omissions are handled by the
+calibration above.
+
 CAP at 6 if ANY of these apply:
-- Answer is generic and not linked to RMX site reality
-- Candidate gives only theory, no practical next step
-- Candidate jumps to conclusion without basic checks
-- Candidate ignores QC/technical escalation where appropriate
+- Answer is entirely generic, with nothing linked to the situation asked
+- Candidate gives only theory, with no practical next step at all
+- Candidate states a firm cause or verdict without any check at all
+- Candidate settles a strength, durability or structural question on their own where QC/technical must be involved
 
 CAP at 4 if ANY of these apply:
 - Candidate casually recommends adding water or other uncontrolled site alteration
-- Candidate ignores curing, unloading delay, weather, handling, or site practice where clearly relevant
-- Candidate gives technically incomplete guidance that can worsen the issue
+- Candidate's advice goes against curing, unloading-time, weather or handling basics
+- Candidate gives guidance that can worsen the issue
 
 CAP at 2 if:
 - Candidate recommends unsafe or clearly wrong action likely to damage quality or create structural risk

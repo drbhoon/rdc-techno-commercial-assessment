@@ -51,7 +51,7 @@ export async function POST(
       recordedAt,
     };
 
-    if (position === 20) {
+    if (position === session.questions.length) {
       session.status = "completed";
       session.completedAt = recordedAt;
     }

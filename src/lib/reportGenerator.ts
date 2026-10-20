@@ -12,15 +12,6 @@ import {
   TECHNICAL_COMPETENCY_NAMES,
 } from "@/prompts/technicalEvaluator";
 
-// Distribution used per assessment (for denominator in competency score %)
-const SELLING_DIST: Record<string, number> = {
-  C1: 2, C2: 4, C3: 3, C4: 2,
-  C5: 3, C6: 3, C7: 1, C8: 2,
-};
-const TECHNICAL_DIST: Record<string, number> = {
-  T1: 3, T2: 3, T3: 4, T4: 4,
-  T5: 3, T6: 2, T7: 1,
-};
 
 // Red-flag triggers from skill files
 const SELLING_RED_FLAGS = [
@@ -69,8 +60,14 @@ export function generateReport(params: {
       ? SELLING_COMPETENCY_NAMES
       : TECHNICAL_COMPETENCY_NAMES;
 
-  const dist =
-    assessmentType === "selling" ? SELLING_DIST : TECHNICAL_DIST;
+  // How many questions of each competency this paper asked. Counted from the
+  // paper itself rather than a fixed table, so a 20-question attempt from
+  // before the move to 15 still reads out of its own 20.
+  const asked: Record<string, number> = {};
+  for (const r of responses) {
+    const primary = r.competencies[0];
+    asked[primary] = (asked[primary] ?? 0) + 1;
+  }
 
   // Compute competency-wise scores (scale 1-10)
   const compTotals: Record<string, { total: number; count: number }> = {};
@@ -85,7 +82,7 @@ export function generateReport(params: {
   const competencyScores: CompetencyScore[] = Object.entries(names).map(
     ([id, name]) => {
       const data = compTotals[id] ?? { total: 0, count: 0 };
-      const maxPossible = (dist[id] ?? 1) * 10; // scale is 1-10
+      const maxPossible = (asked[id] ?? 0) * 10; // scale is 0-10
       const avgScore = data.count > 0 ? data.total / data.count : 0;
       const pct = maxPossible > 0 ? (data.total / maxPossible) * 100 : 0;
       return {
@@ -100,7 +97,8 @@ export function generateReport(params: {
     }
   );
 
-  // Overall score — total out of 200 (20 questions * 10 max each)
+  // Overall score — total out of 150 (15 questions * 10 max each; 200 for a
+  // 20-question paper sat before the change)
   // Checks for a scored evaluation, not a truthy score — a 0 (blank/nonsense
   // answer) must still count toward the average, not be dropped from it.
   const scoredResponses = responses.filter((r) => typeof r.evaluation?.score === "number");

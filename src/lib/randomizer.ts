@@ -1,20 +1,24 @@
 /**
  * Competency-aware deterministic question randomizer.
- * Selects exactly 20 questions per attempt following the distribution
- * rules in the skill files.
+ * Selects QUESTION_COUNT questions per attempt following the distribution
+ * below — the skill files' 20-question spread scaled to 15, with every
+ * competency still asked at least once.
  */
 import type { Question, ClientQuestion } from "@/types";
 import { getBank } from "./questionBank";
 
-// Required distribution: competencyId → count
-const SELLING_DIST: Record<string, number> = {
-  C1: 2, C2: 4, C3: 3, C4: 2,
-  C5: 3, C6: 3, C7: 1, C8: 2,
+/** Questions per paper, both modules. 15 × 10 = 150 marks. */
+export const QUESTION_COUNT = 15;
+
+// Required distribution: competencyId → count. Each sums to QUESTION_COUNT.
+export const SELLING_DIST: Record<string, number> = {
+  C1: 2, C2: 3, C3: 2, C4: 1,
+  C5: 2, C6: 2, C7: 1, C8: 2,
 };
 
-const TECHNICAL_DIST: Record<string, number> = {
-  T1: 3, T2: 3, T3: 4, T4: 4,
-  T5: 3, T6: 2, T7: 1,
+export const TECHNICAL_DIST: Record<string, number> = {
+  T1: 2, T2: 2, T3: 3, T4: 3,
+  T5: 2, T6: 2, T7: 1,
 };
 
 function shuffle<T>(arr: T[]): T[] {
@@ -86,19 +90,19 @@ export function assembleAssessment(
 
   // Phase 2: fill remaining slots using secondary competency membership
   // (questions that list this competency second)
-  if (selected.length < 20) {
+  if (selected.length < QUESTION_COUNT) {
     const allRemaining = shuffle(
       bank.filter((q) => !usedIds.has(q.id))
     );
     for (const q of allRemaining) {
-      if (selected.length >= 20) break;
+      if (selected.length >= QUESTION_COUNT) break;
       selected.push(q);
       usedIds.add(q.id);
     }
   }
 
   // Shuffle final set for random order
-  const finalQuestions = shuffle(selected).slice(0, 20);
+  const finalQuestions = shuffle(selected).slice(0, QUESTION_COUNT);
 
   const clientQuestions: ClientQuestion[] = finalQuestions.map((q, i) => ({
     id: q.id,
