@@ -35,6 +35,8 @@ export async function GET(req: NextRequest) {
     startedAt: s.startedAt,
     completedAt: s.completedAt ?? null,
     questionsAnswered: Object.values(s.responses).filter((r) => r.transcript).length,
+    // The paper's own length: 15 now, 20 for attempts sat before the change.
+    questionsTotal: s.questions?.length || Object.keys(s.responses ?? {}).length,
     overallScore: calcScore(s),
     email: s.candidate.email ?? "",
     retakeAllowedAt: s.retakeAllowedAt ?? null,

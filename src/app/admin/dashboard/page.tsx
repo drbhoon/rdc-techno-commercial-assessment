@@ -15,6 +15,7 @@ interface SessionRow {
   startedAt: string;
   completedAt: string | null;
   questionsAnswered: number;
+  questionsTotal: number;
   overallScore: number | null;
   email: string;
   retakeAllowedAt: string | null;
@@ -375,7 +376,7 @@ export default function AdminDashboard() {
                     </td>
                     <td className="px-4 py-3 text-center">
                       <span className="font-bold text-slate-700">{s.questionsAnswered}</span>
-                      <span className="text-slate-400">/20</span>
+                      <span className="text-slate-400">/{s.questionsTotal}</span>
                     </td>
                     <td className="px-4 py-3 text-center">
                       <span className={`text-lg font-black ${SCORE_COLOR(s.overallScore)}`}>

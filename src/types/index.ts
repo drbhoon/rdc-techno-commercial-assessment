@@ -81,7 +81,7 @@ export interface FinalReport {
   responses: SessionResponse[];
   overallScore: number;       // 0–100 %
   overallAvg: number;         // avg score 1–10
-  totalPoints: number;        // sum of all scores (max 200)
+  totalPoints: number;        // sum of all scores (max 150; 200 on a 20-question paper)
   maxPoints: number;          // max possible (questions * 10)
   competencyScores: CompetencyScore[];
   topStrengths: string[];
