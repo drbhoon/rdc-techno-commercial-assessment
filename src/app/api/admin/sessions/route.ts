@@ -36,6 +36,9 @@ export async function GET(req: NextRequest) {
     completedAt: s.completedAt ?? null,
     questionsAnswered: Object.values(s.responses).filter((r) => r.transcript).length,
     overallScore: calcScore(s),
+    email: s.candidate.email ?? "",
+    retakeAllowedAt: s.retakeAllowedAt ?? null,
+    retakeEmailedAt: s.retakeEmailedAt ?? null,
   }));
   return NextResponse.json(rows);
 }

@@ -10,8 +10,10 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.52.0",
+    "@types/nodemailer": "^6.4.24",
     "jspdf": "^4.2.1",
     "next": "^15.1.0",
+    "nodemailer": "^6.10.1",
     "pg": "^8.13.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

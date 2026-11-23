@@ -16,6 +16,9 @@ interface SessionRow {
   completedAt: string | null;
   questionsAnswered: number;
   overallScore: number | null;
+  email: string;
+  retakeAllowedAt: string | null;
+  retakeEmailedAt: string | null;
 }
 
 const SCORE_COLOR = (s: number | null) => {
@@ -84,6 +87,16 @@ export default function AdminDashboard() {
 
   /** Close an abandoned attempt, or release a candidate for another sitting. */
   const handleAction = useCallback(async (id: string, action: "finalise" | "allow-retake") => {
+    // Retake now sends a real e-mail, so say to whom before it goes.
+    if (action === "allow-retake") {
+      const row = sessions.find((r) => r.id === id);
+      if (row) {
+        const paper = row.assessmentType === "selling" ? "Selling Skill" : "Technical Skill";
+        const to = row.email || "no e-mail address on file";
+        const verb = row.retakeAllowedAt ? "Send the" : "Release a retake and e-mail the";
+        if (!window.confirm(`${verb} ${paper} link to ${row.candidateName} (${to})?`)) return;
+      }
+    }
     setActingId(id);
     setNotice("");
     try {
@@ -103,7 +116,7 @@ export default function AdminDashboard() {
     }
     // fetchSessions is stable for this page's lifetime; adminPwd is what matters.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [adminPwd]);
+  }, [adminPwd, sessions]);
 
   const handleDelete = useCallback(async (id: string) => {
     setDeletingId(id);
@@ -268,7 +281,7 @@ export default function AdminDashboard() {
         </div>
         <p className="text-xs text-slate-400 mt-2">
           Send a candidate the link for the paper they are meant to sit. Each candidate may sit a paper once;
-          use ↻ Retake on their row to release it again.
+          ↻ Retake on their row releases it again and e-mails them the link.
         </p>
       </div>
 
@@ -417,15 +430,33 @@ export default function AdminDashboard() {
                           </button>
                         )}
 
-                        {/* Let somebody sit the paper again. */}
+                        {/* Let somebody sit the paper again — and send them the
+                            link, which the console already knows. Once released,
+                            the same button re-sends the e-mail. */}
                         {(s.status === "completed" || s.status === "submitted" || s.status === "expired") && (
                           <button
                             onClick={() => handleAction(s.id, "allow-retake")}
                             disabled={actingId === s.id}
-                            className="px-2.5 py-1.5 bg-slate-50 hover:bg-slate-100 text-slate-600 rounded-lg text-xs font-bold transition-colors disabled:opacity-50"
-                            title="Release this candidate to take the assessment again"
+                            className={`px-2.5 py-1.5 rounded-lg text-xs font-bold transition-colors disabled:opacity-50 ${
+                              s.retakeAllowedAt
+                                ? "bg-emerald-50 hover:bg-emerald-100 text-emerald-700"
+                                : "bg-slate-50 hover:bg-slate-100 text-slate-600"
+                            }`}
+                            title={
+                              s.retakeEmailedAt
+                                ? `Retake released; link e-mailed ${new Date(s.retakeEmailedAt).toLocaleString("en-IN")}. Click to send it again.`
+                                : s.retakeAllowedAt
+                                  ? "Retake released; no link e-mailed yet. Click to e-mail it."
+                                  : `Release a retake and e-mail the link to ${s.email || "the candidate"}`
+                            }
                           >
-                            {actingId === s.id ? "…" : "↻ Retake"}
+                            {actingId === s.id
+                              ? "…"
+                              : s.retakeEmailedAt
+                                ? "✉ Sent · Resend"
+                                : s.retakeAllowedAt
+                                  ? "✉ Send link"
+                                  : "↻ Retake"}
                           </button>
                         )}
 

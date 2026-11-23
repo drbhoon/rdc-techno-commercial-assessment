@@ -53,6 +53,9 @@ export interface StoredSession {
    * on the attempt it releases so the reason is visible in the data.
    */
   retakeAllowedAt?: string;
+  /** When the retake link was last e-mailed to the candidate, and to where. */
+  retakeEmailedAt?: string;
+  retakeEmailedTo?: string;
   responses: Record<number, StoredResponse>; // keyed by position 1-15 (1-20 before the change)
 }
 
